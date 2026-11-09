@@ -3,8 +3,8 @@
 The supplied files in `public/` are already connected:
 
 - `continue-witth-google-btn.png` — Google signup and sign-in.
-- `continue-witth-password-bttn.png` — email sign-in and account creation.
-- `continue-btn.png` — verification, recovery, password changes, and MFA.
+- `continue-witth-password-bttn.png` — available for a separate email-method chooser.
+- `continue-btn.png` — all email form submissions, verification, recovery, password changes, and MFA.
 - `profile-icon.webp` — name field.
 - `lock.webp` — password fields.
 - `left-chevron.webp` — back navigation.

@@ -13,7 +13,7 @@ export function AuthVisual({ business = false }: { business?: boolean }) {
     <aside className="auth-visual">
       <div className="visual-copy">
         <div className="eyebrow">
-          <span className="tiny-dot" /> A LITTLE CLOSER. A LOT EASIER.
+          <span className="tiny-dot" /> HEALTHCARE AND ESSENTIAL SERVICES
         </div>
         <h1>
           {business ? (
@@ -91,7 +91,6 @@ export function AuthVisual({ business = false }: { business?: boolean }) {
           <br />
           and more. All in one place.
         </p>
-        <span className="visual-page">01 — 03</span>
       </div>
     </aside>
   );

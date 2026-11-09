@@ -78,7 +78,7 @@ The privacy / terms screens are marked pre-launch and require final Bismart poli
 
 ## Artwork
 
-Your supplied PNG buttons and WebP icons in `public/` are connected using their existing filenames. See [the asset guide](public/images/auth/README.md) for replacements. Accessible HTML fallbacks work immediately; missing images are hidden. Brand mark: `components/brand.tsx`. Theme and responsive layouts: `app/globals.css`. Optional illustrations are implemented locally as CSS and SVG, with no external asset calls.
+Your supplied PNG buttons and WebP icons in `public/` are connected using their existing filenames. See [the asset guide](public/images/auth/README.md) for replacements. Accessible HTML fallbacks work immediately; missing images are hidden. Brand mark: `components/brand.tsx`. Theme and responsive layouts: `app/globals.css`. Typography uses locally hosted Inter (regular, semibold, and bold); its OFL license is in `public/fonts/`. Optional illustrations are implemented locally as CSS and SVG, with no external asset calls.
 
 ## Verification
 

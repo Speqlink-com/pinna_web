@@ -13,7 +13,6 @@ import {
   Building2,
   ShieldCheck,
   Copy,
-  CheckCircle2,
 } from "lucide-react";
 import { Brand } from "./brand";
 import { AuthVisual } from "./auth-visual";
@@ -33,27 +32,28 @@ const details: Record<
   { title: string; description: string; label: string }
 > = {
   "sign-in": {
-    title: "Welcome back.",
-    description: "Good to see you. Let’s find what you need.",
+    title: "Sign in to Pinna",
+    description:
+      "Find providers, compare services, and manage your connections.",
     label: "SIGN IN TO PINNA",
   },
   "sign-up": {
-    title: "Your connection to better.",
-    description: "A little less searching. A lot more peace of mind.",
+    title: "Create your account",
+    description: "Choose a personal or business account to get started.",
     label: "GET STARTED WITH PINNA",
   },
   "forgot-password": {
-    title: "Let’s get you back in.",
+    title: "Reset your password",
     description: "We’ll email you a secure link to reset your password.",
     label: "PASSWORD RECOVERY",
   },
   "reset-password": {
-    title: "A fresh start.",
+    title: "Choose a new password",
     description: "Choose a strong password to protect your account.",
     label: "RESET YOUR PASSWORD",
   },
   "verify-email": {
-    title: "Make it official.",
+    title: "Verify your email",
     description: "Confirm your email to start your Pinna journey.",
     label: "VERIFY YOUR EMAIL",
   },
@@ -64,7 +64,7 @@ const details: Record<
     label: "SECURE YOUR ACCOUNT",
   },
   "verify-security": {
-    title: "One more layer of care.",
+    title: "Two-step verification",
     description: "Protect your admin account with an authenticator app.",
     label: "TWO-STEP VERIFICATION",
   },
@@ -285,7 +285,12 @@ export function AuthScreen({
             {message ? (
               <div className="success-state" role="status">
                 <span className="success-symbol">
-                  <CheckCircle2 size={28} />
+                  <Image
+                    src="/verified-check-icon.webp"
+                    width={28}
+                    height={28}
+                    alt=""
+                  />
                 </span>
                 <h3>
                   {mode === "sign-up" ? "Check your inbox." : "You’re all set."}

@@ -4,7 +4,7 @@
 import { useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { ArrowUpRight, LoaderCircle } from "lucide-react";
 export function AssetButton({
-  asset,
+  asset = "continue-button",
   children,
   busy = false,
   variant = "primary",
@@ -19,14 +19,18 @@ export function AssetButton({
   const source =
     variant === "google"
       ? "/continue-witth-google-btn.png"
-      : asset === "sign-in-button" || asset === "create-account-button"
-        ? "/continue-witth-password-bttn.png"
-        : "/continue-btn.png";
+      : "/continue-btn.png";
   return (
     <button
       {...props}
       disabled={busy || props.disabled}
-      className={`asset-button ${variant} ${props.className ?? ""}`}
+      aria-busy={busy}
+      aria-label={
+        props["aria-label"] ??
+        (typeof children === "string" ? children : "Continue")
+      }
+      data-artwork={asset}
+      className={`asset-button ${variant} ${busy ? "is-loading" : ""} ${props.className ?? ""}`}
     >
       <span className="asset-fallback">
         {busy ? (
@@ -46,11 +50,16 @@ export function AssetButton({
         <img
           className="button-asset"
           ref={(node) => {
-            if (node?.complete && node.naturalWidth > 0)
+            if (node?.complete && node.naturalWidth > 0) {
               node.style.opacity = "1";
+              node.closest("button")?.classList.add("artwork-loaded");
+            }
           }}
           onLoad={(event) => {
             event.currentTarget.style.opacity = "1";
+            event.currentTarget
+              .closest("button")
+              ?.classList.add("artwork-loaded");
           }}
           src={source}
           alt=""

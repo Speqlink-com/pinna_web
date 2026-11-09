@@ -6,7 +6,7 @@
   --soft: #efefef;
   --white: #ffffff;
   --radius: 14px;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -15,8 +15,8 @@ body {
   margin: 0;
   background: #ffffff;
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
 button,
@@ -124,7 +124,7 @@ svg {
   flex-shrink: 0;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1.55px;
   line-height: 1.5;
@@ -134,7 +134,7 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
 }
 .text-link:hover {
@@ -144,7 +144,7 @@ svg {
   border: 1px solid transparent;
   border-radius: 8px;
   padding: 13px 19px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   display: inline-flex;
   gap: 9px;
@@ -222,10 +222,10 @@ svg {
   display: flex;
   align-items: center;
   gap: 32px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .auth-header-right > span {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
 }
 .auth-header-right > a {
@@ -238,7 +238,7 @@ svg {
   grid-template-columns: 1.04fr 1fr;
   flex: 1;
   min-height: 700px;
-  max-height: 960px;
+  max-height: none;
   gap: 20px;
 }
 .auth-visual {
@@ -260,18 +260,18 @@ svg {
   align-items: center;
   gap: 9px;
   letter-spacing: 1.8px;
-  font-size: 9px;
+  font-size: 12px;
 }
 .visual-copy h1 {
   font-size: clamp(40px, 4.1vw, 66px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -3.2px;
   line-height: 1.07;
   margin: 25px 0 22px;
 }
 .visual-copy p {
   max-width: 310px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.8;
   color: #727272;
 }
@@ -391,7 +391,7 @@ svg {
     0 4px 15px #28282820;
 }
 .map-label {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 1.4px;
   color: #727272;
   position: absolute;
@@ -459,13 +459,13 @@ svg {
   color: #717171;
 }
 .floating-match strong {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   display: block;
   margin-bottom: 6px;
 }
 .floating-match span {
-  font-size: 9px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -483,7 +483,7 @@ svg {
   border-radius: 50px;
   border: 1px solid #e3e3e3;
   background: #f9f9f9;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   display: flex;
   gap: 5px;
@@ -509,14 +509,14 @@ svg {
   color: #727272;
 }
 .visual-bottom p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.6;
   color: #727272;
 }
 .visual-page {
   margin-left: auto;
   color: #727272;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.3px;
 }
 .auth-form-panel {
@@ -527,13 +527,13 @@ svg {
 }
 .auth-form-inner {
   width: 100%;
-  max-width: 370px;
+  max-width: 440px;
 }
 .auth-kicker {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   letter-spacing: 1.6px;
   font-weight: 600;
@@ -541,13 +541,13 @@ svg {
 }
 .auth-form-inner h2 {
   font-size: 34px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -1.3px;
   line-height: 1.15;
   margin-bottom: 13px;
 }
 .auth-description {
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.8;
   color: #727272;
   margin-bottom: 30px;
@@ -561,7 +561,7 @@ svg {
   border-radius: 8px;
   padding: 0;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
 }
 .asset-fallback {
@@ -587,7 +587,7 @@ svg {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: contain;
 }
 .asset-button.google {
   background: #ffffff;
@@ -604,7 +604,7 @@ svg {
   gap: 15px;
   margin: 24px 0;
   color: #727272;
-  font-size: 10px;
+  font-size: 13px;
   white-space: nowrap;
 }
 .divider:before,
@@ -625,7 +625,7 @@ svg {
   gap: 9px;
 }
 .field-group > label {
-  font-size: 11px;
+  font-size: 14px;
   color: #4a4a4a;
 }
 .input-wrap {
@@ -652,7 +652,7 @@ svg {
   padding: 12px 0;
   background: transparent;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 15px;
   flex: 1;
   width: 100%;
   box-shadow: none;
@@ -675,7 +675,7 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 10px;
+  font-size: 13px;
   margin-top: -3px;
   margin-bottom: 5px;
   gap: 8px;
@@ -694,7 +694,7 @@ svg {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  font-size: 11px;
+  font-size: 14px;
   margin: 24px 0 0;
   color: #727272;
 }
@@ -714,14 +714,14 @@ svg {
   align-items: center;
   gap: 7px;
   color: #727272;
-  font-size: 9px;
+  font-size: 12px;
 }
 .auth-footer {
   height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   gap: 20px;
 }
@@ -762,13 +762,13 @@ svg {
   color: #727272;
 }
 .account-choices button span {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
 }
 .account-choices button small {
   display: block;
-  font-size: 8px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 500;
   color: #727272;
   margin-top: 5px;
 }
@@ -781,7 +781,7 @@ svg {
   margin-left: auto;
 }
 .business-hint {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.7;
   color: #727272;
   margin: -6px 0 15px;
@@ -825,7 +825,7 @@ svg {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
 }
 .password-rules span.met {
@@ -835,7 +835,7 @@ svg {
   display: flex;
   align-items: flex-start;
   gap: 9px;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
   color: #727272;
   cursor: pointer;
@@ -853,7 +853,7 @@ svg {
   text-underline-offset: 3px;
 }
 .match-hint {
-  font-size: 9px;
+  font-size: 12px;
   color: #626262;
   margin-top: -5px;
 }
@@ -864,7 +864,7 @@ svg {
   display: inline-flex;
   gap: 7px;
   align-items: center;
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   margin-bottom: 31px;
 }
@@ -874,7 +874,7 @@ svg {
   background: #f6f6f6;
   border-radius: 8px;
   color: #6d6d6d;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.7;
   margin: 16px 0;
   display: flex;
@@ -899,13 +899,13 @@ svg {
   padding: 22px 0;
   color: #727272;
   line-height: 1.8;
-  font-size: 12px;
+  font-size: 15px;
 }
 .success-state h3,
 .recovery-state h3 {
   font-size: 24px;
   letter-spacing: -0.6px;
-  font-weight: 400;
+  font-weight: 500;
   color: #2f2f2f;
   margin: 20px 0 11px;
 }
@@ -933,17 +933,17 @@ svg {
   gap: 11px;
 }
 .secret-box > span {
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
 }
 .secret-box code {
-  font-size: 12px;
+  font-size: 15px;
   word-break: break-all;
   line-height: 1.7;
   letter-spacing: 1px;
 }
 .secret-box a {
-  font-size: 11px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -952,7 +952,7 @@ svg {
   color: #737373;
 }
 .recovery-state p {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   line-height: 1.8;
 }
@@ -965,7 +965,7 @@ svg {
 .recovery-grid code {
   padding: 9px;
   background: #f3f3f3;
-  font-size: 11px;
+  font-size: 14px;
   border-radius: 4px;
 }
 .recovery-state > .button {
@@ -973,7 +973,7 @@ svg {
   margin-top: 10px;
 }
 .resend-details {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   text-align: center;
   margin-top: 18px;
@@ -992,14 +992,14 @@ svg {
   padding: 10px;
   flex: 1;
   width: 100%;
-  font-size: 10px;
+  font-size: 13px;
 }
 .resend-details button {
   border: 0;
   border-radius: 5px;
   background: #ececec;
   padding: 9px;
-  font-size: 9px;
+  font-size: 12px;
   white-space: nowrap;
 }
 /* Workspace */
@@ -1051,12 +1051,12 @@ svg {
 }
 .workspace-type strong {
   display: block;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   margin-bottom: 5px;
 }
 .workspace-type div > span {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .workspace-type > svg {
@@ -1064,7 +1064,7 @@ svg {
   color: #727272;
 }
 .nav-caption {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: #727272;
   padding: 0 27px;
@@ -1077,8 +1077,8 @@ svg {
   display: flex;
   align-items: center;
   gap: 11px;
-  font-size: 11px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
   color: #727272;
   border: 0;
   background: none;
@@ -1102,7 +1102,7 @@ svg {
   margin-left: auto;
   border: 1px solid #dcdcdc;
   background: #ffffff;
-  font-size: 9px;
+  font-size: 12px;
   padding: 2px 6px;
   border-radius: 4px;
   min-width: 20px;
@@ -1127,11 +1127,11 @@ svg {
   margin-bottom: 13px;
 }
 .sidebar-note strong {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
 }
 .sidebar-note p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.7;
   color: #727272;
   margin: 9px 0 16px;
@@ -1144,7 +1144,7 @@ svg {
   display: flex;
   gap: 12px;
   align-items: center;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
 }
 .sidebar-profile {
@@ -1163,7 +1163,7 @@ svg {
   place-items: center;
   background: #efefef;
   color: #747474;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
   flex-shrink: 0;
   letter-spacing: 0.3px;
@@ -1172,13 +1172,13 @@ svg {
   overflow: hidden;
 }
 .sidebar-profile strong {
-  font-size: 10px;
+  font-size: 13px;
   display: block;
   font-weight: 600;
   margin-bottom: 5px;
 }
 .sidebar-profile div > span {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   display: block;
   overflow: hidden;
@@ -1211,13 +1211,13 @@ svg {
   display: flex;
   align-items: center;
   gap: 15px;
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
 }
 .workspace-header strong {
-  font-weight: 400;
+  font-weight: 500;
   color: #5d5d5d;
-  font-size: 10px;
+  font-size: 13px;
 }
 .breadcrumb-slash {
   color: #727272;
@@ -1225,7 +1225,7 @@ svg {
 .workspace-header-actions .avatar-small {
   width: 29px;
   height: 29px;
-  font-size: 10px;
+  font-size: 13px;
 }
 .workspace-header-actions {
   gap: 22px !important;
@@ -1234,7 +1234,7 @@ svg {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .workspace-main {
@@ -1250,7 +1250,7 @@ svg {
   align-items: center;
   gap: 15px;
   justify-content: space-between;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .preview-banner > span {
@@ -1283,26 +1283,26 @@ svg {
   margin-bottom: 31px;
 }
 .page-heading .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
   margin-bottom: 11px;
 }
 .page-heading h1 {
   font-size: 31px;
   line-height: 1.15;
   letter-spacing: -1.3px;
-  font-weight: 400;
+  font-weight: 500;
 }
 .heading-dot {
   color: #727272;
 }
 .page-heading p {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   line-height: 1.7;
   margin-top: 10px;
 }
 .date-label {
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
   border: 1px solid #e5e5e5;
   border-radius: 7px;
@@ -1327,7 +1327,7 @@ svg {
   justify-content: space-between;
   gap: 7px;
   color: #727272;
-  font-size: 10px;
+  font-size: 13px;
 }
 .stat-card > strong {
   display: block;
@@ -1335,10 +1335,10 @@ svg {
   letter-spacing: -1px;
   line-height: 1;
   margin: 22px 0 12px;
-  font-weight: 400;
+  font-weight: 500;
 }
 .stat-card p {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   line-height: 1.6;
 }
@@ -1357,18 +1357,18 @@ svg {
   gap: 14px;
 }
 .panel-heading h2 {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: -0.1px;
 }
 .panel-heading p {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   margin-top: 7px;
   line-height: 1.6;
 }
 .panel-heading .text-link {
-  font-size: 10px;
+  font-size: 13px;
 }
 .count-tag {
   border: 1px solid #e6e6e6;
@@ -1376,7 +1376,7 @@ svg {
   border-radius: 4px;
   color: #727272;
   padding: 5px 9px;
-  font-size: 9px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .business-hero {
@@ -1393,25 +1393,25 @@ svg {
   justify-content: space-between;
 }
 .business-hero .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.8px;
   color: #adadad;
 }
 .business-hero h2 {
   font-size: 29px;
   line-height: 1.15;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -1px;
   margin: 16px 0 14px;
 }
 .business-hero p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
   color: #b0b0b0;
   margin-bottom: 21px;
 }
 .business-hero .button {
-  font-size: 10px;
+  font-size: 13px;
   padding: 12px 15px;
   min-height: 38px;
   border-radius: 6px;
@@ -1516,13 +1516,13 @@ button.portfolio-row:hover {
 }
 .portfolio-row-name strong {
   display: block;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
 }
 .portfolio-row-name > span {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   margin-top: 6px;
 }
@@ -1542,9 +1542,9 @@ button.portfolio-row:hover {
   border: 1px solid #e8e8e8;
   border-radius: 5px;
   padding: 5px 8px;
-  font-size: 8px;
+  font-size: 12px;
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 500;
 }
 .status-badge > span {
   width: 4px;
@@ -1588,11 +1588,11 @@ button.portfolio-row:hover {
   flex: 1;
 }
 .connection-row strong {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
 }
 .connection-row p {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   margin-top: 7px;
   overflow: hidden;
@@ -1616,19 +1616,19 @@ button.portfolio-row:hover {
   margin-bottom: 16px;
 }
 .guide-panel h3 {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 500;
   letter-spacing: -0.3px;
 }
 .guide-panel p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
   color: #727272;
   margin: 10px 0 18px;
   max-width: 340px;
 }
 .guide-panel .text-link {
-  font-size: 10px;
+  font-size: 13px;
   margin-top: auto;
 }
 .review-callout {
@@ -1653,19 +1653,19 @@ button.portfolio-row:hover {
   flex-shrink: 0;
 }
 .review-callout h3 {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 500;
   margin-bottom: 8px;
   letter-spacing: -0.2px;
 }
 .review-callout p {
   max-width: 550px;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
   color: #727272;
 }
 .review-callout .text-link {
-  font-size: 10px;
+  font-size: 13px;
   white-space: nowrap;
   margin-left: auto;
 }
@@ -1687,15 +1687,15 @@ button.portfolio-row:hover {
   border: 1px solid #e8e8e8;
   display: grid;
   place-items: center;
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
 }
 .review-steps strong {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
 }
 .review-steps p {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   line-height: 1.7;
   margin-top: 5px;
@@ -1708,7 +1708,7 @@ button.portfolio-row:hover {
   border-top: 1px solid #e5e5e5;
   padding: 22px 0;
   color: #727272;
-  font-size: 9px;
+  font-size: 12px;
 }
 .workspace-footer > div {
   display: flex;
@@ -1725,7 +1725,7 @@ button.portfolio-row:hover {
   justify-content: center;
   gap: 13px;
   min-height: 220px;
-  font-size: 12px;
+  font-size: 15px;
   color: #727272;
 }
 .empty-state {
@@ -1749,11 +1749,11 @@ button.portfolio-row:hover {
 .empty-state h3 {
   font-size: 20px;
   letter-spacing: -0.5px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 12px;
 }
 .empty-state p {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   line-height: 1.8;
   max-width: 330px;
@@ -1764,7 +1764,7 @@ button.portfolio-row:hover {
 .subtle-empty {
   padding: 30px 22px;
   color: #727272;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.7;
 }
 .toast {
@@ -1784,7 +1784,7 @@ button.portfolio-row:hover {
   align-items: center;
   gap: 10px;
   z-index: 90;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.7;
 }
 .toast .icon-button:hover {
@@ -1808,7 +1808,7 @@ button.portfolio-row:hover {
 }
 /* Discovery */
 .location-button {
-  font-size: 10px;
+  font-size: 13px;
   padding: 12px 15px;
   min-height: 40px;
 }
@@ -1826,20 +1826,20 @@ button.portfolio-row:hover {
   margin-bottom: 26px;
 }
 .discover-hero .eyebrow {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.8px;
   color: #727272;
 }
 .discover-hero h2 {
   font-size: 31px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.15;
   letter-spacing: -1.1px;
   margin: 15px 0 13px;
   color: #3e3e3e;
 }
 .discover-hero p {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.8;
   color: #727272;
 }
@@ -1847,7 +1847,7 @@ button.portfolio-row:hover {
   display: flex;
   gap: 6px;
   align-items: center;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.15px;
   margin-top: 23px;
   color: #727272;
@@ -1919,12 +1919,12 @@ button.portfolio-row:hover {
 }
 .hero-provider-chip strong {
   display: block;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
   margin-bottom: 6px;
 }
 .hero-provider-chip small {
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
 }
 .hero-provider-chip > svg {
@@ -1978,7 +1978,7 @@ button.portfolio-row:hover {
   outline: none;
   flex: 1;
   width: 100%;
-  font-size: 11px;
+  font-size: 14px;
   color: #515151;
   padding: 10px 0;
 }
@@ -1986,7 +1986,7 @@ button.portfolio-row:hover {
   color: #727272;
 }
 .search-main .button {
-  font-size: 10px;
+  font-size: 13px;
   min-height: 39px;
   padding: 11px 17px;
 }
@@ -1996,7 +1996,7 @@ button.portfolio-row:hover {
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
   border-radius: 6px;
   padding: 10px 13px;
@@ -2012,7 +2012,7 @@ button.portfolio-row:hover {
   height: 14px;
   background: #a5a5a5;
   color: #ffffff;
-  font-size: 8px;
+  font-size: 12px;
   display: grid;
   place-items: center;
 }
@@ -2033,7 +2033,7 @@ button.portfolio-row:hover {
   gap: 7px;
   padding: 9px 12px;
   border-radius: 6px;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .category-tabs button.active {
@@ -2053,7 +2053,7 @@ button.portfolio-row:hover {
   background: #fcfcfc;
 }
 .filter-grid label {
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
   display: flex;
   flex-direction: column;
@@ -2067,7 +2067,7 @@ button.portfolio-row:hover {
   background: #ffffff;
   border-radius: 6px;
   padding: 12px;
-  font-size: 11px;
+  font-size: 14px;
   color: #757575;
   min-height: 40px;
   width: 100%;
@@ -2077,13 +2077,13 @@ button.portfolio-row:hover {
   color: #727272;
 }
 .filter-grid p {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.7;
   color: #727272;
   grid-column: span 3;
 }
 .filter-grid > .text-link {
-  font-size: 9px;
+  font-size: 12px;
   justify-self: end;
   align-self: center;
   border: 0;
@@ -2104,12 +2104,12 @@ button.portfolio-row:hover {
   flex-wrap: wrap;
 }
 .results-heading h2 {
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 500;
   letter-spacing: -0.2px;
 }
 .results-heading > div > span {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .sort-control {
@@ -2117,7 +2117,7 @@ button.portfolio-row:hover {
   align-items: center;
   gap: 7px;
   white-space: nowrap;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
 }
 .sort-control select {
@@ -2125,7 +2125,7 @@ button.portfolio-row:hover {
   border: 1px solid #e6e6e6;
   background: #ffffff;
   border-radius: 6px;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   max-width: 160px;
 }
@@ -2195,13 +2195,13 @@ button.portfolio-row:hover {
   background: #f5f5f5;
 }
 .provider-category {
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
   margin-bottom: 8px;
   display: block;
 }
 .provider-card h3 {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: -0.1px;
@@ -2221,7 +2221,7 @@ button.portfolio-row:hover {
   align-items: center;
   gap: 5px;
   flex-wrap: wrap;
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
   line-height: 1.5;
 }
@@ -2236,7 +2236,7 @@ button.portfolio-row:hover {
 }
 .insurance-tags > span {
   padding: 4px 7px;
-  font-size: 8px;
+  font-size: 12px;
   border-radius: 4px;
   border: 1px solid #ececec;
   color: #727272;
@@ -2252,19 +2252,19 @@ button.portfolio-row:hover {
   border-top: 1px solid #f1f1f1;
 }
 .provider-card-footer > div > span {
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
   display: block;
   margin-bottom: 7px;
 }
 .provider-card-footer strong {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   color: #767676;
 }
 .provider-card-footer small {
-  font-size: 8px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 500;
   color: #727272;
 }
 .connect-button {
@@ -2293,17 +2293,17 @@ button.portfolio-row:hover {
   color: #727272;
 }
 .discovery-footnote p {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.7;
 }
 .portfolio-detail h3 {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 25px;
   letter-spacing: -0.5px;
   margin: 20px 0 10px;
 }
 .portfolio-detail > p {
-  font-size: 12px;
+  font-size: 15px;
   color: #727272;
   line-height: 1.8;
   display: flex;
@@ -2319,7 +2319,7 @@ button.portfolio-row:hover {
   display: flex;
   gap: 20px;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.7;
 }
 .portfolio-detail dt {
@@ -2333,7 +2333,7 @@ button.portfolio-row:hover {
   overflow-wrap: anywhere;
 }
 .portfolio-detail h4 {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   margin-top: 23px;
   margin-bottom: 12px;
@@ -2342,7 +2342,7 @@ button.portfolio-row:hover {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  font-size: 11px;
+  font-size: 14px;
   border-bottom: 1px solid #f1f1f1;
   padding: 14px 0;
   color: #727272;
@@ -2353,11 +2353,11 @@ button.portfolio-row:hover {
   color: #727272;
 }
 .portfolio-detail .small-muted {
-  font-size: 10px;
+  font-size: 13px;
   margin: 20px 0;
 }
 .portfolio-detail .notice {
-  font-size: 10px;
+  font-size: 13px;
 }
 /* Forms, conversations, account */
 .modal {
@@ -2390,7 +2390,7 @@ button.portfolio-row:hover {
 }
 .modal-header h2 {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.4px;
 }
 .modal-body {
@@ -2402,28 +2402,28 @@ button.portfolio-row:hover {
   gap: 18px;
 }
 .small-muted {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   line-height: 1.8;
 }
 .workspace-form label {
-  font-size: 11px;
+  font-size: 14px;
   display: flex;
   flex-direction: column;
   gap: 9px;
   color: #727272;
 }
 .workspace-form label small {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   line-height: 1.6;
 }
 .workspace-form .notice {
   margin: 0;
-  font-size: 10px;
+  font-size: 13px;
 }
 .workspace-form .optional {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   display: inline;
 }
@@ -2433,7 +2433,7 @@ button.portfolio-row:hover {
   gap: 14px;
 }
 .form-section-label {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.8px;
   line-height: 1.7;
   color: #727272;
@@ -2441,7 +2441,7 @@ button.portfolio-row:hover {
   padding-top: 19px;
 }
 .form-section-label span {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0;
   display: block;
   color: #727272;
@@ -2457,7 +2457,7 @@ button.portfolio-row:hover {
   background: #fdfdfd;
 }
 .conversation-heading {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   padding: 24px 20px;
   border-bottom: 1px solid #eeeeee;
@@ -2465,9 +2465,9 @@ button.portfolio-row:hover {
   justify-content: space-between;
 }
 .conversation-heading > span {
-  font-size: 10px;
+  font-size: 13px;
   color: #727272;
-  font-weight: 400;
+  font-weight: 500;
 }
 .conversation-item {
   display: flex;
@@ -2486,13 +2486,13 @@ button.portfolio-row:hover {
   min-width: 0;
 }
 .conversation-item strong {
-  font-size: 10px;
+  font-size: 13px;
   display: block;
   font-weight: 500;
   line-height: 1.5;
 }
 .conversation-item p {
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   line-height: 1.7;
   white-space: nowrap;
@@ -2514,18 +2514,18 @@ button.portfolio-row:hover {
   border-bottom: 1px solid #efefef;
 }
 .chat-header strong {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
 }
 .chat-header span {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #727272;
   margin-top: 5px;
 }
 .chat-header > button {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
   border: 0;
   background: none;
 }
@@ -2534,7 +2534,7 @@ button.portfolio-row:hover {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
   padding: 13px 17px;
   background: #fdfdfd;
@@ -2562,7 +2562,7 @@ button.portfolio-row:hover {
   background: #ececec;
 }
 .message p {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   line-height: 1.8;
   white-space: pre-wrap;
@@ -2571,7 +2571,7 @@ button.portfolio-row:hover {
 .message time {
   display: block;
   text-align: right;
-  font-size: 8px;
+  font-size: 12px;
   color: #727272;
   margin-top: 6px;
 }
@@ -2588,7 +2588,7 @@ button.portfolio-row:hover {
   padding: 13px;
   flex: 1;
   width: 100%;
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
 }
 .chat-composer input::placeholder {
@@ -2614,12 +2614,12 @@ button.portfolio-row:hover {
   font-size: 19px;
 }
 .account-identity h2 {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 20px;
   letter-spacing: -0.4px;
 }
 .account-identity p {
-  font-size: 11px;
+  font-size: 14px;
   color: #727272;
   margin-top: 7px;
 }
@@ -2629,7 +2629,7 @@ button.portfolio-row:hover {
   justify-content: space-between;
   padding: 20px 0;
   border-bottom: 1px solid #eeeeee;
-  font-size: 11px;
+  font-size: 14px;
 }
 .account-panel dt {
   color: #727272;
@@ -2640,7 +2640,7 @@ button.portfolio-row:hover {
   gap: 6px;
   align-items: center;
   color: #727272;
-  font-size: 10px;
+  font-size: 13px;
   text-align: right;
 }
 .account-security {
@@ -2651,18 +2651,18 @@ button.portfolio-row:hover {
   color: #727272;
 }
 .account-security h3 {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
 }
 .account-security p {
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.7;
   color: #727272;
   margin-top: 7px;
 }
 .account-security .button {
   margin-left: auto;
-  font-size: 10px;
+  font-size: 13px;
   white-space: nowrap;
 }
 /* Informational pages */
@@ -2679,12 +2679,12 @@ button.portfolio-row:hover {
 .document-page h1 {
   font-size: 46px;
   letter-spacing: -2px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.15;
   margin: 18px 0;
 }
 .document-intro {
-  font-size: 15px;
+  font-size: 16px;
   color: #727272;
   line-height: 1.8;
   margin-bottom: 35px;
@@ -2694,12 +2694,12 @@ button.portfolio-row:hover {
 }
 .document-page section h2 {
   font-size: 19px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 14px;
   letter-spacing: -0.4px;
 }
 .document-page section p {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.9;
   color: #727272;
 }
@@ -2717,7 +2717,7 @@ button.portfolio-row:hover {
   border: 1px solid #e6e6e6;
   border-radius: 8px;
   color: #727272;
-  font-size: 12px;
+  font-size: 15px;
 }
 .preview-links a > svg:last-child {
   margin-left: auto;
@@ -2737,11 +2737,11 @@ button.portfolio-row:hover {
 }
 .standalone-state h1 {
   font-size: 36px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -1px;
 }
 .standalone-state p {
-  font-size: 13px;
+  font-size: 15px;
   color: #727272;
   line-height: 1.8;
 }
@@ -2755,7 +2755,7 @@ button.portfolio-row:hover {
     min-height: 800px;
   }
   .auth-form-inner {
-    max-width: 390px;
+    max-width: 440px;
   }
   .visual-copy {
     padding: 70px 65px 0;
@@ -2791,7 +2791,7 @@ button.portfolio-row:hover {
     letter-spacing: -2px;
   }
   .visual-copy p {
-    font-size: 12px;
+    font-size: 15px;
     max-width: 270px;
   }
   .auth-form-panel {
@@ -2835,10 +2835,10 @@ button.portfolio-row:hover {
     gap: 7px;
   }
   .workspace-type strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .workspace-type div > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .sidebar-logo {
     padding-left: 23px;
@@ -2856,10 +2856,10 @@ button.portfolio-row:hover {
     padding: 18px 14px;
   }
   .stat-card > div {
-    font-size: 9px;
+    font-size: 12px;
   }
   .stat-card p {
-    font-size: 8px;
+    font-size: 12px;
   }
   .business-hero {
     padding: 28px;
@@ -2885,7 +2885,7 @@ button.portfolio-row:hover {
     gap: 12px;
   }
   .review-callout .text-link {
-    font-size: 9px;
+    font-size: 12px;
   }
   .preview-banner > div {
     gap: 10px;
@@ -2926,7 +2926,7 @@ button.portfolio-row:hover {
     display: none;
   }
   .workspace-type strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .sidebar-logo {
     padding-left: 18px;
@@ -2938,7 +2938,7 @@ button.portfolio-row:hover {
     padding: 0 10px;
   }
   .nav-item {
-    font-size: 10px;
+    font-size: 13px;
     padding: 12px;
     gap: 9px;
   }
@@ -2946,16 +2946,16 @@ button.portfolio-row:hover {
     gap: 7px;
   }
   .sidebar-profile strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .sidebar-profile div > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .sidebar-note p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .sidebar-note strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .sidebar-bottom {
     padding: 20px 10px 0;
@@ -2970,10 +2970,10 @@ button.portfolio-row:hover {
     grid-template-columns: repeat(2, 1fr);
   }
   .stat-card > div {
-    font-size: 10px;
+    font-size: 13px;
   }
   .stat-card p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .stat-card > strong {
     font-size: 27px;
@@ -2996,7 +2996,7 @@ button.portfolio-row:hover {
     font-size: 26px;
   }
   .business-hero .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
   }
   .discover-hero-art {
     width: 220px;
@@ -3011,10 +3011,10 @@ button.portfolio-row:hover {
     gap: 8px;
   }
   .hero-provider-chip strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .hero-provider-chip small {
-    font-size: 7px;
+    font-size: 12px;
   }
   .hero-provider-chip > svg {
     display: none;
@@ -3040,11 +3040,11 @@ button.portfolio-row:hover {
     gap: 7px;
   }
   .preview-banner > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .preview-banner > div {
     gap: 15px;
-    font-size: 8px;
+    font-size: 12px;
   }
   .dashboard-bottom-grid {
     grid-template-columns: 1fr;
@@ -3111,11 +3111,11 @@ button.portfolio-row:hover {
     letter-spacing: -2px;
   }
   .visual-copy p {
-    font-size: 11px;
+    font-size: 14px;
     max-width: 220px;
   }
   .visual-copy .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.2px;
   }
   .auth-form-inner h2 {
@@ -3129,7 +3129,7 @@ button.portfolio-row:hover {
     gap: 8px;
   }
   .visual-bottom p {
-    font-size: 8px;
+    font-size: 12px;
   }
   .visual-page {
     display: none;
@@ -3140,16 +3140,16 @@ button.portfolio-row:hover {
     left: 4%;
   }
   .floating-match strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .floating-match span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .floating-match > svg {
     display: none;
   }
   .auth-footer {
-    font-size: 8px;
+    font-size: 12px;
   }
   .footer-location {
     display: none;
@@ -3159,10 +3159,10 @@ button.portfolio-row:hover {
     padding: 10px 7px;
   }
   .account-choices button span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .account-choices button small {
-    font-size: 7px;
+    font-size: 12px;
   }
   .account-choices button > svg:first-child {
     width: 15px;
@@ -3180,7 +3180,7 @@ button.portfolio-row:hover {
   }
   .auth-header-right {
     gap: 17px;
-    font-size: 10px;
+    font-size: 13px;
   }
   .auth-header-right > span {
     display: none;
@@ -3200,19 +3200,19 @@ button.portfolio-row:hover {
     align-items: center;
   }
   .auth-form-inner {
-    max-width: 390px;
+    max-width: 440px;
   }
   .auth-form-inner h2 {
     font-size: 35px;
   }
   .auth-description {
-    font-size: 12px;
+    font-size: 15px;
   }
   .auth-kicker {
     margin-bottom: 22px;
   }
   .auth-footer {
-    font-size: 8px;
+    font-size: 12px;
     gap: 15px;
     height: 70px;
     border-top: 1px solid #f0f0f0;
@@ -3235,10 +3235,10 @@ button.portfolio-row:hover {
     padding: 13px 12px;
   }
   .account-choices button span {
-    font-size: 10px;
+    font-size: 13px;
   }
   .account-choices button small {
-    font-size: 8px;
+    font-size: 12px;
   }
   .account-choices button > svg:first-child {
     width: 17px;
@@ -3303,7 +3303,7 @@ button.portfolio-row:hover {
     gap: 11px !important;
   }
   .secure-label {
-    font-size: 8px;
+    font-size: 12px;
   }
   .workspace-main {
     padding: 28px 20px 0;
@@ -3319,10 +3319,10 @@ button.portfolio-row:hover {
     height: 31px;
   }
   .workspace-type strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .workspace-type div > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .workspace-type > svg {
     display: block;
@@ -3331,15 +3331,15 @@ button.portfolio-row:hover {
     padding: 0 14px;
   }
   .nav-item {
-    font-size: 11px;
+    font-size: 14px;
     padding: 13px;
     gap: 11px;
   }
   .sidebar-profile strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .sidebar-profile div > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .sidebar-bottom {
     padding: 24px 14px 0;
@@ -3348,23 +3348,23 @@ button.portfolio-row:hover {
     padding: 18px 15px;
   }
   .sidebar-note p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .sidebar-note strong {
-    font-size: 11px;
+    font-size: 14px;
   }
   .preview-banner {
     padding: 9px 20px;
     gap: 8px;
   }
   .preview-banner > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .preview-banner > div {
     gap: 17px;
   }
   .preview-banner > div a {
-    font-size: 8px;
+    font-size: 12px;
   }
   .page-heading {
     margin-bottom: 25px;
@@ -3373,14 +3373,14 @@ button.portfolio-row:hover {
     font-size: 29px;
   }
   .page-heading p {
-    font-size: 11px;
+    font-size: 14px;
     max-width: 420px;
   }
   .page-heading .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .page-heading > .button {
-    font-size: 10px;
+    font-size: 13px;
     padding: 12px 13px;
     min-height: 39px;
   }
@@ -3401,10 +3401,10 @@ button.portfolio-row:hover {
     padding: 20px;
   }
   .stat-card > div {
-    font-size: 10px;
+    font-size: 13px;
   }
   .stat-card p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .business-hero-art {
     width: 220px;
@@ -3417,7 +3417,7 @@ button.portfolio-row:hover {
     padding: 28px;
   }
   .business-hero .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .provider-grid {
     gap: 14px;
@@ -3437,16 +3437,16 @@ button.portfolio-row:hover {
     gap: 7px;
   }
   .results-heading h2 {
-    font-size: 14px;
+    font-size: 16px;
   }
   .results-heading > div > span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .toast {
     left: 50%;
     max-width: calc(100vw - 35px);
     bottom: 20px;
-    font-size: 10px;
+    font-size: 13px;
   }
   .dashboard-bottom-grid {
     grid-template-columns: 1.1fr 1fr;
@@ -3456,7 +3456,7 @@ button.portfolio-row:hover {
     padding: 23px;
   }
   .guide-panel p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .connection-row {
     padding: 20px 16px;
@@ -3465,7 +3465,7 @@ button.portfolio-row:hover {
     max-width: 150px;
   }
   .date-label {
-    font-size: 9px;
+    font-size: 12px;
     padding: 11px;
   }
   .review-callout .text-link {
@@ -3482,10 +3482,10 @@ button.portfolio-row:hover {
     padding: 25px 0 45px;
   }
   .document-intro {
-    font-size: 13px;
+    font-size: 15px;
   }
   .document-page section p {
-    font-size: 12px;
+    font-size: 15px;
   }
   .document-page section h2 {
     font-size: 18px;
@@ -3503,13 +3503,13 @@ button.portfolio-row:hover {
     max-width: 165px;
   }
   .conversation-item strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .chat-header strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .chat-notice {
-    font-size: 7px;
+    font-size: 12px;
   }
   .account-panel {
     padding: 23px;
@@ -3531,7 +3531,7 @@ button.portfolio-row:hover {
     min-height: calc(100svh - 149px);
   }
   .auth-footer {
-    font-size: 7px;
+    font-size: 12px;
   }
   .auth-footer > div {
     gap: 13px;
@@ -3546,10 +3546,10 @@ button.portfolio-row:hover {
     padding: 0 23px;
   }
   .auth-header-right {
-    font-size: 10px;
+    font-size: 13px;
   }
   .auth-form-inner {
-    max-width: 380px;
+    max-width: 440px;
   }
   .workspace-main {
     padding: 25px 17px 0;
@@ -3558,11 +3558,11 @@ button.portfolio-row:hover {
     padding: 0 17px;
   }
   .workspace-header > div {
-    font-size: 9px;
+    font-size: 12px;
     gap: 9px;
   }
   .workspace-header strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .secure-label {
     display: none;
@@ -3580,12 +3580,12 @@ button.portfolio-row:hover {
     letter-spacing: -1px;
   }
   .page-heading p {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.8;
     max-width: 280px;
   }
   .page-heading .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.2px;
   }
   .page-heading > .location-button {
@@ -3601,7 +3601,7 @@ button.portfolio-row:hover {
     height: 17px;
   }
   .page-heading > .button:not(.location-button) {
-    font-size: 9px;
+    font-size: 12px;
     padding: 10px;
     min-height: 35px;
     gap: 5px;
@@ -3624,13 +3624,13 @@ button.portfolio-row:hover {
     max-width: 260px;
   }
   .discover-hero .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.2px;
     position: relative;
     z-index: 2;
   }
   .discover-hero p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .discover-hero-art {
     position: absolute;
@@ -3648,7 +3648,7 @@ button.portfolio-row:hover {
     display: none;
   }
   .hero-small {
-    font-size: 7px;
+    font-size: 12px;
     margin-top: 20px;
   }
   .search-main {
@@ -3662,18 +3662,18 @@ button.portfolio-row:hover {
     gap: 10px;
   }
   .search-query input {
-    font-size: 10px;
+    font-size: 13px;
     padding: 9px 0;
   }
   .search-main .filter-toggle {
     margin-left: 0;
-    font-size: 9px;
+    font-size: 12px;
     padding: 9px 13px;
     min-height: 34px;
   }
   .search-main .button {
     margin-left: auto;
-    font-size: 9px;
+    font-size: 12px;
     min-height: 34px;
     padding: 9px 18px;
   }
@@ -3682,7 +3682,7 @@ button.portfolio-row:hover {
     gap: 4px;
   }
   .category-tabs button {
-    font-size: 8px;
+    font-size: 12px;
     padding: 8px 10px;
     gap: 5px;
   }
@@ -3701,11 +3701,11 @@ button.portfolio-row:hover {
     display: block;
   }
   .results-heading h2 {
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 7px;
   }
   .results-heading > div > span {
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.7;
     display: block;
     max-width: 220px;
@@ -3715,7 +3715,7 @@ button.portfolio-row:hover {
     gap: 0;
   }
   .sort-control select {
-    font-size: 8px;
+    font-size: 12px;
     padding: 9px 20px 9px 8px;
     max-width: 115px;
   }
@@ -3735,20 +3735,20 @@ button.portfolio-row:hover {
     margin-bottom: 15px;
   }
   .provider-card h3 {
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 12px;
   }
   .provider-category {
-    font-size: 9px;
+    font-size: 12px;
   }
   .provider-address {
-    font-size: 9px;
+    font-size: 12px;
   }
   .insurance-tags {
     margin: 17px 0 20px;
   }
   .insurance-tags > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .provider-card-footer {
     margin-left: -20px;
@@ -3756,13 +3756,13 @@ button.portfolio-row:hover {
     padding: 15px 20px;
   }
   .provider-card-footer > div > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .provider-card-footer strong {
-    font-size: 13px;
+    font-size: 15px;
   }
   .provider-card-footer small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .provider-card-footer .connect-button {
     width: 36px;
@@ -3780,7 +3780,7 @@ button.portfolio-row:hover {
     margin-top: 3px;
   }
   .discovery-footnote p {
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.8;
   }
   .filter-grid {
@@ -3788,21 +3788,21 @@ button.portfolio-row:hover {
     gap: 13px 10px;
   }
   .filter-grid label {
-    font-size: 9px;
+    font-size: 12px;
   }
   .filter-grid input,
   .filter-grid select {
-    font-size: 10px;
+    font-size: 13px;
     padding: 10px;
     min-height: 38px;
   }
   .filter-grid p {
     grid-column: 1/-1;
-    font-size: 8px;
+    font-size: 12px;
   }
   .filter-grid > .text-link {
     grid-column: 1/-1;
-    font-size: 9px;
+    font-size: 12px;
   }
   .stats-grid {
     gap: 11px;
@@ -3812,7 +3812,7 @@ button.portfolio-row:hover {
     padding: 17px 15px;
   }
   .stat-card > div {
-    font-size: 9px;
+    font-size: 12px;
   }
   .stat-card > div > svg {
     width: 15px;
@@ -3823,7 +3823,7 @@ button.portfolio-row:hover {
     margin: 18px 0 9px;
   }
   .stat-card p {
-    font-size: 8px;
+    font-size: 12px;
   }
   .business-hero {
     padding: 27px 23px;
@@ -3835,7 +3835,7 @@ button.portfolio-row:hover {
     z-index: 2;
   }
   .business-hero .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.1px;
   }
   .business-hero h2 {
@@ -3844,7 +3844,7 @@ button.portfolio-row:hover {
     margin: 15px 0 12px;
   }
   .business-hero p {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.8;
   }
   .business-hero-art {
@@ -3856,7 +3856,7 @@ button.portfolio-row:hover {
     z-index: 0;
   }
   .business-hero .button {
-    font-size: 9px;
+    font-size: 12px;
     padding: 11px 13px;
     min-height: 35px;
   }
@@ -3865,15 +3865,15 @@ button.portfolio-row:hover {
     gap: 8px;
   }
   .panel-heading h2 {
-    font-size: 12px;
+    font-size: 15px;
   }
   .panel-heading p {
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.7;
     max-width: 220px;
   }
   .panel-heading .text-link {
-    font-size: 9px;
+    font-size: 12px;
     gap: 4px;
     white-space: nowrap;
   }
@@ -3898,14 +3898,14 @@ button.portfolio-row:hover {
     height: 20px;
   }
   .portfolio-row-name strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .portfolio-row-name > span {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 5px;
   }
   .portfolio-row > .status-badge {
-    font-size: 7px;
+    font-size: 12px;
     padding: 5px 6px;
     max-width: 105px;
     white-space: normal;
@@ -3926,7 +3926,7 @@ button.portfolio-row:hover {
     padding: 24px;
   }
   .guide-panel p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .review-callout {
     padding: 19px;
@@ -3934,15 +3934,15 @@ button.portfolio-row:hover {
     margin: 20px 0;
   }
   .review-callout h3 {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.5;
   }
   .review-callout p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .review-callout .text-link {
     margin-left: 50px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .callout-icon {
     width: 38px;
@@ -3961,17 +3961,17 @@ button.portfolio-row:hover {
     border-right: 0;
   }
   .conversation-heading {
-    font-size: 11px;
+    font-size: 14px;
   }
   .conversation-item strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .conversation-item p {
     max-width: 280px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .chat-notice {
-    font-size: 7px;
+    font-size: 12px;
   }
   .chat-area {
     min-height: 410px;
@@ -3980,10 +3980,10 @@ button.portfolio-row:hover {
     padding: 16px;
   }
   .chat-header strong {
-    font-size: 10px;
+    font-size: 13px;
   }
   .chat-header span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .chat-messages {
     padding: 20px 17px;
@@ -3991,17 +3991,17 @@ button.portfolio-row:hover {
     max-height: 350px;
   }
   .message p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .message time {
-    font-size: 7px;
+    font-size: 12px;
   }
   .chat-composer {
     padding: 13px;
     gap: 9px;
   }
   .chat-composer input {
-    font-size: 10px;
+    font-size: 13px;
     padding: 12px;
   }
   .chat-composer .button {
@@ -4024,15 +4024,15 @@ button.portfolio-row:hover {
     font-size: 16px;
   }
   .account-identity p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .account-panel dl > div {
-    font-size: 10px;
+    font-size: 13px;
     gap: 15px;
     line-height: 1.7;
   }
   .account-panel dd {
-    font-size: 9px;
+    font-size: 12px;
     max-width: 65%;
   }
   .account-panel dd > svg {
@@ -4044,17 +4044,17 @@ button.portfolio-row:hover {
     align-items: flex-start;
   }
   .account-security h3 {
-    font-size: 11px;
+    font-size: 14px;
   }
   .account-security p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .account-security .button {
     margin-left: 30px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .workspace-footer {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: 28px;
     padding: 20px 0;
   }
@@ -4065,7 +4065,7 @@ button.portfolio-row:hover {
     padding: 9px 17px;
   }
   .preview-banner > span {
-    font-size: 7px;
+    font-size: 12px;
     gap: 4px;
   }
   .preview-banner > span > svg {
@@ -4076,13 +4076,13 @@ button.portfolio-row:hover {
     gap: 18px;
   }
   .preview-banner > div a {
-    font-size: 8px;
+    font-size: 12px;
   }
   .modal-header {
     padding: 15px 19px;
   }
   .modal-header h2 {
-    font-size: 15px;
+    font-size: 16px;
   }
   .modal-body {
     padding: 21px 20px 24px;
@@ -4091,11 +4091,11 @@ button.portfolio-row:hover {
     gap: 16px;
   }
   .workspace-form label {
-    font-size: 10px;
+    font-size: 13px;
   }
   .workspace-form input,
   .workspace-form select {
-    font-size: 11px;
+    font-size: 14px;
     min-height: 43px;
     padding: 12px;
   }
@@ -4103,25 +4103,25 @@ button.portfolio-row:hover {
     grid-template-columns: 1fr;
   }
   .workspace-form .button {
-    font-size: 11px;
+    font-size: 14px;
   }
   .workspace-form .notice {
-    font-size: 9px;
+    font-size: 12px;
   }
   .small-muted {
-    font-size: 10px;
+    font-size: 13px;
   }
   .workspace-form .form-section-label {
-    font-size: 8px;
+    font-size: 12px;
   }
   .portfolio-detail h3 {
     font-size: 23px;
   }
   .portfolio-detail dl > div {
-    font-size: 10px;
+    font-size: 13px;
   }
   .service-line {
-    font-size: 10px;
+    font-size: 13px;
   }
   .document-page {
     padding: 0 23px;
@@ -4131,10 +4131,10 @@ button.portfolio-row:hover {
     letter-spacing: -1px;
   }
   .document-intro {
-    font-size: 12px;
+    font-size: 15px;
   }
   .document-page section p {
-    font-size: 11px;
+    font-size: 14px;
     line-height: 1.9;
   }
   .document-page section h2 {
@@ -4144,7 +4144,7 @@ button.portfolio-row:hover {
     font-size: 29px;
   }
   .standalone-state p {
-    font-size: 12px;
+    font-size: 15px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -4169,7 +4169,7 @@ button.portfolio-row:hover {
   transform: translateY(1px);
 }
 .google-consent-hint {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.7;
   color: #727272;
   margin: 9px 8px -6px;
@@ -4184,4 +4184,257 @@ button.portfolio-row:hover {
   background-position: right 12px center;
   background-size: 10px;
   padding-right: 31px;
+}
+
+/* Readable type and controls across every workspace. */
+body {
+  font-weight: 400;
+  line-height: 1.5;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+}
+.auth-form-inner h2,
+.signup-inner h2 {
+  font-size: clamp(28px, 2.4vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+.visual-copy h1 {
+  font-weight: 700;
+  letter-spacing: -2px;
+}
+.page-heading h1,
+.discover-hero h2,
+.business-hero h2,
+.document-page h1 {
+  font-weight: 700;
+}
+.panel-heading h2,
+.provider-card h3,
+.empty-state h3,
+.guide-panel h3 {
+  font-weight: 600;
+}
+.field-group > label,
+.workspace-form label,
+.filter-grid label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #303030;
+}
+.input-wrap,
+.signup-inner .input-wrap {
+  min-height: 52px;
+  height: 52px;
+}
+.input-wrap input,
+.workspace-form input,
+.workspace-form select,
+.filter-grid input,
+.filter-grid select,
+.resend-details input,
+.chat-composer input {
+  font-size: 16px;
+  font-weight: 400;
+}
+.input-wrap > img,
+.input-wrap > svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.auth-description,
+.visual-copy p,
+.page-heading p {
+  color: #555;
+  line-height: 1.7;
+}
+.auth-description {
+  font-size: 15px;
+}
+.account-choices {
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.account-choices button {
+  padding: 14px 12px;
+  min-height: 78px;
+  align-items: flex-start;
+}
+.account-choices button span {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.account-choices button small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.account-choices button > svg {
+  margin-top: 2px;
+}
+.account-choices button > svg:first-child {
+  width: 20px;
+  height: 20px;
+}
+.account-choices button > svg:last-child:not(:first-child) {
+  width: 15px;
+  height: 15px;
+}
+.form-options {
+  font-size: 13px;
+  flex-wrap: wrap;
+  row-gap: 12px;
+}
+.password-rules {
+  gap: 8px 15px;
+}
+.password-rules span {
+  font-size: 12px;
+}
+.consent {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.consent input {
+  width: 16px;
+  height: 16px;
+}
+.auth-trust,
+.auth-footer {
+  font-size: 12px;
+}
+.auth-footer {
+  min-height: 84px;
+  height: auto;
+  padding: 23px 0;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-location {
+  display: none;
+}
+.asset-button {
+  aspect-ratio: 817 / 120;
+  min-height: 52px;
+}
+.asset-fallback {
+  min-height: 52px;
+  height: 100%;
+  font-size: 15px;
+  font-weight: 600;
+}
+.asset-button.artwork-loaded .asset-fallback {
+  visibility: hidden;
+}
+.input-wrap input::placeholder,
+.search-query input::placeholder {
+  color: #737373;
+}
+.sidebar-profile strong {
+  font-weight: 600;
+}
+.sidebar-profile div > span {
+  font-size: 12px;
+}
+.nav-item {
+  font-size: 14px;
+  font-weight: 500;
+}
+.nav-item.active {
+  font-weight: 600;
+}
+.portfolio-row-name strong,
+.connection-row strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.provider-card h3 {
+  font-size: 18px;
+}
+.provider-card-footer strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.stat-card > strong {
+  font-weight: 700;
+}
+.panel-heading {
+  align-items: flex-start;
+}
+.account-security {
+  flex-wrap: wrap;
+}
+.auth-form-panel {
+  padding-top: 36px;
+  padding-bottom: 36px;
+}
+@media (max-width: 760px) {
+  .auth-page {
+    padding: 0 22px;
+  }
+  .auth-form-panel {
+    padding: 28px 0 40px;
+  }
+  .auth-form-panel:has(.signup-inner) {
+    padding-top: 22px;
+  }
+  .auth-form-inner h2,
+  .signup-inner h2 {
+    font-size: 30px;
+  }
+  .auth-description {
+    margin-bottom: 24px;
+  }
+  .auth-form {
+    gap: 22px;
+  }
+  .auth-footer > div {
+    gap: 22px;
+  }
+  .preview-banner > div {
+    flex-wrap: wrap;
+    gap: 12px 18px;
+  }
+  .page-heading p {
+    max-width: 100%;
+  }
+  .results-heading {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .panel-heading p {
+    max-width: none;
+  }
+  .account-security .button {
+    margin-left: 0;
+  }
+  .category-tabs button {
+    min-height: 42px;
+  }
+  .workspace-footer {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+}
+@media (max-width: 380px) {
+  .account-choices {
+    grid-template-columns: 1fr;
+  }
+  .account-choices button {
+    min-height: 66px;
+  }
+  .auth-form-inner h2,
+  .signup-inner h2 {
+    font-size: 28px;
+  }
+}
+
+.asset-button.is-loading .asset-fallback {
+  visibility: visible;
 }
