@@ -37,6 +37,8 @@ import {
   LockKeyhole,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { IdentityAdmin } from "./identity-admin";
+import { IdentitySecurity } from "./identity-security";
 import { Brand } from "./brand";
 import { api } from "@/lib/api";
 import {
@@ -168,6 +170,7 @@ export function Dashboard({
     ? [
         { key: "overview", label: "Overview", icon: LayoutGrid },
         { key: "applications", label: "Applications", icon: FileCheck2 },
+        { key: "clients", label: "Business accounts", icon: ShieldCheck },
         ...(user.role === "SUPER_ADMIN"
           ? [{ key: "team", label: "Admin team", icon: Users }]
           : []),
@@ -191,6 +194,7 @@ export function Dashboard({
         : "Discover care",
     portfolios: "My portfolios",
     applications: "Portfolio applications",
+    clients: "Business accounts",
     team: "Admin team",
     saved: "Saved providers",
     messages: "Messages",
@@ -403,7 +407,15 @@ export function Dashboard({
             </div>
           ) : (
             <>
-              {section === "settings" ? (
+              {section === "clients" && isAdmin ? (
+                preview ? (
+                  <p>
+                    Client approval is available in a signed-in admin workspace.
+                  </p>
+                ) : (
+                  <IdentityAdmin user={user} />
+                )
+              ) : section === "settings" ? (
                 <Account user={user} preview={preview} />
               ) : section === "messages" ? (
                 <Messages
@@ -567,7 +579,13 @@ export function Dashboard({
                     </>
                   ) : null}
                   {section === "team" ? (
-                    <AdminTeam data={data} onInvite={() => setCreating(true)} />
+                    <>
+                      <AdminTeam
+                        data={data}
+                        onInvite={() => setCreating(true)}
+                      />
+                      {!preview && <IdentityAdmin user={user} kind="admins" />}
+                    </>
                   ) : (
                     <section className="panel">
                       <div className="panel-heading">
@@ -1830,6 +1848,7 @@ function Account({ user, preview }: { user: User; preview: boolean }) {
           ) : null}
         </div>
       </section>
+      {!preview && <IdentitySecurity user={user} />}
     </>
   );
 }

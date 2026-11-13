@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import type { User } from "@/lib/types";
 import { db } from "./db";
+import { backendSession } from "./backend";
 import { digest, token } from "./crypto";
 export class Problem extends Error {
   constructor(
@@ -50,24 +51,7 @@ export async function rateLimit(scope: string, identity: string, max = 10) {
     );
 }
 export async function getSession(): Promise<User | null> {
-  const value = (await cookies()).get(cookieName)?.value;
-  if (!value) return null;
-  const { rows } = await db().query(
-    `SELECT u.id,u.name,u.email,u.role,u.must_change_password,u.mfa_secret, s.mfa_verified FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token_hash=$1 AND s.expires_at>now() AND u.disabled=false`,
-    [digest(value)],
-  );
-  const user = rows[0];
-  if (!user) return null;
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    mustChangePassword: user.must_change_password,
-    mfaEnrolled: !!user.mfa_secret,
-    mfaRequired:
-      ["ADMIN", "SUPER_ADMIN"].includes(user.role) && !user.mfa_verified,
-  };
+  return backendSession();
 }
 export async function requireUser(restricted = false) {
   const user = await getSession();
@@ -83,9 +67,13 @@ export function requireRole(user: User, roles: User["role"][]) {
 export function nextPath(user: User) {
   return user.mustChangePassword
     ? "/change-password"
-    : user.mfaRequired
-      ? "/verify-security"
-      : "/dashboard";
+    : user.role === "BUSINESS" &&
+        user.approvalStatus &&
+        user.approvalStatus !== "APPROVED"
+      ? "/account-status"
+      : user.mfaRequired
+        ? "/verify-security"
+        : "/dashboard";
 }
 export async function newSession(userId: string, mfaVerified = false) {
   const raw = token();

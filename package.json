@@ -7,13 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:migrate": "node scripts/db.mjs",
-    "db:seed": "node --import tsx scripts/seed.ts",
-    "mail:worker": "node --import tsx scripts/mail-worker.ts",
     "test": "node --import tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write app components lib scripts tests next.config.ts eslint.config.mjs",
-    "maintenance": "node scripts/maintenance.mjs"
+    "format": "prettier --write app components lib scripts tests next.config.ts eslint.config.mjs"
   },
   "dependencies": {
     "jose": "^6.2.15",

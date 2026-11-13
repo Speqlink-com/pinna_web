@@ -7,7 +7,7 @@ export default async function DashboardPage({
 }: {
   params: Promise<{ section?: string[] }>;
 }) {
-  const user = process.env.DATABASE_URL ? await getSession() : null;
+  const user = await getSession();
   if (!user) redirect("/sign-in");
   if (nextPath(user) !== "/dashboard") redirect(nextPath(user));
   const parts = (await params).section ?? [];
@@ -19,8 +19,8 @@ export default async function DashboardPage({
       : user.role === "BUSINESS"
         ? ["overview", "portfolios", "messages", "settings"]
         : user.role === "SUPER_ADMIN"
-          ? ["overview", "applications", "team", "settings"]
-          : ["overview", "applications", "settings"];
+          ? ["overview", "applications", "clients", "team", "settings"]
+          : ["overview", "applications", "clients", "settings"];
   if (!allowed.includes(section)) notFound();
   return (
     <Dashboard key={`${user.id}:${section}`} user={user} section={section} />

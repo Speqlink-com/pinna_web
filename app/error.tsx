@@ -1,15 +1,24 @@
 "use client";
-import { AlertCircle } from "lucide-react";
-export default function ErrorPage({ reset }: { reset: () => void }) {
+import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
+export default function ErrorPage({
+  retry,
+}: {
+  error: unknown;
+  retry: () => void;
+}) {
   return (
     <main className="standalone-state">
-      <AlertCircle size={40} />
-      <span className="eyebrow">A MOMENTARY INTERRUPTION</span>
-      <h1>We couldn’t load this page.</h1>
-      <p>Please try again. Your account details are safe.</p>
-      <button className="button primary" onClick={reset}>
+      <ShieldCheck size={36} />
+      <span className="eyebrow">PINNA</span>
+      <h1>We couldn’t load your account</h1>
+      <p>The service may be temporarily unavailable. Try again in a moment.</p>
+      <button type="button" className="button primary" onClick={retry}>
         Try again
       </button>
+      <Link className="button secondary" href="/help">
+        Get help
+      </Link>
     </main>
   );
 }

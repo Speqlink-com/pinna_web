@@ -21,13 +21,13 @@ export default async function AuthPage({
   const { screen } = await params;
   if (!modes.includes(screen as AuthMode)) notFound();
   const query = await searchParams;
-  const user = process.env.DATABASE_URL ? await getSession() : null;
+  const user = await getSession();
   if (screen === "change-password" || screen === "verify-security") {
     if (!user) redirect("/sign-in");
     if (screen === "verify-security" && user.mustChangePassword)
       redirect("/change-password");
-    if (screen === "verify-security" && !user.mfaRequired)
-      redirect("/dashboard");
+    if (screen === "verify-security" && nextPath(user) !== "/verify-security")
+      redirect(nextPath(user));
   } else if (user && (screen === "sign-in" || screen === "sign-up"))
     redirect(nextPath(user));
   return (

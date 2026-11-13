@@ -65,7 +65,8 @@ const details: Record<
   },
   "verify-security": {
     title: "Two-step verification",
-    description: "Protect your admin account with an authenticator app.",
+    description:
+      "Protect your business or admin account with an authenticator app.",
     label: "TWO-STEP VERIFICATION",
   },
 };
@@ -138,6 +139,7 @@ export function AuthScreen({
     [consent, setConsent] = useState(false),
     [secret, setSecret] = useState(""),
     [uri, setUri] = useState(""),
+    [qrCode, setQrCode] = useState(""),
     [recovery, setRecovery] = useState<string[]>([]),
     [copied, setCopied] = useState(false);
   const isSignup = mode === "sign-up",
@@ -224,12 +226,13 @@ export function AuthScreen({
     setBusy(true);
     setFailure("");
     try {
-      const result = await api<{ secret: string; uri: string }>(
+      const result = await api<{ secret: string; uri: string; qrCode: string }>(
         "auth/mfa/setup",
         {},
       );
       setSecret(result.secret);
       setUri(result.uri);
+      setQrCode(result.qrCode);
     } catch (error) {
       setFailure(error instanceof Error ? error.message : "Please try again.");
     } finally {
@@ -360,7 +363,8 @@ export function AuthScreen({
                 {business && isSignup ? (
                   <p className="business-hint">
                     One account for your clinic, chemist, ambulance service, or
-                    agrovet. Add your portfolios after signing up.
+                    agrovet. Admin approval and two-step verification are
+                    required before you can add portfolios.
                   </p>
                 ) : null}
                 {isLogin || isSignup ? (
@@ -500,9 +504,9 @@ export function AuthScreen({
                           <div className="verification-box">
                             <ShieldCheck size={28} />
                             <p>
-                              Admin accounts use two-step verification. Add
-                              Pinna to your authenticator, then enter its
-                              six-digit code.
+                              Business and admin accounts use two-step
+                              verification. Add Pinna to your authenticator,
+                              then enter its six-digit code.
                             </p>
                           </div>
                           {!secret ? (
@@ -516,6 +520,16 @@ export function AuthScreen({
                             </button>
                           ) : (
                             <div className="secret-box">
+                              {qrCode && (
+                                <Image
+                                  src={qrCode}
+                                  width={200}
+                                  height={200}
+                                  unoptimized
+                                  alt="Scan this QR code with your authenticator app"
+                                  className="authenticator-qr"
+                                />
+                              )}
                               <span>Manual setup key</span>
                               <code>{secret}</code>
                               <a href={uri}>

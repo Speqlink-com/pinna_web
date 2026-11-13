@@ -7,6 +7,11 @@ export type User = {
   mustChangePassword: boolean;
   mfaRequired: boolean;
   mfaEnrolled: boolean;
+  hasPassword?: boolean;
+  googleConnected?: boolean;
+  approvalStatus?:
+    "NOT_REQUIRED" | "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED";
+  approvalNote?: string | null;
 };
 export const portfolioTypes = [
   "Hospital / clinic",

@@ -1,3 +1,11 @@
+# Identity authority update · 2026-11-13
+
+`pinna_infra` is now the sole routed identity/workspace authority. The Vercel app proxies versioned requests and carries opaque backend sessions in HttpOnly cookies. Public account type choices remain USER/BUSINESS; administrative roles are assigned by private seeding or owner invitation. Every business/admin/owner requires TOTP, and business workspace access also requires administrative account approval. Customers do not require MFA.
+
+The earlier Node auth/schema/mail files below describe the initial prototype and are retained only as migration references. Their endpoints are no longer dispatched, and their operational npm scripts were removed. Do not mix their scrypt/AES formats or database schema with the new Argon2id/Fernet/HMAC backend. See `pinna_infra/docs/IDENTITY.md` and `DEPLOYMENT.md` for current contracts and deployment.
+
+---
+
 # Phase-one decisions · 9 November 2026
 
 - Latest owner brief controls visible naming: **Pinna**, a product of **Bismart Inc.** Prior BT naming changes are historical context.
