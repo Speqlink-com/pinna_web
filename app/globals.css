@@ -5426,3 +5426,66 @@ h4 {
   font-size: 15px;
   line-height: 1.7;
 }
+.email-code-verification {
+  margin-top: 26px;
+}
+.email-code-help,
+.email-code-success p {
+  color: #545454;
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.email-code-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 76px;
+  padding: 14px 18px;
+  border: 1.5px solid #c8c8c8;
+  border-radius: 12px;
+  background: #fff;
+  color: #111;
+  font: 700 32px/1.2 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.32em;
+  text-align: center;
+}
+.email-code-input:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+.email-code-input::placeholder {
+  color: #b8b8b8;
+}
+.email-code-hint {
+  color: #606060;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.email-code-resend {
+  margin-top: 18px;
+}
+.email-code-resend p,
+.email-code-fallback {
+  color: #545454;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 20px 0 0;
+  text-align: center;
+}
+.email-code-resend a,
+.email-code-fallback a,
+a.email-code-fallback {
+  color: #171717;
+  text-underline-offset: 4px;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.email-code-success {
+  margin-top: 28px;
+}
+.email-code-success h3 {
+  font-size: 24px;
+  letter-spacing: -0.04em;
+  margin: 16px 0 10px;
+}

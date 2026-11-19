@@ -46,3 +46,5 @@ pnpm build
 ```
 
 Backend integration/security tests and the production TLS/container smoke test live in `../pinna_infra`. Real Google/Zoho delivery and Vercel/Cloudflare acceptance require the operator's completed environment and infrastructure. The privacy/terms pages still need final Bismart policy and support details before public provider onboarding.
+
+Email signup now opens `/verify-email` for a six-digit code with a ten-minute expiry. The screen supports paste/autofill, resend cooldown, incorrect/expired feedback and existing unverified accounts. Valid password sign-in for an unverified account routes back to this step. No code is placed in a URL or browser storage. Email verification does not replace password login, business approval or privileged MFA. Previously mailed verification links remain usable until expiry.

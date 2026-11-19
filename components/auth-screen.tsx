@@ -17,7 +17,9 @@ import {
 import { Brand } from "./brand";
 import { AuthVisual } from "./auth-visual";
 import { AssetButton } from "./asset-button";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
+import { rememberEmailVerification } from "@/lib/email-verification";
+import { EmailVerification } from "./email-verification";
 import type { User } from "@/lib/types";
 export type AuthMode =
   | "sign-in"
@@ -54,7 +56,7 @@ const details: Record<
   },
   "verify-email": {
     title: "Verify your email",
-    description: "Confirm your email to start your Pinna journey.",
+    description: "Enter the six-digit code from your email to continue.",
     label: "VERIFY YOUR EMAIL",
   },
   "change-password": {
@@ -130,6 +132,7 @@ export function AuthScreen({
   user?: User | null;
 }) {
   const [business, setBusiness] = useState(false),
+    [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [confirmation, setConfirmation] = useState(""),
     [currentPassword, setCurrentPassword] = useState(""),
@@ -206,13 +209,26 @@ export function AuthScreen({
             : mode === "change-password"
               ? { currentPassword, password }
               : { token, ...(mode === "reset-password" ? { password } : {}) };
-      const result = await api<{ redirect?: string; message?: string }>(
-        `auth/${path}`,
-        body,
-      );
-      if (result.redirect) window.location.assign(result.redirect);
+      const result = await api<{
+        redirect?: string;
+        message?: string;
+        resendAfter?: number;
+      }>(`auth/${path}`, body);
+      if (isSignup) {
+        rememberEmailVerification(String(values.email), result.resendAfter);
+        window.location.assign("/verify-email");
+      } else if (result.redirect) window.location.assign(result.redirect);
       else setMessage(result.message ?? "All done.");
     } catch (error) {
+      if (
+        isLogin &&
+        error instanceof ApiError &&
+        error.code === "EMAIL_NOT_VERIFIED"
+      ) {
+        rememberEmailVerification(String(values.email), error.resendAfter);
+        window.location.assign("/verify-email");
+        return;
+      }
       setFailure(
         error instanceof Error
           ? error.message
@@ -275,396 +291,371 @@ export function AuthScreen({
             )}
             <h2>{meta.title}</h2>
             <p className="auth-description">{meta.description}</p>
-            {failure || oauthError[error] ? (
-              <div className="notice error" role="alert">
-                {failure || oauthError[error]}
-              </div>
-            ) : null}
-            {expired ? (
-              <div className="notice">
-                Your session ended. Sign in to continue.
-              </div>
-            ) : null}
-            {message ? (
-              <div className="success-state" role="status">
-                <span className="success-symbol">
-                  <Image
-                    src="/verified-check-icon.webp"
-                    width={28}
-                    height={28}
-                    alt=""
-                  />
-                </span>
-                <h3>
-                  {mode === "sign-up" ? "Check your inbox." : "You’re all set."}
-                </h3>
-                <p>{message}</p>
-                <Link href="/sign-in" className="button primary">
-                  Back to sign in <ArrowUpRight size={16} />
-                </Link>
-              </div>
-            ) : recovery.length ? (
-              <div className="recovery-state">
-                <ShieldCheck size={28} />
-                <h3>Keep these codes safe.</h3>
-                <p>
-                  Each code can be used once if you lose access to your
-                  authenticator. Store them somewhere private.
-                </p>
-                <div className="recovery-grid">
-                  {recovery.map((c) => (
-                    <code key={c}>{c}</code>
-                  ))}
-                </div>
-                <button
-                  className="button secondary"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(recovery.join("\n"));
-                    setCopied(true);
-                  }}
-                >
-                  <Copy size={16} />
-                  {copied ? "Copied" : "Copy recovery codes"}
-                </button>
-                <Link href="/dashboard" className="button primary">
-                  I’ve saved my codes <ArrowUpRight size={16} />
-                </Link>
-              </div>
+            {mode === "verify-email" ? (
+              <EmailVerification key={token} token={token} />
             ) : (
               <>
-                {isSignup ? (
-                  <div className="account-choices" aria-label="Account purpose">
-                    <button
-                      type="button"
-                      aria-pressed={!business}
-                      className={!business ? "selected" : ""}
-                      onClick={() => setBusiness(false)}
-                    >
-                      <UserRound size={18} />
-                      <span>
-                        For myself<small>Find & connect with care</small>
-                      </span>
-                      {!business ? <Check size={15} /> : null}
-                    </button>
-                    <button
-                      type="button"
-                      aria-pressed={business}
-                      className={business ? "selected" : ""}
-                      onClick={() => setBusiness(true)}
-                    >
-                      <Building2 size={18} />
-                      <span>
-                        Bismart Business<small>Manage your portfolios</small>
-                      </span>
-                      {business ? <Check size={15} /> : null}
-                    </button>
+                {failure || oauthError[error] ? (
+                  <div className="notice error" role="alert">
+                    {failure || oauthError[error]}
                   </div>
                 ) : null}
-                {business && isSignup ? (
-                  <p className="business-hint">
-                    One account for your clinic, chemist, ambulance service, or
-                    agrovet. Admin approval and two-step verification are
-                    required before you can add portfolios.
-                  </p>
+                {expired ? (
+                  <div className="notice">
+                    Your session ended. Sign in to continue.
+                  </div>
                 ) : null}
-                {isLogin || isSignup ? (
-                  <>
-                    <AssetButton
-                      asset="google-button"
-                      variant="google"
-                      type="button"
-                      disabled={isSignup && !consent}
-                      onClick={() =>
-                        window.location.assign(
-                          `/api/v1/auth/google/start?intent=${isSignup ? "register" : "login"}&account=${business ? "BUSINESS" : "USER"}&consent=${consent}`,
-                        )
-                      }
+                {message ? (
+                  <div className="success-state" role="status">
+                    <span className="success-symbol">
+                      <Image
+                        src="/verified-check-icon.webp"
+                        width={28}
+                        height={28}
+                        alt=""
+                      />
+                    </span>
+                    <h3>
+                      {mode === "sign-up"
+                        ? "Check your inbox."
+                        : "You’re all set."}
+                    </h3>
+                    <p>{message}</p>
+                    <Link href="/sign-in" className="button primary">
+                      Back to sign in <ArrowUpRight size={16} />
+                    </Link>
+                  </div>
+                ) : recovery.length ? (
+                  <div className="recovery-state">
+                    <ShieldCheck size={28} />
+                    <h3>Keep these codes safe.</h3>
+                    <p>
+                      Each code can be used once if you lose access to your
+                      authenticator. Store them somewhere private.
+                    </p>
+                    <div className="recovery-grid">
+                      {recovery.map((c) => (
+                        <code key={c}>{c}</code>
+                      ))}
+                    </div>
+                    <button
+                      className="button secondary"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(
+                          recovery.join("\n"),
+                        );
+                        setCopied(true);
+                      }}
                     >
-                      {isSignup ? "Sign up with Google" : "Sign in with Google"}
-                    </AssetButton>
-                    {isSignup && !consent ? (
-                      <p className="google-consent-hint">
-                        Accept the terms below to enable Google sign-up.
+                      <Copy size={16} />
+                      {copied ? "Copied" : "Copy recovery codes"}
+                    </button>
+                    <Link href="/dashboard" className="button primary">
+                      I’ve saved my codes <ArrowUpRight size={16} />
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    {isSignup ? (
+                      <div
+                        className="account-choices"
+                        aria-label="Account purpose"
+                      >
+                        <button
+                          type="button"
+                          aria-pressed={!business}
+                          className={!business ? "selected" : ""}
+                          onClick={() => setBusiness(false)}
+                        >
+                          <UserRound size={18} />
+                          <span>
+                            For myself<small>Find & connect with care</small>
+                          </span>
+                          {!business ? <Check size={15} /> : null}
+                        </button>
+                        <button
+                          type="button"
+                          aria-pressed={business}
+                          className={business ? "selected" : ""}
+                          onClick={() => setBusiness(true)}
+                        >
+                          <Building2 size={18} />
+                          <span>
+                            Bismart Business
+                            <small>Manage your portfolios</small>
+                          </span>
+                          {business ? <Check size={15} /> : null}
+                        </button>
+                      </div>
+                    ) : null}
+                    {business && isSignup ? (
+                      <p className="business-hint">
+                        One account for your clinic, chemist, ambulance service,
+                        or agrovet. Admin approval and two-step verification are
+                        required before you can add portfolios.
                       </p>
                     ) : null}
-                    <div className="divider">
-                      <span>or continue with email</span>
-                    </div>
-                  </>
-                ) : null}
-                <form onSubmit={submit} className="auth-form" aria-busy={busy}>
-                  {isSignup ? (
-                    <div className="field-group">
-                      <label htmlFor="name">Full name</label>
-                      <div className="input-wrap">
-                        <Image
-                          src="/profile-icon.webp"
-                          width={17}
-                          height={17}
-                          alt=""
-                        />
-                        <input
-                          id="name"
-                          name="name"
-                          required
-                          autoComplete="name"
-                          minLength={2}
-                          maxLength={100}
-                          placeholder="Your full name"
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                  {isLogin || isSignup || mode === "forgot-password" ? (
-                    <div className="field-group">
-                      <label htmlFor="email">Email address</label>
-                      <div className="input-wrap">
-                        <Mail size={17} />
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          required
-                          maxLength={254}
-                          placeholder="you@example.com"
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                  {mode === "change-password" ? (
-                    <Password
-                      name="currentPassword"
-                      label="Temporary password"
-                      value={currentPassword}
-                      onChange={setCurrentPassword}
-                    />
-                  ) : null}
-                  {isLogin || isCreate ? (
-                    <Password
-                      creation={isCreate}
-                      label={isCreate ? "New password" : "Password"}
-                      value={password}
-                      onChange={setPassword}
-                    />
-                  ) : null}
-                  {isCreate ? (
-                    <>
-                      <div className="password-rules" aria-live="polite">
-                        {passwordRules.map((rule) => (
-                          <span
-                            className={rule.pass ? "met" : ""}
-                            key={rule.label}
-                          >
-                            <Check size={12} />
-                            {rule.label}
-                          </span>
-                        ))}
-                      </div>
-                      <Password
-                        name="confirmation"
-                        label="Confirm password"
-                        creation
-                        value={confirmation}
-                        onChange={setConfirmation}
-                      />
-                      {confirmation ? (
-                        <p
-                          className={`match-hint ${password === confirmation ? "matched" : ""}`}
+                    {isLogin || isSignup ? (
+                      <>
+                        <AssetButton
+                          asset="google-button"
+                          variant="google"
+                          type="button"
+                          disabled={isSignup && !consent}
+                          onClick={() =>
+                            window.location.assign(
+                              `/api/v1/auth/google/start?intent=${isSignup ? "register" : "login"}&account=${business ? "BUSINESS" : "USER"}&consent=${consent}`,
+                            )
+                          }
                         >
-                          {password === confirmation
-                            ? "Passwords match"
-                            : "Passwords don’t match yet"}
-                        </p>
-                      ) : null}
-                    </>
-                  ) : null}
-                  {isLogin ? (
-                    <div className="form-options">
-                      <span>
-                        <ShieldCheck size={14} /> Your account stays private
-                      </span>
-                      <Link href="/forgot-password">Forgot password?</Link>
-                    </div>
-                  ) : null}
-                  {mode === "verify-email" ? (
-                    <div className="verification-box">
-                      <Mail size={30} />
-                      <p>
-                        {token
-                          ? "Use the button below to verify your email address. Your link can only be used once."
-                          : "Open the verification link in your inbox, or request a new one below."}
-                      </p>
-                    </div>
-                  ) : null}
-                  {mode === "verify-security" ? (
-                    <>
-                      {needsSetup ? (
-                        <>
-                          <div className="verification-box">
-                            <ShieldCheck size={28} />
-                            <p>
-                              Business and admin accounts use two-step
-                              verification. Add Pinna to your authenticator,
-                              then enter its six-digit code.
-                            </p>
-                          </div>
-                          {!secret ? (
-                            <button
-                              className="button secondary full-width"
-                              type="button"
-                              disabled={busy}
-                              onClick={setup}
-                            >
-                              Set up authenticator <ArrowUpRight size={16} />
-                            </button>
-                          ) : (
-                            <div className="secret-box">
-                              {qrCode && (
-                                <Image
-                                  src={qrCode}
-                                  width={200}
-                                  height={200}
-                                  unoptimized
-                                  alt="Scan this QR code with your authenticator app"
-                                  className="authenticator-qr"
-                                />
-                              )}
-                              <span>Manual setup key</span>
-                              <code>{secret}</code>
-                              <a href={uri}>
-                                Open authenticator app{" "}
-                                <ArrowUpRight size={13} />
-                              </a>
-                            </div>
-                          )}
-                        </>
-                      ) : null}
-                      {!needsSetup || secret ? (
+                          {isSignup
+                            ? "Sign up with Google"
+                            : "Sign in with Google"}
+                        </AssetButton>
+                        {isSignup && !consent ? (
+                          <p className="google-consent-hint">
+                            Accept the terms below to enable Google sign-up.
+                          </p>
+                        ) : null}
+                        <div className="divider">
+                          <span>or continue with email</span>
+                        </div>
+                      </>
+                    ) : null}
+                    <form
+                      onSubmit={submit}
+                      className="auth-form"
+                      aria-busy={busy}
+                    >
+                      {isSignup ? (
                         <div className="field-group">
-                          <label htmlFor="code">
-                            Authenticator or recovery code
-                          </label>
+                          <label htmlFor="name">Full name</label>
                           <div className="input-wrap">
-                            <ShieldCheck size={17} />
+                            <Image
+                              src="/profile-icon.webp"
+                              width={17}
+                              height={17}
+                              alt=""
+                            />
                             <input
-                              id="code"
-                              name="code"
-                              autoComplete="one-time-code"
+                              id="name"
+                              name="name"
                               required
-                              minLength={6}
-                              maxLength={80}
-                              placeholder="Enter your code"
-                              autoFocus
+                              autoComplete="name"
+                              minLength={2}
+                              maxLength={100}
+                              placeholder="Your full name"
                             />
                           </div>
                         </div>
                       ) : null}
-                    </>
-                  ) : null}
-                  {isSignup ? (
-                    <label className="consent">
-                      <input
-                        type="checkbox"
-                        checked={consent}
-                        onChange={(e) => setConsent(e.target.checked)}
-                        required
-                      />
-                      <span>
-                        I agree to the{" "}
-                        <Link href="/terms" target="_blank">
-                          Terms of Service
-                        </Link>{" "}
-                        and{" "}
-                        <Link href="/privacy" target="_blank">
-                          Privacy Notice
-                        </Link>
-                        .
-                      </span>
-                    </label>
-                  ) : null}
-                  <AssetButton
-                    asset={
-                      isLogin
-                        ? "sign-in-button"
-                        : isSignup
-                          ? "create-account-button"
-                          : "continue-button"
-                    }
-                    type="submit"
-                    busy={busy}
-                    disabled={
-                      (mode === "verify-email" && !token) ||
-                      (mode === "verify-security" && needsSetup && !secret)
-                    }
-                  >
-                    {isLogin
-                      ? "Sign in"
-                      : isSignup
-                        ? "Create account"
-                        : mode === "forgot-password"
-                          ? "Send reset link"
-                          : mode === "verify-email"
-                            ? "Verify my email"
-                            : mode === "verify-security"
-                              ? "Verify & continue"
-                              : "Save password"}
-                  </AssetButton>
-                </form>
-                {isLogin || isSignup ? (
-                  <p className="auth-switch">
-                    {isLogin ? "New here?" : "Already connected?"}{" "}
-                    <Link href={isLogin ? "/sign-up" : "/sign-in"}>
-                      {isLogin ? "Create an account" : "Sign in"}{" "}
-                      <ArrowUpRight size={13} />
-                    </Link>
-                  </p>
-                ) : null}
-                {isLogin || mode === "verify-email" ? (
-                  <details className="resend-details">
-                    <summary>Need a new verification email?</summary>
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        setBusy(true);
-                        setFailure("");
-                        try {
-                          const email = new FormData(e.currentTarget).get(
-                            "email",
-                          );
-                          const result = await api<{ message: string }>(
-                            "auth/resend-verification",
-                            { email },
-                          );
-                          setMessage(result.message);
-                        } catch (err) {
-                          setFailure(
-                            err instanceof Error
-                              ? err.message
-                              : "Please try again.",
-                          );
-                        } finally {
-                          setBusy(false);
+                      {isLogin || isSignup || mode === "forgot-password" ? (
+                        <div className="field-group">
+                          <label htmlFor="email">Email address</label>
+                          <div className="input-wrap">
+                            <Mail size={17} />
+                            <input
+                              id="email"
+                              name="email"
+                              type="email"
+                              autoComplete="email"
+                              required
+                              maxLength={254}
+                              placeholder="you@example.com"
+                              value={email}
+                              onChange={(event) => setEmail(event.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                      {mode === "change-password" ? (
+                        <Password
+                          name="currentPassword"
+                          label="Temporary password"
+                          value={currentPassword}
+                          onChange={setCurrentPassword}
+                        />
+                      ) : null}
+                      {isLogin || isCreate ? (
+                        <Password
+                          creation={isCreate}
+                          label={isCreate ? "New password" : "Password"}
+                          value={password}
+                          onChange={setPassword}
+                        />
+                      ) : null}
+                      {isCreate ? (
+                        <>
+                          <div className="password-rules" aria-live="polite">
+                            {passwordRules.map((rule) => (
+                              <span
+                                className={rule.pass ? "met" : ""}
+                                key={rule.label}
+                              >
+                                <Check size={12} />
+                                {rule.label}
+                              </span>
+                            ))}
+                          </div>
+                          <Password
+                            name="confirmation"
+                            label="Confirm password"
+                            creation
+                            value={confirmation}
+                            onChange={setConfirmation}
+                          />
+                          {confirmation ? (
+                            <p
+                              className={`match-hint ${password === confirmation ? "matched" : ""}`}
+                            >
+                              {password === confirmation
+                                ? "Passwords match"
+                                : "Passwords don’t match yet"}
+                            </p>
+                          ) : null}
+                        </>
+                      ) : null}
+                      {isLogin ? (
+                        <div className="form-options">
+                          <span>
+                            <ShieldCheck size={14} /> Your account stays private
+                          </span>
+                          <Link href="/forgot-password">Forgot password?</Link>
+                        </div>
+                      ) : null}
+                      {mode === "verify-security" ? (
+                        <>
+                          {needsSetup ? (
+                            <>
+                              <div className="verification-box">
+                                <ShieldCheck size={28} />
+                                <p>
+                                  Business and admin accounts use two-step
+                                  verification. Add Pinna to your authenticator,
+                                  then enter its six-digit code.
+                                </p>
+                              </div>
+                              {!secret ? (
+                                <button
+                                  className="button secondary full-width"
+                                  type="button"
+                                  disabled={busy}
+                                  onClick={setup}
+                                >
+                                  Set up authenticator{" "}
+                                  <ArrowUpRight size={16} />
+                                </button>
+                              ) : (
+                                <div className="secret-box">
+                                  {qrCode && (
+                                    <Image
+                                      src={qrCode}
+                                      width={200}
+                                      height={200}
+                                      unoptimized
+                                      alt="Scan this QR code with your authenticator app"
+                                      className="authenticator-qr"
+                                    />
+                                  )}
+                                  <span>Manual setup key</span>
+                                  <code>{secret}</code>
+                                  <a href={uri}>
+                                    Open authenticator app{" "}
+                                    <ArrowUpRight size={13} />
+                                  </a>
+                                </div>
+                              )}
+                            </>
+                          ) : null}
+                          {!needsSetup || secret ? (
+                            <div className="field-group">
+                              <label htmlFor="code">
+                                Authenticator or recovery code
+                              </label>
+                              <div className="input-wrap">
+                                <ShieldCheck size={17} />
+                                <input
+                                  id="code"
+                                  name="code"
+                                  autoComplete="one-time-code"
+                                  required
+                                  minLength={6}
+                                  maxLength={80}
+                                  placeholder="Enter your code"
+                                  autoFocus
+                                />
+                              </div>
+                            </div>
+                          ) : null}
+                        </>
+                      ) : null}
+                      {isSignup ? (
+                        <label className="consent">
+                          <input
+                            type="checkbox"
+                            checked={consent}
+                            onChange={(e) => setConsent(e.target.checked)}
+                            required
+                          />
+                          <span>
+                            I agree to the{" "}
+                            <Link href="/terms" target="_blank">
+                              Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <Link href="/privacy" target="_blank">
+                              Privacy Notice
+                            </Link>
+                            .
+                          </span>
+                        </label>
+                      ) : null}
+                      <AssetButton
+                        asset={
+                          isLogin
+                            ? "sign-in-button"
+                            : isSignup
+                              ? "create-account-button"
+                              : "continue-button"
                         }
-                      }}
-                    >
-                      <label className="sr-only" htmlFor="resend-email">
-                        Email address
-                      </label>
-                      <input
-                        id="resend-email"
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="you@example.com"
-                        autoComplete="email"
-                      />
-                      <button type="submit" disabled={busy}>
-                        Resend link
-                      </button>
+                        type="submit"
+                        busy={busy}
+                        disabled={
+                          mode === "verify-security" && needsSetup && !secret
+                        }
+                      >
+                        {isLogin
+                          ? "Sign in"
+                          : isSignup
+                            ? "Create account"
+                            : mode === "forgot-password"
+                              ? "Send reset link"
+                              : mode === "verify-security"
+                                ? "Verify & continue"
+                                : "Save password"}
+                      </AssetButton>
                     </form>
-                  </details>
-                ) : null}
+                    {isLogin || isSignup ? (
+                      <p className="auth-switch">
+                        {isLogin ? "New here?" : "Already connected?"}{" "}
+                        <Link href={isLogin ? "/sign-up" : "/sign-in"}>
+                          {isLogin ? "Create an account" : "Sign in"}{" "}
+                          <ArrowUpRight size={13} />
+                        </Link>
+                      </p>
+                    ) : null}
+                    {isLogin ? (
+                      <p className="email-code-fallback">
+                        <Link
+                          href="/verify-email"
+                          onClick={() => rememberEmailVerification(email, 0)}
+                        >
+                          Need an email verification code?
+                        </Link>
+                      </p>
+                    ) : null}
+                  </>
+                )}
               </>
             )}
             <div className="auth-trust">
