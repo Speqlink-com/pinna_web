@@ -1,4 +1,4 @@
-# Pinna web · Bismart Inc.
+# pinnaa web · Bismart Inc.
 
 Next.js 16 / React 19 web app in black, grey and white, deployed to **https://pinnaa.com** on Vercel. Identity and workspace data come from the Python/PostgreSQL backend in `../pinna_infra`, exposed at **https://api.pinnaa.com**.
 

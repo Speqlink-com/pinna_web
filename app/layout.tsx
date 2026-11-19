@@ -24,11 +24,11 @@ const inter = localFont({
 });
 export const metadata: Metadata = {
   title: {
-    default: "Pinna — The right care. Closer to you.",
-    template: "%s | Pinna",
+    default: "pinnaa — The right care. Closer to you.",
+    template: "%s | pinnaa",
   },
   description:
-    "Find providers that fit your insurance, budget, and location. Connect to healthcare, pharmacies, agrovets, and more with Pinna by Bismart Inc.",
+    "Find providers that fit your insurance, budget, and location. Connect to healthcare, pharmacies, agrovets, and more with pinnaa by Bismart Inc.",
   robots: { index: false, follow: false },
 };
 export const viewport: Viewport = {

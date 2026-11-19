@@ -124,7 +124,7 @@ export async function googleCallback(request: NextRequest) {
         [
           typeof payload.name === "string"
             ? payload.name.slice(0, 100)
-            : "Pinna member",
+            : "pinnaa member",
           email,
           payload.sub,
           flow.account_type,

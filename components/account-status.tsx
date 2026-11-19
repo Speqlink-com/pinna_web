@@ -26,8 +26,8 @@ export function AccountStatus({ user }: { user: User }) {
         </p>
         <p>
           {pending
-            ? "A Pinna administrator will review your business account. We’ll email you when a decision is made. Once approved, you’ll connect an authenticator before entering your workspace."
-            : "Review the administrator’s note below. Contact Pinna support if you need help with this decision."}
+            ? "A pinnaa administrator will review your business account. We’ll email you when a decision is made. Once approved, you’ll connect an authenticator before entering your workspace."
+            : "Review the administrator’s note below. Contact pinnaa support if you need help with this decision."}
         </p>
         {user.approvalNote && (
           <div className="notice">

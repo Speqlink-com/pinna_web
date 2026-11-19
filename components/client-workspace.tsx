@@ -1143,7 +1143,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                     <SectionTitle
                       eyebrow="04 / VERIFICATION"
                       title="Evidence stays private"
-                      description="Upload a registration certificate and a current operating licence or service authorisation. Only your business and Pinna reviewers can download these documents."
+                      description="Upload a registration certificate and a current operating licence or service authorisation. Only your business and pinnaa reviewers can download these documents."
                     />
                     {detail ? (
                       <>
@@ -1320,7 +1320,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                             </strong>
                             <p>{event.note}</p>
                             <small>
-                              {event.actor_name ?? "Pinna"} ·{" "}
+                              {event.actor_name ?? "pinnaa"} ·{" "}
                               {date(event.created_at)} · revision{" "}
                               {event.revision}
                             </small>

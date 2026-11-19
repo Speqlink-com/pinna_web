@@ -10,7 +10,7 @@ export default function ErrorPage({
   return (
     <main className="standalone-state">
       <ShieldCheck size={36} />
-      <span className="eyebrow">PINNA</span>
+      <span className="eyebrow">pinnaa</span>
       <h1>We couldn’t load your account</h1>
       <p>The service may be temporarily unavailable. Try again in a moment.</p>
       <button type="button" className="button primary" onClick={retry}>

@@ -52,7 +52,7 @@ before(async () => {
   process.env.AUTH_ENCRYPTION_KEY = "a".repeat(64);
   process.env.APP_ORIGIN = "http://localhost:3000";
   process.env.SMTP_HOST = "smtp.example.test";
-  process.env.SMTP_FROM = "Pinna <no-reply@example.test>";
+  process.env.SMTP_FROM = "pinnaa <no-reply@example.test>";
   await pg.exec(
     await readFile(new URL("../scripts/schema.sql", import.meta.url), "utf8"),
   );

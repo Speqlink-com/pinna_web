@@ -36,7 +36,7 @@ try {
     );
   }
   await client.query("COMMIT");
-  console.log("Pinna database schema is ready.");
+  console.log("pinnaa database schema is ready.");
 } catch (error) {
   await client.query("ROLLBACK");
   throw error;

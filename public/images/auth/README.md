@@ -1,4 +1,4 @@
-# Pinna auth artwork
+# pinnaa auth artwork
 
 The supplied files in `public/` are already connected:
 
@@ -15,4 +15,4 @@ Existing filenames are preserved exactly, including spelling. All images are ser
 
 To replace a button, overwrite its file or change the `source` map in `components/asset-button.tsx`. Avoid replacing an action-specific image with different wording; Google, email, and general Continue are intentionally mapped separately. The supplied Google artwork retains its coloured Google mark; the interface uses black, grey, and white.
 
-The wordmark is in `components/brand.tsx`; replace it when the approved Pinna logo is supplied.
+The wordmark is in `components/brand.tsx`; replace it when the approved pinnaa logo is supplied.

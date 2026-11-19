@@ -34,15 +34,15 @@ const details: Record<
   { title: string; description: string; label: string }
 > = {
   "sign-in": {
-    title: "Sign in to Pinna",
+    title: "Sign in to pinnaa",
     description:
       "Find providers, compare services, and manage your connections.",
-    label: "SIGN IN TO PINNA",
+    label: "SIGN IN TO pinnaa",
   },
   "sign-up": {
     title: "Create your account",
     description: "Choose a personal or business account to get started.",
-    label: "GET STARTED WITH PINNA",
+    label: "GET STARTED WITH pinnaa",
   },
   "forgot-password": {
     title: "Reset your password",
@@ -160,7 +160,7 @@ export function AuthScreen({
     "existing-account":
       "This email already has a password account. Sign in with that password.",
     "register-first":
-      "No Pinna account is linked to this Google account yet. Create an account first.",
+      "No pinnaa account is linked to this Google account yet. Create an account first.",
   };
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -531,7 +531,7 @@ export function AuthScreen({
                                 <ShieldCheck size={28} />
                                 <p>
                                   Business and admin accounts use two-step
-                                  verification. Add Pinna to your authenticator,
+                                  verification. Add pinnaa to your authenticator,
                                   then enter its six-digit code.
                                 </p>
                               </div>

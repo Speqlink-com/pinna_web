@@ -8,7 +8,7 @@ export function requireMail() {
   )
     throw new Problem(
       503,
-      "Email delivery is not configured yet. Please contact the Pinna team.",
+      "Email delivery is not configured yet. Please contact the pinnaa team.",
     );
 }
 export function mailTransport() {

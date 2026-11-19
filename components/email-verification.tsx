@@ -133,7 +133,7 @@ function EmailVerificationForm({ token }: { token: string }) {
         </p>
       ) : (
         <p className="email-code-help">
-          Check your inbox and spam folder for a six-digit Pinna code. Codes
+          Check your inbox and spam folder for a six-digit pinnaa code. Codes
           expire after 10 minutes. Request a code below if you haven’t received
           one.
         </p>

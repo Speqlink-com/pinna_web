@@ -13,7 +13,7 @@ async function handle(request: NextRequest, context: Context) {
       request.headers.get("sec-fetch-site") === "cross-site" &&
       !path.endsWith("callback")
     )
-      throw new Problem(403, "Open sign-in from Pinna to continue.");
+      throw new Problem(403, "Open sign-in from pinnaa to continue.");
     let body: string | Uint8Array | undefined;
     if (request.method !== "GET") {
       checkOrigin(request);
@@ -61,7 +61,7 @@ async function handle(request: NextRequest, context: Context) {
     if (error instanceof Problem)
       return json({ error: error.message }, error.status);
     console.error(
-      "Pinna API bridge failed",
+      "pinnaa API bridge failed",
       error instanceof Error ? error.name : "UnknownError",
     );
     return json(

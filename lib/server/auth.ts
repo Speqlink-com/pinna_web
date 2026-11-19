@@ -40,10 +40,10 @@ async function enqueue(
     [
       email,
       purpose === "verify"
-        ? "Verify your Pinna email"
-        : "Reset your Pinna password",
+        ? "Verify your pinnaa email"
+        : "Reset your pinnaa password",
       encrypt(
-        `Use this link to ${purpose === "verify" ? "verify your email" : "reset your password"}:\n\n${link}\n\nExpires in ${purpose === "verify" ? "24 hours" : "30 minutes"}. If you did not request this, ignore this email.\n\nPinna by Bismart Inc.`,
+        `Use this link to ${purpose === "verify" ? "verify your email" : "reset your password"}:\n\n${link}\n\nExpires in ${purpose === "verify" ? "24 hours" : "30 minutes"}. If you did not request this, ignore this email.\n\npinnaa by Bismart Inc.`,
       ),
     ],
   );
@@ -274,7 +274,7 @@ export async function authPost(
     );
     return json({
       secret,
-      uri: `otpauth://totp/Pinna:${encodeURIComponent(user.email)}?secret=${secret}&issuer=Pinna&algorithm=SHA1&digits=6&period=30`,
+      uri: `otpauth://totp/pinnaa:${encodeURIComponent(user.email)}?secret=${secret}&issuer=pinnaa&algorithm=SHA1&digits=6&period=30`,
     });
   }
   if (path === "auth/mfa/verify") {

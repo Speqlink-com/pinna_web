@@ -15,7 +15,7 @@ const content: Record<
   privacy: {
     title: "Your privacy matters.",
     intro:
-      "How Pinna by Bismart Inc. handles information in this web application.",
+      "How pinnaa by Bismart Inc. handles information in this web application.",
     sections: [
       {
         title: "Your account",
@@ -45,11 +45,11 @@ const content: Record<
   },
   terms: {
     title: "Good connections. Clear terms.",
-    intro: "Terms for using this phase of Pinna by Bismart Inc.",
+    intro: "Terms for using this phase of pinnaa by Bismart Inc.",
     sections: [
       {
-        title: "What Pinna does",
-        text: "Pinna helps people discover and connect with providers by service, insurance, location, and listed prices. Business clients can manage multiple independent portfolios using one account.",
+        title: "What pinnaa does",
+        text: "pinnaa helps people discover and connect with providers by service, insurance, location, and listed prices. Business clients can manage multiple independent portfolios using one account.",
       },
       {
         title: "Your account",
@@ -75,14 +75,14 @@ const content: Record<
   },
   help: {
     title: "A little help, right here.",
-    intro: "Pinna connects people with the services that fit their lives.",
+    intro: "pinnaa connects people with the services that fit their lives.",
     sections: [
       {
         title: "Find care for yourself",
         text: "Create a personal account, verify your email, and search providers by service, area, insurance plan, or budget. Choose Use my location if you want to compare distance. Save providers and start a conversation to confirm details.",
       },
       {
-        title: "Bring your business to Pinna",
+        title: "Bring your business to pinnaa",
         text: "Choose Bismart Business when creating an account. After verification, add a portfolio for each clinic, chemist, ambulance company, agrovet, or other service you manage. One login can manage many portfolios.",
       },
       {
@@ -117,9 +117,9 @@ export function DocumentPage({ document }: { document: string }) {
       </header>
       <main>
         <Link href="/sign-in" className="back-link">
-          <ArrowLeft size={15} /> Back to Pinna
+          <ArrowLeft size={15} /> Back to pinnaa
         </Link>
-        <div className="eyebrow">PINNA BY BISMART INC.</div>
+        <div className="eyebrow">pinnaa BY BISMART INC.</div>
         <h1>{entry.title}</h1>
         <p className="document-intro">{entry.intro}</p>
         {document !== "help" ? (

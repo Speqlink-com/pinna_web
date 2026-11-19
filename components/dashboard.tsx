@@ -241,7 +241,7 @@ export function Dashboard({
           <div>
             <strong>
               {isAdmin
-                ? "Pinna Administration"
+                ? "pinnaa Administration"
                 : isBusiness
                   ? "Bismart Business"
                   : "Personal workspace"}
@@ -314,7 +314,7 @@ export function Dashboard({
               )
             ) : (
               <Link href="/help">
-                Explore Pinna <ArrowUpRight size={14} />
+                Explore pinnaa <ArrowUpRight size={14} />
               </Link>
             )}
           </div>
@@ -360,7 +360,7 @@ export function Dashboard({
             >
               <Menu size={21} />
             </button>
-            <span>Pinna</span>
+            <span>pinnaa</span>
             <span className="breadcrumb-slash">/</span>
             <strong>{titles[section] ?? "Overview"}</strong>
           </div>
@@ -473,9 +473,9 @@ export function Dashboard({
                       </h1>
                       <p>
                         {section === "team"
-                          ? "Manage the people who keep the Pinna network trusted."
+                          ? "Manage the people who keep the pinnaa network trusted."
                           : isAdmin
-                            ? "Here’s what needs your attention across the Pinna network."
+                            ? "Here’s what needs your attention across the pinnaa network."
                             : "A clear view of your services. A closer connection to your customers."}
                       </p>
                     </div>
@@ -754,7 +754,7 @@ export function Dashboard({
                             : "Your portfolio stays private until verification is complete. Keep your contact details, services, and insurance information up to date."}
                         </p>
                         <Link href="/help" className="text-link">
-                          How Pinna works <ArrowUpRight size={14} />
+                          How pinnaa works <ArrowUpRight size={14} />
                         </Link>
                       </section>
                     </div>
@@ -764,7 +764,7 @@ export function Dashboard({
             </>
           )}
           <footer className="workspace-footer">
-            <span>Pinna by Bismart Inc.</span>
+            <span>pinnaa by Bismart Inc.</span>
             <div>
               <Link href="/privacy">Privacy</Link>
               <Link href="/help">
@@ -1733,7 +1733,7 @@ function InviteAdmin({
       }}
     >
       <p className="small-muted">
-        Create an admin account. Pinna will email a temporary password; the
+        Create an admin account. pinnaa will email a temporary password; the
         recipient must change it and set up two-step verification at first
         sign-in.
       </p>

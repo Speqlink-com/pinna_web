@@ -16,7 +16,7 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   stopping = true;
 });
-console.log("Pinna email worker running. Message contents are never logged.");
+console.log("pinnaa email worker running. Message contents are never logged.");
 while (!stopping) {
   const sent = await transaction(async (client) => {
     const { rows } = await client.query(

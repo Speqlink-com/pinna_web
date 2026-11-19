@@ -3,7 +3,7 @@ export function Brand({ light = false }: { light?: boolean }) {
   return (
     <Link
       href="/"
-      aria-label="Pinna home"
+      aria-label="pinnaa home"
       className={`brand ${light ? "brand-light" : ""}`}
     >
       <span className="brand-mark" aria-hidden="true">
@@ -23,7 +23,7 @@ export function Brand({ light = false }: { light?: boolean }) {
         </svg>
       </span>
       <span>
-        pinna<span className="brand-dot">.</span>
+        pinnaa<span className="brand-dot">.</span>
       </span>
     </Link>
   );

@@ -8,7 +8,7 @@ The earlier Node auth/schema/mail files below describe the initial prototype and
 
 # Phase-one decisions · 9 November 2026
 
-- Latest owner brief controls visible naming: **Pinna**, a product of **Bismart Inc.** Prior BT naming changes are historical context.
+- Latest owner brief controls visible naming: **pinnaa**, a product of **Bismart Inc.** Prior BT naming changes are historical context.
 - Next.js 16 is retained from the supplied `pinna_web` starter. Versioned handlers use PostgreSQL rather than embedding identity state in the browser.
 - BT is a product / architecture reference, not a runtime dependency. Its PGlite schema, legacy roles, and demo seeds are not reused. Existing-account migration remains an explicit future decision.
 - Public account purpose is personal or business. Provider category belongs to a portfolio. Neither request body nor a login selector can assign an administrative role.
