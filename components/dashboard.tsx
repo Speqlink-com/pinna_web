@@ -37,6 +37,7 @@ import {
   LockKeyhole,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { ClientWorkspace } from "./client-workspace";
 import { IdentityAdmin } from "./identity-admin";
 import { IdentitySecurity } from "./identity-security";
 import { Brand } from "./brand";
@@ -302,9 +303,15 @@ export function Dashboard({
                   : "Your insurance. Your budget. Your choice."}
             </p>
             {isBusiness ? (
-              <button onClick={() => setCreating(true)}>
-                Add a portfolio <ArrowUpRight size={14} />
-              </button>
+              preview ? (
+                <button onClick={() => setCreating(true)}>
+                  Add a portfolio <ArrowUpRight size={14} />
+                </button>
+              ) : (
+                <Link href="/dashboard/portfolios?create=1">
+                  Add a portfolio <ArrowUpRight size={14} />
+                </Link>
+              )
             ) : (
               <Link href="/help">
                 Explore Pinna <ArrowUpRight size={14} />
@@ -407,7 +414,11 @@ export function Dashboard({
             </div>
           ) : (
             <>
-              {section === "clients" && isAdmin ? (
+              {!preview &&
+              (isBusiness || isAdmin) &&
+              ["overview", "portfolios", "applications"].includes(section) ? (
+                <ClientWorkspace user={user} />
+              ) : section === "clients" && isAdmin ? (
                 preview ? (
                   <p>
                     Client approval is available in a signed-in admin workspace.
@@ -820,7 +831,7 @@ export function Dashboard({
                 <strong>
                   {s.price === null
                     ? "Request a quote"
-                    : `KES ${s.price.toLocaleString()}`}
+                    : `${s.priceType === "from" ? "From " : ""}KES ${s.price.toLocaleString()}`}
                 </strong>
               </div>
             ))}
@@ -1380,6 +1391,17 @@ function Discovery({
             <p>
               <MapPin size={14} /> {details.address}
             </p>
+            {details.description && (
+              <p className="provider-description">{details.description}</p>
+            )}
+            {details.verification_expires_on && (
+              <p className="small-muted">
+                <ShieldCheck size={15} /> Portfolio verification through{" "}
+                {new Date(details.verification_expires_on).toLocaleDateString(
+                  "en-KE",
+                )}
+              </p>
+            )}
             <h4>Insurance plans</h4>
             <div className="insurance-tags">
               {details.insurance.map((p) => (
@@ -1393,10 +1415,41 @@ function Discovery({
                 <strong>
                   {s.price === null
                     ? "Request a quote"
-                    : `KES ${s.price.toLocaleString()}`}
+                    : `${s.priceType === "from" ? "From " : ""}KES ${s.price.toLocaleString()}`}
                 </strong>
               </div>
             ))}
+            {details.opening_hours && details.opening_hours.length > 0 && (
+              <>
+                <h4>Opening hours · East Africa Time</h4>
+                <dl className="provider-opening-hours">
+                  {details.opening_hours.map((hours) => (
+                    <div key={hours.day}>
+                      <dt>
+                        {
+                          [
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                            "Sunday",
+                          ][hours.day]
+                        }
+                      </dt>
+                      <dd>
+                        {hours.closed
+                          ? "Closed"
+                          : hours.allDay
+                            ? "24 hours"
+                            : `${hours.opens} – ${hours.closes}${hours.overnight ? " (next day)" : ""}`}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            )}
             <p className="small-muted">
               Confirm exact plan coverage and final charges with the provider.
               Ambulance listings are for enquiries and do not confirm dispatch.

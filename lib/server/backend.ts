@@ -20,7 +20,8 @@ export async function backendFetch(
   path: string,
   options: {
     method?: string;
-    body?: string;
+    body?: string | Uint8Array;
+    evidence?: string;
     session?: string;
     oauth?: string;
     query?: string;
@@ -47,16 +48,26 @@ export async function backendFetch(
     method: options.method ?? "GET",
     cache: "no-store",
     redirect: "error",
-    signal: AbortSignal.timeout(12000),
+    signal: AbortSignal.timeout(options.evidence ? 30000 : 12000),
     headers: {
       "X-Pinna-Proxy-Key": key,
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.body
+        ? {
+            "Content-Type": options.evidence
+              ? "application/octet-stream"
+              : "application/json",
+          }
+        : {}),
+      ...(options.evidence ? { "X-Pinna-Evidence": options.evidence } : {}),
       ...(options.session
         ? { Authorization: `Bearer ${options.session}` }
         : {}),
       ...(options.oauth ? { "X-Pinna-OAuth-State": options.oauth } : {}),
     },
-    body: options.body,
+    body:
+      options.body instanceof Uint8Array
+        ? new Blob([Uint8Array.from(options.body)])
+        : options.body,
   });
 }
 
@@ -71,7 +82,7 @@ export async function backendSession(): Promise<User | null> {
 export async function proxyBackend(
   request: NextRequest,
   path: string,
-  body?: string,
+  body?: string | Uint8Array,
 ) {
   const response = await backendFetch(path, {
     method: request.method,
@@ -79,7 +90,30 @@ export async function proxyBackend(
     session: request.cookies.get(sessionName)?.value,
     oauth: request.cookies.get(oauthName)?.value,
     query: request.nextUrl.search,
+    evidence:
+      body instanceof Uint8Array
+        ? (request.headers.get("x-pinna-evidence") ?? undefined)
+        : undefined,
   });
+  if (
+    response.ok &&
+    /^portfolios\/[a-f0-9-]{36}\/documents\/[a-f0-9-]{36}\/download$/i.test(
+      path,
+    )
+  ) {
+    return new NextResponse(await response.arrayBuffer(), {
+      status: response.status,
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition":
+          response.headers.get("content-disposition") ?? "attachment",
+        "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Security-Policy": "sandbox; default-src 'none'",
+        "Referrer-Policy": "no-referrer",
+      },
+    });
+  }
   const data = await response.json();
   const {
     sessionToken,

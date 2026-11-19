@@ -26,7 +26,9 @@ The Python backend is the only routed identity authority, in development and pro
 
 Admins review business sign-in requests in `/dashboard/clients`. The owner manages invited admin access and client recovery, with reasons and audit events. Account settings expose name update, password change, explicit Google connection, own session revocation and recovery-code replacement. No sign-in role selector or public admin signup exists.
 
-Business account approval does not publish portfolios. New portfolios stay private drafts. Provider evidence submission, category verification and publication remain a separate phase. Discovery, saving and owner/customer chats use backend ownership checks; admins cannot read private chats. Medicine catalogues, dispatch, clinical records and payments are outside this identity scope.
+Business account approval does not publish portfolios. The client workspace supports a business profile and multiple portfolios with category-specific details, services and KES prices, insurance, coordinates and opening hours. Owners upload private registration and licence evidence and submit an immutable application. An Admin reviews the documents and recommends; a different Super Admin gives final publication approval. Owners can withdraw, reopen or archive listings. Expired evidence removes a listing from discovery until renewed and reviewed. The API enforces ownership, MFA, recent authentication for reviews and revision checks. Evidence is encrypted at rest and downloads remain private attachments.
+
+Discovery, saving and owner/customer chats use backend ownership checks; admins cannot read private chats. Medicine catalogues, dispatch, clinical records and payments are outside this module. See the backend `docs/CLIENTS.md` for the evidence limits and review workflow. No additional deployment environment variables are needed for this module.
 
 ## Design previews and artwork
 

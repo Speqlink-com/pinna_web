@@ -37,10 +37,28 @@ export type Portfolio = {
     | "CHANGES_REQUESTED";
   created_at: string;
   insurance: string[];
-  services: { name: string; price: number | null }[];
+  services: {
+    name: string;
+    price: number | null;
+    priceType?: "fixed" | "from" | "quote";
+  }[];
   phone: string;
 };
-export type Provider = Portfolio & { distance: number | null };
+export type Provider = Portfolio & {
+  distance: number | null;
+  description?: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  verification_expires_on?: string | null;
+  opening_hours?: {
+    day: number;
+    closed: boolean;
+    allDay: boolean;
+    opens: string;
+    closes: string;
+    overnight: boolean;
+  }[];
+};
 export type Conversation = {
   id: string;
   provider_name: string;

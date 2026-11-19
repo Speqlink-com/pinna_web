@@ -14,12 +14,24 @@ async function handle(request: NextRequest, context: Context) {
       !path.endsWith("callback")
     )
       throw new Problem(403, "Open sign-in from Pinna to continue.");
-    let body: string | undefined;
+    let body: string | Uint8Array | undefined;
     if (request.method !== "GET") {
       checkOrigin(request);
-      if (!request.headers.get("content-type")?.startsWith("application/json"))
-        throw new Problem(415, "Send a JSON request.");
-      if (Number(request.headers.get("content-length") ?? 0) > 32768)
+      const upload = /^portfolios\/[a-f0-9-]{36}\/documents\/upload$/i.test(
+        path,
+      );
+      const maximum = upload ? 3 * 1024 * 1024 : 32768;
+      if (upload && !request.headers.get("x-pinna-evidence"))
+        throw new Problem(400, "Add the document details.");
+      if ((request.headers.get("x-pinna-evidence")?.length ?? 0) > 4096)
+        throw new Problem(413, "Document details are too large.");
+      if (
+        !request.headers
+          .get("content-type")
+          ?.startsWith(upload ? "application/octet-stream" : "application/json")
+      )
+        throw new Problem(415, "Use the supported request content type.");
+      if (Number(request.headers.get("content-length") ?? 0) > maximum)
         throw new Problem(413, "This request is too large.");
       const reader = request.body?.getReader();
       const chunks: Uint8Array[] = [];
@@ -29,7 +41,7 @@ async function handle(request: NextRequest, context: Context) {
           const chunk = await reader.read();
           if (chunk.done) break;
           size += chunk.value.length;
-          if (size > 32768) {
+          if (size > maximum) {
             await reader.cancel();
             throw new Problem(413, "This request is too large.");
           }
@@ -42,7 +54,7 @@ async function handle(request: NextRequest, context: Context) {
         bytes.set(chunk, offset);
         offset += chunk.length;
       }
-      body = new TextDecoder().decode(bytes);
+      body = upload ? bytes : new TextDecoder().decode(bytes);
     }
     return await proxyBackend(request, path, body);
   } catch (error) {
