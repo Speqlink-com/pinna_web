@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowUpRight,
   Check,
@@ -151,6 +151,7 @@ export function AuthScreen({
     [emailCodeSent, setEmailCodeSent] = useState(false),
     [resendSeconds, setResendSeconds] = useState(0);
   const adminMfa = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
+  const codeInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (resendSeconds <= 0) return;
     const timer = setTimeout(
@@ -319,7 +320,7 @@ export function AuthScreen({
                     Your session ended. Sign in to continue.
                   </div>
                 ) : null}
-                {message ? (
+                {message && mode !== "verify-security" ? (
                   <div className="success-state" role="status">
                     <span className="success-symbol">
                       <Image
@@ -540,6 +541,11 @@ export function AuthScreen({
                       ) : null}
                       {mode === "verify-security" ? (
                         <>
+                          {message && (
+                            <div className="notice" role="status">
+                              {message}
+                            </div>
+                          )}
                           {adminMfa && (
                             <div
                               className="client-primary-tabs"
@@ -592,6 +598,7 @@ export function AuthScreen({
                                     setMessage(result.message);
                                     setEmailCodeSent(true);
                                     setResendSeconds(result.resendAfter);
+                                    codeInput.current?.focus();
                                   } catch (e) {
                                     setFailure(
                                       e instanceof Error
@@ -653,7 +660,7 @@ export function AuthScreen({
                               )}
                             </>
                           ) : null}
-                          {(mfaMethod === "email" && emailCodeSent) ||
+                          {mfaMethod === "email" ||
                           (mfaMethod === "authenticator" &&
                             (!needsSetup || secret)) ? (
                             <div className="field-group">
@@ -665,13 +672,29 @@ export function AuthScreen({
                               <div className="input-wrap">
                                 <ShieldCheck size={17} />
                                 <input
+                                  key={mfaMethod}
+                                  ref={codeInput}
                                   id="code"
                                   name="code"
+                                  type="text"
+                                  inputMode={
+                                    mfaMethod === "email" ? "numeric" : "text"
+                                  }
+                                  pattern={
+                                    mfaMethod === "email"
+                                      ? "[0-9]{6}"
+                                      : undefined
+                                  }
+                                  enterKeyHint="done"
                                   autoComplete="one-time-code"
                                   required
                                   minLength={6}
-                                  maxLength={80}
-                                  placeholder="Enter your code"
+                                  maxLength={mfaMethod === "email" ? 6 : 80}
+                                  placeholder={
+                                    mfaMethod === "email"
+                                      ? "Enter six-digit email code"
+                                      : "Enter your code"
+                                  }
                                   autoFocus
                                 />
                               </div>
@@ -712,9 +735,9 @@ export function AuthScreen({
                         busy={busy}
                         disabled={
                           mode === "verify-security" &&
-                          (mfaMethod === "email"
-                            ? !emailCodeSent
-                            : needsSetup && !secret)
+                          mfaMethod === "authenticator" &&
+                          needsSetup &&
+                          !secret
                         }
                       >
                         {isLogin
