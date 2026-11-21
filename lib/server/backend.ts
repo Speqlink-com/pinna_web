@@ -159,7 +159,7 @@ export async function proxyBackend(
     /^[A-Za-z0-9_-]{40,100}$/.test(sessionToken) &&
     Number.isInteger(sessionMaxAge) &&
     sessionMaxAge > 0 &&
-    sessionMaxAge <= 7 * 86400
+    sessionMaxAge <= 90 * 86400
   )
     result.cookies.set(sessionName, sessionToken, {
       ...cookieOptions,

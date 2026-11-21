@@ -1,4 +1,6 @@
 "use client";
+import { LocationMap } from "./location-map";
+import { LocationOperations } from "./location-operations";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -351,7 +353,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
             {form
               ? detail
                 ? detail.portfolio.name
-                : "Create a portfolio"
+                : "Register a business location"
               : business
                 ? "Your business, connected."
                 : "Review the provider network."}
@@ -360,7 +362,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
             {form
               ? "Keep each service location, offering and verification record in one place."
               : business
-                ? "One account. Every clinic, chemist, ambulance and service you manage."
+                ? "Register each business or branch with its own location. Complete the profile and evidence, then submit it for pinnaa approval."
                 : "Check the evidence, record your decision, and keep listings current."}
           </p>
         </div>
@@ -376,7 +378,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
               setError("");
             }}
           >
-            <Plus size={18} /> Add portfolio
+            <Plus size={18} /> Register business location
           </button>
         )}
         {form && (
@@ -467,8 +469,10 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                   <div>
                     <strong>Start with your business identity.</strong>
                     <p>
-                      Complete your business profile before submitting a
-                      portfolio. You can prepare drafts at any time.
+                      Complete your owner profile, register each business
+                      location, add its map pin, services and evidence, then
+                      submit it for pinnaa review. Each location is approved
+                      separately.
                     </p>
                   </div>
                   <button
@@ -680,6 +684,9 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                 ["location", "Location & hours"],
                 ["documents", "Verification documents"],
                 ["history", "Review history"],
+                ...(business && detail
+                  ? [["operations", "Availability & stock"]]
+                  : []),
               ].map(([key, label], index) => (
                 <button
                   key={key}
@@ -915,6 +922,28 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                                 }
                               />
                             </Field>
+                            <Field label="Offering type">
+                              <select
+                                value={service.kind ?? "service"}
+                                onChange={(e) =>
+                                  patch(
+                                    "services",
+                                    form.services.map((s, i) =>
+                                      i === index
+                                        ? {
+                                            ...s,
+                                            kind: e.target.value as
+                                              "service" | "product",
+                                          }
+                                        : s,
+                                    ),
+                                  )
+                                }
+                              >
+                                <option value="service">Service</option>
+                                <option value="product">Product</option>
+                              </select>
+                            </Field>
                             <Field label="Price basis">
                               <select
                                 value={service.priceType}
@@ -1027,12 +1056,44 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                     </fieldset>
                   </>
                 )}
+                {tab === "operations" && detail && (
+                  <LocationOperations
+                    id={detail.portfolio.id}
+                    onSaved={async () => {
+                      await open(detail.portfolio.id);
+                      await refresh();
+                    }}
+                  />
+                )}
                 {tab === "location" && (
                   <>
                     <SectionTitle
                       eyebrow="03 / FINDABILITY"
                       title="Make it easy to find you"
                       description="Use the actual service location so customers can compare distance and price."
+                    />
+                    <LocationMap
+                      picking
+                      disabled={!editable || busy}
+                      point={
+                        form.latitude !== null && form.longitude !== null
+                          ? { lat: form.latitude, lng: form.longitude }
+                          : null
+                      }
+                      onPick={(point, address) => {
+                        setForm((previous) =>
+                          previous
+                            ? {
+                                ...previous,
+                                latitude: point.lat,
+                                longitude: point.lng,
+                                ...(address
+                                  ? { address: address.slice(0, 300) }
+                                  : {}),
+                              }
+                            : null,
+                        );
+                      }}
                     />
                     <fieldset disabled={!editable || busy}>
                       <div className="client-fields">
@@ -1330,7 +1391,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                     </ol>
                   </>
                 )}
-                {editable && (
+                {editable && tab !== "operations" && (
                   <div className="client-editor-footer">
                     <span>
                       <ShieldCheck size={15} /> Saved privately until approved

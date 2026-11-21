@@ -1,3 +1,4 @@
+@import "mapbox-gl/dist/mapbox-gl.css";
 :root {
   --ink: #1c1c1c;
   --muted: #7e7e7e;
@@ -5043,7 +5044,7 @@ h4 {
 .client-service-row {
   display: grid;
   grid-template-columns:
-    minmax(150px, 1.6fr) minmax(110px, 1fr) minmax(100px, 0.8fr)
+    minmax(140px, 1.6fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(90px, 0.8fr)
     32px;
   gap: 12px;
   align-items: end;
@@ -5489,3 +5490,25 @@ a.email-code-fallback {
   letter-spacing: -0.04em;
   margin: 16px 0 10px;
 }
+
+/* Live business locations and operational controls */
+.location-map { border: 1px solid #dce7e3; border-radius: 18px; overflow: hidden; margin: 20px 0; background: #fff; }
+.map-canvas { height: 420px; width: 100%; }
+.map-search { position: relative; padding: 12px; background: #f6faf8; z-index: 2; }
+.map-search label { display: flex; align-items: center; gap: 10px; }
+.map-search input { width: 100%; padding: 12px; border: 1px solid #dce7e3; border-radius: 8px; background: white; }
+.map-search ul { list-style: none; margin: 4px 0; padding: 0; background: white; }
+.map-search li button { width: 100%; text-align: left; padding: 12px; border: 0; border-bottom: 1px solid #e6efeb; background: white; cursor: pointer; }
+.map-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px; font-size: 13px; color: #52665e; }
+.location-marker { display: grid; place-items: center; width: 42px; height: 42px; background: #126d62; color: white; border: 3px solid white; border-radius: 50%; cursor: pointer; box-shadow: 0 3px 12px #183c4033; }
+.location-marker.closed { background: #6b7280; }
+.operation-row { display: grid; grid-template-columns: minmax(140px, 1fr) repeat(3, minmax(95px, 1fr)); align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid #e1ebe6; }
+.operation-row input[type=number] { width: 100%; padding: 10px; border: 1px solid #dce7e3; border-radius: 8px; }
+.operations-panel { display: grid; gap: 20px; }
+.operation-toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.availability-label { display: inline-block; font-size: 12px; padding: 5px 9px; background: #e8f5ef; color: #126d62; border-radius: 6px; margin: 8px 0; }
+.availability-label.closed { background: #f4eee5; color: #79582d; }
+.inventory-history { overflow-x: auto; }
+.inventory-history table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.inventory-history th,.inventory-history td { padding: 12px; text-align: left; border-bottom: 1px solid #e1ebe6; }
+@media(max-width: 640px) { .map-canvas { height: 340px; } .operation-row { grid-template-columns: 1fr 1fr; } }

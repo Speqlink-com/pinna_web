@@ -39,6 +39,10 @@ export type Portfolio = {
   insurance: string[];
   services: {
     name: string;
+    kind?: "service" | "product";
+    available?: boolean;
+    trackInventory?: boolean;
+    inStock?: boolean | null;
     price: number | null;
     priceType?: "fixed" | "from" | "quote";
   }[];
@@ -46,6 +50,8 @@ export type Portfolio = {
 };
 export type Provider = Portfolio & {
   distance: number | null;
+  is_open?: boolean;
+  accepting_customers?: boolean;
   description?: string;
   latitude?: number | null;
   longitude?: number | null;

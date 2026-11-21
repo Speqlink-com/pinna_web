@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { LocationMap, type Point } from "./location-map";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowUpRight,
@@ -162,6 +164,16 @@ export function Dashboard({
       active = false;
     };
   }, [preview]);
+  useEffect(() => {
+    if (preview || section !== "messages") return;
+    const timer = setInterval(() => {
+      if (document.visibilityState === "hidden") return;
+      api<DashboardData>("dashboard")
+        .then(setData)
+        .catch(() => {});
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [preview, section]);
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 6500);
@@ -440,7 +452,11 @@ export function Dashboard({
                   savedOnly={section === "saved"}
                   preview={preview}
                   notify={notify}
-                  onConnect={() => window.location.assign(href("messages"))}
+                  onConnect={(id) =>
+                    window.location.assign(
+                      `${href("messages")}?conversation=${encodeURIComponent(id)}`,
+                    )
+                  }
                 />
               ) : (
                 <>
@@ -827,7 +843,18 @@ export function Dashboard({
             <h4>Services & listed prices</h4>
             {selected.services.map((s) => (
               <div className="service-line" key={s.name}>
-                <span>{s.name}</span>
+                <span>
+                  {s.name}
+                  {s.available !== undefined && (
+                    <small className="availability-label">
+                      {s.inStock === false
+                        ? "Out of stock"
+                        : s.available
+                          ? "Available now"
+                          : "Currently unavailable"}
+                    </small>
+                  )}
+                </span>
                 <strong>
                   {s.price === null
                     ? "Request a quote"
@@ -858,7 +885,7 @@ function Discovery({
   savedOnly: boolean;
   preview: boolean;
   notify: (s: string) => void;
-  onConnect: () => void;
+  onConnect: (id: string) => void;
 }) {
   const [query, setQuery] = useState(""),
     [category, setCategory] = useState(""),
@@ -867,6 +894,7 @@ function Discovery({
     [maxPrice, setMaxPrice] = useState(""),
     [radius, setRadius] = useState(""),
     [sort, setSort] = useState("nearest"),
+    [openNow, setOpenNow] = useState(false),
     [providers, setProviders] = useState<Provider[]>(
       preview ? previewProviders : [],
     ),
@@ -878,21 +906,24 @@ function Discovery({
     [locating, setLocating] = useState(false),
     [details, setDetails] = useState<Provider | null>(null),
     [pending, setPending] = useState("");
+  const searchSequence = useRef(0);
   useEffect(() => {
     let active = true;
+    const requestId = ++searchSequence.current;
     if (!preview) {
       api<{ providers: Provider[] }>(savedOnly ? "saved" : "providers")
         .then((result) => {
-          if (active) {
+          if (active && requestId === searchSequence.current) {
             setProviders(result.providers);
             if (savedOnly) setSaved(result.providers.map((p) => p.id));
           }
         })
         .catch((err) => {
-          if (active) setError(err.message);
+          if (active && requestId === searchSequence.current)
+            setError(err.message);
         })
         .finally(() => {
-          if (active) setLoading(false);
+          if (active && requestId === searchSequence.current) setLoading(false);
         });
       if (!savedOnly)
         api<{ providers: Provider[] }>("saved")
@@ -938,10 +969,12 @@ function Discovery({
     e?: FormEvent,
     categoryOverride?: string,
     sortOverride?: string,
+    locationOverride?: Point,
   ) {
     e?.preventDefault();
     setError("");
-    if (radius && !coords) {
+    const origin = locationOverride ?? coords;
+    if (radius && !origin) {
       setError(
         "Share your location to use a distance filter, or clear the distance filter.",
       );
@@ -951,6 +984,7 @@ function Discovery({
       if (radius && !coords) setError("Share your location first.");
       return;
     }
+    const requestId = ++searchSequence.current;
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -958,19 +992,21 @@ function Discovery({
         category: categoryOverride ?? category,
         insurance,
         county,
-        maxPrice,
-        radius,
+        ...(maxPrice ? { maxPrice } : {}),
+        ...(radius ? { radius } : {}),
+        openNow: String(openNow),
         sort: sortOverride ?? sort,
-        ...(coords ? { lat: String(coords.lat), lng: String(coords.lng) } : {}),
+        ...(origin ? { lat: String(origin.lat), lng: String(origin.lng) } : {}),
       });
       const result = await api<{ providers: Provider[] }>(
-        `${savedOnly ? "saved" : "providers"}${savedOnly ? "" : `?${params}`}`,
+        `${savedOnly ? "saved" : "providers"}?${params}`,
       );
-      setProviders(result.providers);
+      if (requestId === searchSequence.current) setProviders(result.providers);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Search failed.");
+      if (requestId === searchSequence.current)
+        setError(err instanceof Error ? err.message : "Search failed.");
     } finally {
-      setLoading(false);
+      if (requestId === searchSequence.current) setLoading(false);
     }
   }
   function locate() {
@@ -984,14 +1020,14 @@ function Discovery({
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setCoords({
+        const point = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        });
+        };
+        setCoords(point);
+        void search(undefined, undefined, undefined, point);
         setLocating(false);
-        notify(
-          "Location shared for this search only. Apply filters to refresh distances.",
-        );
+        notify("Nearest providers refreshed for your location.");
       },
       () => {
         setLocating(false);
@@ -1033,8 +1069,10 @@ function Discovery({
     }
     setPending(p.id);
     try {
-      await api("conversations", { portfolioId: p.id });
-      onConnect();
+      const result = await api<{ id: string }>("conversations", {
+        portfolioId: p.id,
+      });
+      onConnect(result.id);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not connect.");
     } finally {
@@ -1225,6 +1263,14 @@ function Discovery({
                   ))}
                 </select>
               </label>
+              <label className="operation-toggle">
+                <input
+                  type="checkbox"
+                  checked={openNow}
+                  onChange={(e) => setOpenNow(e.target.checked)}
+                />{" "}
+                Open now with available offerings
+              </label>
               <p>
                 Location is optional. Distance is a straight-line estimate.
                 Confirm your exact insurance plan and final price with the
@@ -1234,6 +1280,7 @@ function Discovery({
                 type="button"
                 className="text-link"
                 onClick={() => {
+                  setOpenNow(false);
                   setInsurance("");
                   setCounty("");
                   setMaxPrice("");
@@ -1280,6 +1327,15 @@ function Discovery({
           </select>
         </label>
       </div>
+      <LocationMap
+        providers={results}
+        point={coords}
+        onProvider={setDetails}
+        onSearchArea={(point) => {
+          setCoords(point);
+          void search(undefined, undefined, undefined, point);
+        }}
+      />
       {loading ? (
         <div className="workspace-loading">
           <LoaderCircle className="spin" /> Finding providers…
@@ -1322,6 +1378,17 @@ function Discovery({
                     ? "Distance unavailable"
                     : `${p.distance.toFixed(1)} km away`}
                 </div>
+                {p.is_open !== undefined && (
+                  <span
+                    className={`availability-label ${p.is_open ? "" : "closed"}`}
+                  >
+                    {p.is_open
+                      ? "Open now"
+                      : p.accepting_customers === false
+                        ? "Temporarily unavailable"
+                        : "Closed now"}
+                  </span>
+                )}
                 <div className="insurance-tags">
                   {p.insurance.length ? (
                     p.insurance
@@ -1402,6 +1469,19 @@ function Discovery({
                 )}
               </p>
             )}
+            {details.latitude != null && details.longitude != null && (
+              <a
+                className="button secondary"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${details.latitude},${details.longitude}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Directions to this location <Navigation size={16} />
+              </a>
+            )}
+            <a className="button secondary" href={`tel:${details.phone}`}>
+              Call provider
+            </a>
             <h4>Insurance plans</h4>
             <div className="insurance-tags">
               {details.insurance.map((p) => (
@@ -1411,7 +1491,18 @@ function Discovery({
             <h4>Services & listed prices</h4>
             {details.services.map((s) => (
               <div className="service-line" key={s.name}>
-                <span>{s.name}</span>
+                <span>
+                  {s.name}
+                  {s.available !== undefined && (
+                    <small className="availability-label">
+                      {s.inStock === false
+                        ? "Out of stock"
+                        : s.available
+                          ? "Available now"
+                          : "Currently unavailable"}
+                    </small>
+                  )}
+                </span>
                 <strong>
                   {s.price === null
                     ? "Request a quote"
@@ -1916,7 +2007,12 @@ function Messages({
   preview: boolean;
   notify: (s: string) => void;
 }) {
-  const [active, setActive] = useState(data.conversations[0]?.id ?? ""),
+  const requested = useSearchParams().get("conversation");
+  const [selectedConversation, setActive] = useState(
+      data.conversations.find((c) => c.id === requested)?.id ??
+        data.conversations[0]?.id ??
+        "",
+    ),
     [messages, setMessages] = useState<Message[]>(() =>
       preview
         ? [
@@ -1933,21 +2029,33 @@ function Messages({
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(false);
+  const active = data.conversations.some((c) => c.id === selectedConversation)
+    ? selectedConversation
+    : (data.conversations[0]?.id ?? "");
   useEffect(() => {
     let live = true;
     if (!active || preview) return;
-    api<{ messages: Message[] }>(`conversations/${active}`)
-      .then((r) => {
-        if (live) setMessages(r.messages);
-      })
-      .catch((e) => {
-        if (live) setError(e.message);
-      })
-      .finally(() => {
-        if (live) setLoading(false);
-      });
+    const load = () => {
+      if (document.visibilityState === "hidden") return;
+      api<{ messages: Message[] }>(`conversations/${active}`)
+        .then((r) => {
+          if (live) {
+            setMessages(r.messages);
+            setError("");
+          }
+        })
+        .catch((e) => {
+          if (live) setError(e.message);
+        })
+        .finally(() => {
+          if (live) setLoading(false);
+        });
+    };
+    load();
+    const timer = setInterval(load, 5000);
     return () => {
       live = false;
+      clearInterval(timer);
     };
   }, [active, preview]);
   async function send(e: FormEvent) {
@@ -1956,16 +2064,22 @@ function Messages({
     setBusy(true);
     setError("");
     try {
-      if (!preview) await api(`conversations/${active}`, { message: text });
-      setMessages((m) => [
-        ...m,
-        {
-          id: `${Date.now()}`,
-          sender_id: user.id,
-          body: text.trim(),
-          created_at: new Date().toISOString(),
-        },
-      ]);
+      if (!preview) {
+        await api(`conversations/${active}`, { message: text });
+        const result = await api<{ messages: Message[] }>(
+          `conversations/${active}`,
+        );
+        setMessages(result.messages);
+      } else
+        setMessages((m) => [
+          ...m,
+          {
+            id: `${Date.now()}`,
+            sender_id: user.id,
+            body: text.trim(),
+            created_at: new Date().toISOString(),
+          },
+        ]);
       setText("");
       if (preview) notify("Preview message only. Nothing was sent.");
     } catch (e) {
@@ -2014,7 +2128,7 @@ function Messages({
                 <div>
                   <strong>
                     {user.role === "BUSINESS"
-                      ? c.customer_name
+                      ? `${c.customer_name} · ${c.provider_name}`
                       : c.provider_name}
                   </strong>
                   <p>{c.last_message ?? "Start a conversation"}</p>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowUpRight,
   Check,
@@ -68,7 +68,7 @@ const details: Record<
   "verify-security": {
     title: "Two-step verification",
     description:
-      "Protect your business or admin account with an authenticator app.",
+      "Verify with an authenticator app. Admins can also use a code sent to their verified email.",
     label: "TWO-STEP VERIFICATION",
   },
 };
@@ -144,7 +144,21 @@ export function AuthScreen({
     [uri, setUri] = useState(""),
     [qrCode, setQrCode] = useState(""),
     [recovery, setRecovery] = useState<string[]>([]),
-    [copied, setCopied] = useState(false);
+    [copied, setCopied] = useState(false),
+    [mfaMethod, setMfaMethod] = useState<"authenticator" | "email">(
+      "authenticator",
+    ),
+    [emailCodeSent, setEmailCodeSent] = useState(false),
+    [resendSeconds, setResendSeconds] = useState(0);
+  const adminMfa = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
+  useEffect(() => {
+    if (resendSeconds <= 0) return;
+    const timer = setTimeout(
+      () => setResendSeconds((s) => Math.max(0, s - 1)),
+      1000,
+    );
+    return () => clearTimeout(timer);
+  }, [resendSeconds]);
   const isSignup = mode === "sign-up",
     isLogin = mode === "sign-in",
     isCreate =
@@ -175,7 +189,7 @@ export function AuthScreen({
     try {
       if (mode === "verify-security") {
         const result = await api<{ redirect: string; recoveryCodes: string[] }>(
-          "auth/mfa/verify",
+          mfaMethod === "email" ? "auth/mfa/email/verify" : "auth/mfa/verify",
           { code: values.code },
         );
         if (result.recoveryCodes.length) {
@@ -391,8 +405,9 @@ export function AuthScreen({
                     {business && isSignup ? (
                       <p className="business-hint">
                         One account for your clinic, chemist, ambulance service,
-                        or agrovet. Admin approval and two-step verification are
-                        required before you can add portfolios.
+                        or agrovet. Verify your email and secure your account,
+                        then register each business location for pinnaa
+                        approval.
                       </p>
                     ) : null}
                     {isLogin || isSignup ? (
@@ -525,14 +540,85 @@ export function AuthScreen({
                       ) : null}
                       {mode === "verify-security" ? (
                         <>
-                          {needsSetup ? (
+                          {adminMfa && (
+                            <div
+                              className="client-primary-tabs"
+                              aria-label="Verification method"
+                            >
+                              <button
+                                type="button"
+                                className={
+                                  mfaMethod === "authenticator" ? "active" : ""
+                                }
+                                onClick={() => {
+                                  setMfaMethod("authenticator");
+                                  setFailure("");
+                                }}
+                              >
+                                Authenticator
+                              </button>
+                              <button
+                                type="button"
+                                className={
+                                  mfaMethod === "email" ? "active" : ""
+                                }
+                                onClick={() => {
+                                  setMfaMethod("email");
+                                  setFailure("");
+                                }}
+                              >
+                                Email OTP
+                              </button>
+                            </div>
+                          )}
+                          {mfaMethod === "email" && (
+                            <div className="verification-box">
+                              <p>
+                                Send a six-digit sign-in code to your verified
+                                admin email. The code expires in five minutes.
+                              </p>
+                              <button
+                                type="button"
+                                className="button secondary full-width"
+                                disabled={busy || resendSeconds > 0}
+                                onClick={async () => {
+                                  setBusy(true);
+                                  setFailure("");
+                                  try {
+                                    const result = await api<{
+                                      message: string;
+                                      resendAfter: number;
+                                    }>("auth/mfa/email/send", {});
+                                    setMessage(result.message);
+                                    setEmailCodeSent(true);
+                                    setResendSeconds(result.resendAfter);
+                                  } catch (e) {
+                                    setFailure(
+                                      e instanceof Error
+                                        ? e.message
+                                        : "Could not send code.",
+                                    );
+                                  } finally {
+                                    setBusy(false);
+                                  }
+                                }}
+                              >
+                                {resendSeconds > 0
+                                  ? `Resend in ${resendSeconds}s`
+                                  : emailCodeSent
+                                    ? "Resend email code"
+                                    : "Send email code"}
+                              </button>
+                            </div>
+                          )}
+                          {mfaMethod === "authenticator" && needsSetup ? (
                             <>
                               <div className="verification-box">
                                 <ShieldCheck size={28} />
                                 <p>
                                   Business and admin accounts use two-step
-                                  verification. Add pinnaa to your authenticator,
-                                  then enter its six-digit code.
+                                  verification. Add pinnaa to your
+                                  authenticator, then enter its six-digit code.
                                 </p>
                               </div>
                               {!secret ? (
@@ -567,10 +653,14 @@ export function AuthScreen({
                               )}
                             </>
                           ) : null}
-                          {!needsSetup || secret ? (
+                          {(mfaMethod === "email" && emailCodeSent) ||
+                          (mfaMethod === "authenticator" &&
+                            (!needsSetup || secret)) ? (
                             <div className="field-group">
                               <label htmlFor="code">
-                                Authenticator or recovery code
+                                {mfaMethod === "email"
+                                  ? "Email sign-in code"
+                                  : "Authenticator or recovery code"}
                               </label>
                               <div className="input-wrap">
                                 <ShieldCheck size={17} />
@@ -621,7 +711,10 @@ export function AuthScreen({
                         type="submit"
                         busy={busy}
                         disabled={
-                          mode === "verify-security" && needsSetup && !secret
+                          mode === "verify-security" &&
+                          (mfaMethod === "email"
+                            ? !emailCodeSent
+                            : needsSetup && !secret)
                         }
                       >
                         {isLogin

@@ -32,6 +32,7 @@ export type OpeningHours = {
   overnight: boolean;
 };
 export type ClientService = {
+  kind?: "service" | "product";
   name: string;
   price: number | null;
   priceType: "fixed" | "from" | "quote";

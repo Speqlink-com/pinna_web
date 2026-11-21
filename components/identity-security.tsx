@@ -209,8 +209,9 @@ export function IdentitySecurity({ user }: { user: User }) {
       <section className="panel identity-security-panel">
         <h2>Active sessions</h2>
         <p>
-          Business and admin sessions expire after 30 minutes of inactivity,
-          with a 12-hour maximum.
+          Customers and providers stay signed in for up to 30 days; admins for
+          up to 7 days. Sensitive actions may require a fresh sign-in. You can
+          revoke any session below.
         </p>
         {sessions.map((session) => (
           <div className="identity-session" key={session.id}>
