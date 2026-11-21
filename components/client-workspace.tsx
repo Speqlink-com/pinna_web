@@ -139,7 +139,14 @@ function Field({
 export function ClientWorkspace({ user }: ClientWorkspaceProps) {
   const business = user.role === "BUSINESS";
   const router = useRouter();
-  const create = useSearchParams().get("create") === "1";
+  const params = useSearchParams();
+  const create = params.get("create") === "1";
+  const rawPortfolio = params.get("portfolio") ?? "";
+  const requestedPortfolio = /^[a-f0-9-]{36}$/i.test(rawPortfolio)
+    ? rawPortfolio
+    : "";
+  const requestedTab = params.get("tab") ?? "details";
+  const initialQuery = (params.get("q") ?? "").slice(0, 100);
   const [options, setOptions] = useState<ClientOptions | null>(null),
     [profile, setProfile] = useState<BusinessProfile | null>(null),
     [list, setList] = useState<ClientPortfolio[]>([]),
@@ -148,9 +155,11 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
     [next, setNext] = useState<number | null>(null),
     [status, setStatus] = useState(business ? "" : "SUBMITTED"),
     [archived, setArchived] = useState(false),
-    [search, setSearch] = useState(""),
-    [query, setQuery] = useState(""),
-    [pane, setPane] = useState("portfolios"),
+    [search, setSearch] = useState(initialQuery),
+    [query, setQuery] = useState(initialQuery),
+    [pane, setPane] = useState(
+      params.get("view") === "profile" ? "profile" : "portfolios",
+    ),
     [tab, setTab] = useState("details"),
     [detail, setDetail] = useState<ClientDetail | null>(null),
     [form, setForm] = useState<PortfolioForm | null>(null),
@@ -177,6 +186,8 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
       return;
     setForm(null);
     setDetail(null);
+    if (business && requestedPortfolio)
+      router.replace("/dashboard/portfolios", { scroll: false });
     setPending("");
     setError("");
   }
@@ -189,11 +200,27 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
       business
         ? api<{ profile: BusinessProfile | null }>("client/profile")
         : Promise.resolve({ profile: null }),
+      requestedPortfolio
+        ? api<ClientDetail>(`portfolios/${requestedPortfolio}`)
+        : Promise.resolve(null),
     ])
-      .then(([o, p]) => {
+      .then(([o, p, selected]) => {
         if (active) {
           setOptions(o);
           setProfile(p.profile);
+          if (selected && !create) {
+            setDetail(selected);
+            setForm(normalize(selected.portfolio));
+            const tabs = [
+              "details",
+              "services",
+              "location",
+              "documents",
+              "history",
+              ...(business ? ["operations"] : []),
+            ];
+            setTab(tabs.includes(requestedTab) ? requestedTab : "details");
+          }
           if (business && create) {
             setDetail(null);
             setForm(empty(p.profile));
@@ -208,7 +235,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
     return () => {
       active = false;
     };
-  }, [business, create, router]);
+  }, [business, create, router, requestedPortfolio, requestedTab]);
   useEffect(() => {
     let active = true;
     const url = `portfolios?offset=${offset}&archived=${archived}${status ? `&status=${status}` : ""}${query ? `&q=${encodeURIComponent(query)}` : ""}`;
@@ -347,7 +374,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
       <div className="client-page-heading">
         <div>
           <span className="eyebrow">
-            {business ? "BISMART BUSINESS" : "PROVIDER VERIFICATION"}
+            {business ? "YOUR BUSINESS NETWORK" : "PROVIDER VERIFICATION"}
           </span>
           <h1>
             {form
@@ -355,7 +382,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                 ? detail.portfolio.name
                 : "Register a business location"
               : business
-                ? "Your business, connected."
+                ? "Your businesses."
                 : "Review the provider network."}
           </h1>
           <p>
@@ -432,7 +459,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                 className={pane === "portfolios" ? "active" : ""}
                 onClick={() => setPane("portfolios")}
               >
-                <Building2 size={17} /> My portfolios
+                <Building2 size={17} /> Business locations
               </button>
               <button
                 className={pane === "profile" ? "active" : ""}
@@ -591,7 +618,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                             })
                           }
                         >
-                          {business ? "Manage portfolio" : "Review portfolio"}
+                          {business ? "Manage business" : "Review portfolio"}
                           <ArrowUpRight size={17} />
                         </button>
                       </article>

@@ -1,96 +1,85 @@
+import Image from "next/image";
 import {
-  MapPin,
-  ShieldCheck,
-  ArrowUpRight,
-  Navigation,
-  Plus,
-  HeartPulse,
-  Pill,
   Building2,
+  HeartPulse,
+  Leaf,
+  MapPinned,
+  PawPrint,
+  ShieldCheck,
 } from "lucide-react";
+
 export function AuthVisual({ business = false }: { business?: boolean }) {
   return (
-    <aside className="auth-visual">
-      <div className="visual-copy">
-        <div className="eyebrow">
-          <span className="tiny-dot" /> HEALTHCARE AND ESSENTIAL SERVICES
-        </div>
+    <aside className="auth-visual welcome-visual">
+      <div className="welcome-story">
+        <span className="welcome-eyebrow">
+          <span /> ONE HEALTH. CONNECTED.
+        </span>
         <h1>
           {business ? (
             <>
-              Your services.
-              <br />
-              More connections.
+              <span>Your business.</span> <span>A world of</span>{" "}
+              <em>connections.</em>
             </>
           ) : (
             <>
-              The right care.
-              <br />
-              Closer to you.
+              <span>Good care.</span> <span>Closer</span> <em>connections.</em>
             </>
           )}
         </h1>
         <p>
           {business
-            ? "One account. Every portfolio. Connect your services with the people looking for them."
-            : "Find providers that fit your insurance, your budget, and your neighborhood."}
+            ? "Bring every location, service and customer conversation together. Build your presence in the pinnaa provider network."
+            : "Healthcare, animal health and everyday essentials. Find the right providers, make informed choices, and connect with confidence."}
         </p>
+        <div className="welcome-pillars" aria-label="The One Health community">
+          <span>
+            <HeartPulse size={17} /> People
+          </span>
+          <span>
+            <PawPrint size={17} /> Animals
+          </span>
+          <span>
+            <Leaf size={17} /> Environment
+          </span>
+        </div>
       </div>
-      <div
-        className="care-map"
-        aria-label="Illustration of connected healthcare services"
-      >
-        <div className="map-road road-one" />
-        <div className="map-road road-two" />
-        <div className="map-road road-three" />
-        <div className="map-block block-one" />
-        <div className="map-block block-two" />
-        <div className="map-block block-three" />
-        <div className="map-block block-four" />
-        <div className="map-label label-one">YOUR NEIGHBORHOOD</div>
-        <div className="map-label label-two">CARE, CONNECTED</div>
-        <div className="map-ring ring-one" />
-        <div className="map-ring ring-two" />
-        <div className="map-ring ring-three" />
-        <div className="map-person">
-          <Navigation size={22} fill="currentColor" />
-        </div>
-        <div className="map-pin pin-one">
-          <HeartPulse size={21} />
-        </div>
-        <div className="map-pin pin-two">
-          <Pill size={20} />
-        </div>
-        <div className="map-pin pin-three">
-          <Building2 size={21} />
-        </div>
-        <div className="floating-match">
-          <div className="match-icon">
-            <Plus size={24} />
-          </div>
+      <div className="welcome-scene">
+        <Image
+          src="/images/welcome/one-health-campus.jpg"
+          alt="Illustration of a modern healthcare campus surrounded by greenery"
+          fill
+          sizes="(max-width: 900px) 100vw, 55vw"
+          priority
+          className="welcome-campus"
+        />
+        <div className="welcome-scene-shade" />
+        <div className="welcome-location-card">
+          <span className="welcome-location-icon">
+            <MapPinned size={23} />
+          </span>
           <div>
-            <strong>A better match, nearby</strong>
+            <strong>
+              {business
+                ? "Every location. One workspace."
+                : "The right provider, closer to you."}
+            </strong>
             <span>
-              <ShieldCheck size={12} /> Your insurance. Your choice.
+              {business
+                ? "Your services, availability and connections."
+                : "Discover by location, service and insurance."}
             </span>
           </div>
-          <ArrowUpRight size={17} />
+          <ShieldCheck size={21} />
         </div>
-        <div className="distance-tag">
-          <MapPin size={13} /> Find your kind of care
+        <div className="welcome-scene-caption">
+          <Building2 size={16} />
+          <span>A connected community of essential services</span>
         </div>
       </div>
-      <div className="visual-bottom">
-        <div className="mini-icons">
-          <HeartPulse size={16} />
-          <Pill size={16} />
-          <Building2 size={16} />
-        </div>
-        <p>
-          Healthcare, pharmacies, agrovets
-          <br />
-          and more. All in one place.
-        </p>
+      <div className="welcome-visual-footer">
+        <span>Built for a healthier, more connected future.</span>
+        <span>pinnaa · Kenya</span>
       </div>
     </aside>
   );

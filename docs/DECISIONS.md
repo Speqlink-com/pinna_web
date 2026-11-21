@@ -1,3 +1,13 @@
+# Welcome and provider design · 21 November 2026
+
+The welcome/sign-in and provider workspace use BT's One Health positioning and teal/navy/coral palette with the Inter typography and Lucide icon system shared by the Bizlead reference. BT was pulled with `--ff-only`; existing local BT changes remain intact. The healthcare campus illustration is copied from BT and presented as an illustration, not a photograph of a listed provider. Existing user button artwork remains replaceable at the same public asset paths.
+
+The provider workspace has a full-width content area, collapsible desktop navigation and a mobile drawer. Its overview derives metrics, next steps and conversations from the authenticated dashboard response. Business, verification and operating-control links open the exact location in the existing editor; header search opens the filtered business list. The empty state offers registration without fabricated activity, revenue, ratings or trends. The provider theme is scoped with `.provider-workspace`; customer/admin dashboards retain their previous designs. `app/premium.css` contains the palette and scoped presentation rules.
+
+No backend authorization, publication, stock or authentication policy changes are included. The email OTP form regression remains covered by the interactive Admin and Super Admin tests.
+
+---
+
 # Identity authority update · 2026-11-13
 
 `pinna_infra` is now the sole routed identity/workspace authority. The Vercel app proxies versioned requests and carries opaque backend sessions in HttpOnly cookies. Public account type choices remain USER/BUSINESS; administrative roles are assigned by private seeding or owner invitation. Every business/admin/owner requires TOTP, and business workspace access also requires administrative account approval. Customers do not require MFA.

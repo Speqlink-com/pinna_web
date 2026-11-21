@@ -37,8 +37,12 @@ import {
   AlertCircle,
   Mail,
   LockKeyhole,
+  PanelLeftClose,
+  PanelLeftOpen,
+  CircleHelp,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { ProviderOverview } from "./provider-overview";
 import { ClientWorkspace } from "./client-workspace";
 import { IdentityAdmin } from "./identity-admin";
 import { IdentitySecurity } from "./identity-security";
@@ -120,6 +124,7 @@ export function Dashboard({
     [error, setError] = useState(""),
     [toast, setToast] = useState(""),
     [menu, setMenu] = useState(false),
+    [collapsed, setCollapsed] = useState(false),
     [creating, setCreating] = useState(false),
     [selected, setSelected] = useState<Portfolio | null>(null),
     [busy, setBusy] = useState(false);
@@ -191,7 +196,7 @@ export function Dashboard({
     : isBusiness
       ? [
           { key: "overview", label: "Overview", icon: LayoutGrid },
-          { key: "portfolios", label: "My portfolios", icon: Building2 },
+          { key: "portfolios", label: "My businesses", icon: Building2 },
           { key: "messages", label: "Messages", icon: MessagesSquare },
         ]
       : [
@@ -205,7 +210,7 @@ export function Dashboard({
       : isBusiness
         ? "Business overview"
         : "Discover care",
-    portfolios: "My portfolios",
+    portfolios: isBusiness ? "My businesses" : "My portfolios",
     applications: "Portfolio applications",
     clients: "Business accounts",
     team: "Admin team",
@@ -225,7 +230,9 @@ export function Dashboard({
     }
   }
   return (
-    <div className="workspace">
+    <div
+      className={`workspace ${isBusiness ? "provider-workspace" : ""} ${isBusiness && collapsed ? "provider-collapsed" : ""}`}
+    >
       <a className="skip-link" href="#workspace-main">
         Skip to content
       </a>
@@ -255,7 +262,7 @@ export function Dashboard({
               {isAdmin
                 ? "pinnaa Administration"
                 : isBusiness
-                  ? "Bismart Business"
+                  ? "Provider workspace"
                   : "Personal workspace"}
             </strong>
             <span>
@@ -264,11 +271,11 @@ export function Dashboard({
                   ? "Super Admin"
                   : "Administrator"
                 : isBusiness
-                  ? "All your portfolios"
+                  ? "All your businesses"
                   : "Care on your terms"}
             </span>
           </div>
-          <ChevronDown size={14} />
+          {!isBusiness && <ChevronDown size={14} />}
         </div>
         <div className="nav-caption">WORKSPACE</div>
         <nav aria-label="Main navigation">
@@ -276,6 +283,8 @@ export function Dashboard({
             <Link
               key={item.key}
               href={href(item.key)}
+              aria-label={item.label}
+              title={item.label}
               className={`nav-item ${section === item.key ? "active" : ""}`}
               onClick={() => setMenu(false)}
               aria-current={section === item.key ? "page" : undefined}
@@ -317,11 +326,11 @@ export function Dashboard({
             {isBusiness ? (
               preview ? (
                 <button onClick={() => setCreating(true)}>
-                  Add a portfolio <ArrowUpRight size={14} />
+                  Register a business <Plus size={14} />
                 </button>
               ) : (
                 <Link href="/dashboard/portfolios?create=1">
-                  Add a portfolio <ArrowUpRight size={14} />
+                  Register a business <Plus size={14} />
                 </Link>
               )
             ) : (
@@ -332,12 +341,33 @@ export function Dashboard({
           </div>
           <Link
             href={href("settings")}
+            aria-label="Account settings"
+            title="Account settings"
             className={`nav-item ${section === "settings" ? "active" : ""}`}
           >
-            <Settings size={18} /> Account settings
+            <Settings size={18} />
+            <span>Account settings</span>
           </Link>
-          <button className="nav-item" disabled={busy} onClick={logout}>
-            <LogOut size={18} /> Sign out
+          {isBusiness && (
+            <Link
+              href="/help"
+              className="nav-item"
+              aria-label="Help & support"
+              title="Help & support"
+            >
+              <CircleHelp size={18} />
+              <span>Help & support</span>
+            </Link>
+          )}
+          <button
+            className="nav-item"
+            aria-label="Sign out"
+            title="Sign out"
+            disabled={busy}
+            onClick={logout}
+          >
+            <LogOut size={18} />
+            <span>Sign out</span>
           </button>
           <div className="sidebar-profile">
             <div className="avatar">
@@ -372,15 +402,66 @@ export function Dashboard({
             >
               <Menu size={21} />
             </button>
-            <span>pinnaa</span>
+            {isBusiness && (
+              <button
+                className="icon-button provider-collapse-toggle"
+                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                aria-expanded={!collapsed}
+                onClick={() => setCollapsed((value) => !value)}
+              >
+                {collapsed ? (
+                  <PanelLeftOpen size={20} />
+                ) : (
+                  <PanelLeftClose size={20} />
+                )}
+              </button>
+            )}
+            <span>{isBusiness ? "Workspace" : "pinnaa"}</span>
             <span className="breadcrumb-slash">/</span>
             <strong>{titles[section] ?? "Overview"}</strong>
           </div>
+          {isBusiness && (
+            <form
+              className="provider-header-search"
+              action={preview ? "/preview/business" : "/dashboard/portfolios"}
+              method="get"
+            >
+              <Search size={17} />
+              <input
+                type="search"
+                name="q"
+                maxLength={100}
+                aria-label="Search your businesses"
+                placeholder="Search your businesses…"
+              />
+              {preview && (
+                <input type="hidden" name="section" value="portfolios" />
+              )}
+            </form>
+          )}
           <div className="workspace-header-actions">
             <span className="secure-label">
               <LockKeyhole size={13} /> Secure workspace
             </span>
-            <div className="avatar avatar-small">{user.name[0]}</div>
+            {isBusiness && (
+              <Link
+                className="icon-button provider-messages-shortcut"
+                href={href("messages")}
+                aria-label="Open customer messages"
+              >
+                <MessagesSquare size={20} />
+                {data.conversations.length > 0 && (
+                  <span>{data.conversations.length}</span>
+                )}
+              </Link>
+            )}
+            <Link
+              href={href("settings")}
+              className="avatar avatar-small"
+              aria-label="Open your account settings"
+            >
+              {user.name[0]}
+            </Link>
           </div>
         </header>
         {preview ? (
@@ -426,9 +507,11 @@ export function Dashboard({
             </div>
           ) : (
             <>
-              {!preview &&
-              (isBusiness || isAdmin) &&
-              ["overview", "portfolios", "applications"].includes(section) ? (
+              {isBusiness && section === "overview" ? (
+                <ProviderOverview user={user} data={data} preview={preview} />
+              ) : !preview &&
+                (isBusiness || isAdmin) &&
+                ["overview", "portfolios", "applications"].includes(section) ? (
                 <ClientWorkspace user={user} />
               ) : section === "clients" && isAdmin ? (
                 preview ? (

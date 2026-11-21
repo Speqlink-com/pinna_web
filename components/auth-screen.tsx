@@ -34,10 +34,10 @@ const details: Record<
   { title: string; description: string; label: string }
 > = {
   "sign-in": {
-    title: "Sign in to pinnaa",
+    title: "Welcome back.",
     description:
-      "Find providers, compare services, and manage your connections.",
-    label: "SIGN IN TO pinnaa",
+      "Sign in to find care, connect with providers, or manage your business.",
+    label: "YOUR CONNECTED CARE ACCOUNT",
   },
   "sign-up": {
     title: "Create your account",
@@ -90,7 +90,7 @@ function Password({
     <div className="field-group">
       <label htmlFor={name}>{label}</label>
       <div className="input-wrap">
-        <Image src="/lock.webp" width={17} height={17} alt="" />
+        <LockKeyhole size={18} />
         <input
           id={name}
           name={name}
@@ -279,14 +279,12 @@ export function AuthScreen({
     { label: "A number", pass: /[0-9]/.test(password) },
   ];
   return (
-    <div className="auth-page">
+    <div className="auth-page welcome-shell">
       <header className="auth-header">
         <Brand />
         <div className="auth-header-right">
-          <span>By Bismart Inc.</span>
-          <Link href="/help">
-            Need a hand? <ArrowUpRight size={13} />
-          </Link>
+          <span>One platform. More possibilities.</span>
+          <Link href="/help">Help & support</Link>
         </div>
       </header>
       <main className="auth-main">
@@ -447,12 +445,7 @@ export function AuthScreen({
                         <div className="field-group">
                           <label htmlFor="name">Full name</label>
                           <div className="input-wrap">
-                            <Image
-                              src="/profile-icon.webp"
-                              width={17}
-                              height={17}
-                              alt=""
-                            />
+                            <UserRound size={18} />
                             <input
                               id="name"
                               name="name"
