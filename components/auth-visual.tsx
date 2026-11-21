@@ -3,10 +3,10 @@ import {
   Building2,
   HeartPulse,
   Leaf,
-  MapPinned,
   PawPrint,
   ShieldCheck,
 } from "lucide-react";
+import { PremiumIcon } from "./premium-icon";
 
 export function AuthVisual({ business = false }: { business?: boolean }) {
   return (
@@ -56,7 +56,7 @@ export function AuthVisual({ business = false }: { business?: boolean }) {
         <div className="welcome-scene-shade" />
         <div className="welcome-location-card">
           <span className="welcome-location-icon">
-            <MapPinned size={23} />
+            <PremiumIcon name="location" size={30} />
           </span>
           <div>
             <strong>

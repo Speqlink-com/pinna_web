@@ -1,8 +1,8 @@
 @import "mapbox-gl/dist/mapbox-gl.css";
 :root {
   --ink: #1c1c1c;
-  --muted: #7e7e7e;
-  --line: #e6e6e6;
+  --muted: #586775;
+  --line: #cfd8df;
   --surface: #f7f7f7;
   --soft: #efefef;
   --white: #ffffff;

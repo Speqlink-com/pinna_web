@@ -37,12 +37,12 @@ import {
   AlertCircle,
   Mail,
   LockKeyhole,
-  PanelLeftClose,
-  PanelLeftOpen,
   CircleHelp,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ProviderOverview } from "./provider-overview";
+import { PremiumIcon } from "./premium-icon";
+import { BusinessNotifications } from "./business-notifications";
 import { ClientWorkspace } from "./client-workspace";
 import { IdentityAdmin } from "./identity-admin";
 import { IdentitySecurity } from "./identity-security";
@@ -252,7 +252,7 @@ export function Dashboard({
             {isAdmin ? (
               <ShieldCheck size={19} />
             ) : isBusiness ? (
-              <Building2 size={19} />
+              <PremiumIcon name="business" size={28} />
             ) : (
               <HeartPulse size={19} />
             )}
@@ -289,7 +289,13 @@ export function Dashboard({
               onClick={() => setMenu(false)}
               aria-current={section === item.key ? "page" : undefined}
             >
-              <item.icon size={18} />
+              {isBusiness && item.key === "messages" ? (
+                <PremiumIcon name="message" size={24} />
+              ) : isBusiness && item.key === "portfolios" ? (
+                <PremiumIcon name="business" size={26} />
+              ) : (
+                <item.icon size={18} />
+              )}
               <span>{item.label}</span>
               {item.key === "messages" && data.conversations.length > 0 ? (
                 <span className="nav-count">{data.conversations.length}</span>
@@ -326,11 +332,11 @@ export function Dashboard({
             {isBusiness ? (
               preview ? (
                 <button onClick={() => setCreating(true)}>
-                  Register a business <Plus size={14} />
+                  Register a business <PremiumIcon name="add" size={19} />
                 </button>
               ) : (
                 <Link href="/dashboard/portfolios?create=1">
-                  Register a business <Plus size={14} />
+                  Register a business <PremiumIcon name="add" size={19} />
                 </Link>
               )
             ) : (
@@ -345,7 +351,11 @@ export function Dashboard({
             title="Account settings"
             className={`nav-item ${section === "settings" ? "active" : ""}`}
           >
-            <Settings size={18} />
+            {isBusiness ? (
+              <PremiumIcon name="settings" />
+            ) : (
+              <Settings size={18} />
+            )}
             <span>Account settings</span>
           </Link>
           {isBusiness && (
@@ -366,7 +376,11 @@ export function Dashboard({
             disabled={busy}
             onClick={logout}
           >
-            <LogOut size={18} />
+            {isBusiness ? (
+              <PremiumIcon name="logout" size={22} />
+            ) : (
+              <LogOut size={18} />
+            )}
             <span>Sign out</span>
           </button>
           <div className="sidebar-profile">
@@ -400,7 +414,11 @@ export function Dashboard({
               aria-label="Open navigation"
               onClick={() => setMenu(true)}
             >
-              <Menu size={21} />
+              {isBusiness ? (
+                <PremiumIcon name="sidebar" size={23} />
+              ) : (
+                <Menu size={21} />
+              )}
             </button>
             {isBusiness && (
               <button
@@ -409,11 +427,7 @@ export function Dashboard({
                 aria-expanded={!collapsed}
                 onClick={() => setCollapsed((value) => !value)}
               >
-                {collapsed ? (
-                  <PanelLeftOpen size={20} />
-                ) : (
-                  <PanelLeftClose size={20} />
-                )}
+                <PremiumIcon name="sidebar" size={23} />
               </button>
             )}
             <span>{isBusiness ? "Workspace" : "pinnaa"}</span>
@@ -426,7 +440,7 @@ export function Dashboard({
               action={preview ? "/preview/business" : "/dashboard/portfolios"}
               method="get"
             >
-              <Search size={17} />
+              <PremiumIcon name="search" size={19} />
               <input
                 type="search"
                 name="q"
@@ -444,12 +458,18 @@ export function Dashboard({
               <LockKeyhole size={13} /> Secure workspace
             </span>
             {isBusiness && (
+              <BusinessNotifications
+                portfolios={data.portfolios}
+                preview={preview}
+              />
+            )}
+            {isBusiness && (
               <Link
                 className="icon-button provider-messages-shortcut"
                 href={href("messages")}
                 aria-label="Open customer messages"
               >
-                <MessagesSquare size={20} />
+                <PremiumIcon name="message" size={25} />
                 {data.conversations.length > 0 && (
                   <span>{data.conversations.length}</span>
                 )}

@@ -8,7 +8,6 @@ import {
   Plus,
   ArrowLeft,
   ArrowUpRight,
-  MapPin,
   FileCheck2,
   ShieldCheck,
   Clock,
@@ -18,7 +17,6 @@ import {
   AlertCircle,
   LoaderCircle,
   Trash2,
-  Search,
   Save,
   Send,
   Archive,
@@ -27,6 +25,7 @@ import {
   BriefcaseBusiness,
 } from "lucide-react";
 import { api } from "@/lib/api";
+import { PremiumIcon } from "./premium-icon";
 import type {
   BusinessProfile,
   ClientDetail,
@@ -405,7 +404,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
               setError("");
             }}
           >
-            <Plus size={18} /> Register business location
+            <PremiumIcon name="add" size={23} /> Register business location
           </button>
         )}
         {form && (
@@ -545,7 +544,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                       setLoading(true);
                     }}
                   >
-                    <Search size={17} />
+                    <PremiumIcon name="search" size={19} />
                     <input
                       aria-label="Search portfolios"
                       placeholder="Search name or county"
@@ -575,7 +574,7 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                         <span className="client-category">{p.category}</span>
                         <h2>{p.name}</h2>
                         <p className="client-card-location">
-                          <MapPin size={15} />
+                          <PremiumIcon name="location" size={19} />
                           {p.county || "Location needed"}
                           {p.address && ` · ${p.address}`}
                         </p>
@@ -1202,7 +1201,8 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
                             );
                           }}
                         >
-                          <MapPin size={16} /> Use my current location
+                          <PremiumIcon name="location" size={21} /> Use my
+                          current location
                         </button>
                       )}
                       <h3 className="client-subheading">Opening hours</h3>

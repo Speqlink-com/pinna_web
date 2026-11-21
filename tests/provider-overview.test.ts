@@ -1,11 +1,34 @@
-import { test } from "node:test";
+import { after, before, mock, test } from "node:test";
 import assert from "node:assert/strict";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Window } from "happy-dom";
-import { ProviderOverview } from "../components/provider-overview";
 import { previewUsers, previewProviders } from "../lib/preview";
 import type { DashboardData } from "../lib/types";
+
+let ProviderOverview: typeof import("../components/provider-overview").ProviderOverview;
+let BusinessNotifications: typeof import("../components/business-notifications").BusinessNotifications;
+before(async () => {
+  mock.module("next/image.js", {
+    defaultExport: ({
+      src,
+      alt,
+      width,
+      height,
+      className,
+    }: {
+      src: string;
+      alt: string;
+      width?: number;
+      height?: number;
+      className?: string;
+    }) => createElement("img", { src, alt, width, height, className }),
+  });
+  ({ ProviderOverview } = await import("../components/provider-overview"));
+  ({ BusinessNotifications } =
+    await import("../components/business-notifications"));
+});
+after(() => mock.restoreAll());
 
 const empty: DashboardData = {
   portfolios: [],
@@ -94,6 +117,39 @@ test("provider overview derives counts and routes actions to the exact business 
       operationLink?.getAttribute("href"),
       `/dashboard/portfolios?portfolio=${id}&tab=operations`,
     );
+  } finally {
+    await browser.happyDOM.close();
+  }
+});
+
+test("business notifications show current approval states and route to the matching location", async () => {
+  const browser = new Window();
+  try {
+    browser.document.body.innerHTML = renderToStaticMarkup(
+      createElement(BusinessNotifications, {
+        portfolios: [
+          {
+            ...previewProviders[0],
+            id: "synthetic-location",
+            status: "CHANGES_REQUESTED",
+          },
+        ],
+      }),
+    );
+    const doc = browser.document;
+    assert.equal(
+      doc.querySelector("summary")?.getAttribute("aria-label"),
+      "Open business notifications",
+    );
+    assert.match(
+      doc.querySelector("li")?.textContent ?? "",
+      /Changes requested/,
+    );
+    assert.equal(
+      doc.querySelector("li a")?.getAttribute("href"),
+      "/dashboard/portfolios?portfolio=synthetic-location",
+    );
+    assert.doesNotMatch(doc.body.textContent ?? "", /unread/i);
   } finally {
     await browser.happyDOM.close();
   }

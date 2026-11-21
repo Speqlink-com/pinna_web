@@ -1,3 +1,11 @@
+# Premium artwork and contrast · 21 November 2026
+
+The supplied public icon assets now appear in provider navigation, search, messages, settings, registration, business cards and location controls. The notification bell opens a keyboard-accessible panel with current business registration/approval statuses and links to the matching location. It does not imply unread events or introduce a notification delivery service. Selected map locations use the supplied location pin while retaining dragging and coordinate selection.
+
+Secondary text, semantic status labels, borders and dashboard surfaces use stronger colors. The shared muted-text and border tokens are also darker. Original artwork colors/transparency and the user's updated authentication button images are preserved; accessible names remain on controls, with artwork treated as decorative.
+
+---
+
 # Welcome and provider design · 21 November 2026
 
 The welcome/sign-in and provider workspace use BT's One Health positioning and teal/navy/coral palette with the Inter typography and Lucide icon system shared by the Bizlead reference. BT was pulled with `--ff-only`; existing local BT changes remain intact. The healthcare campus illustration is copied from BT and presented as an illustration, not a photograph of a listed provider. Existing user button artwork remains replaceable at the same public asset paths.

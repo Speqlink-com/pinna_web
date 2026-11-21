@@ -5,16 +5,12 @@ import {
   Check,
   CheckCheck,
   CircleHelp,
-  Clock3,
   FileCheck2,
   HeartPulse,
   Leaf,
-  MapPin,
   MessagesSquare,
   PackageCheck,
   Pill,
-  Plus,
-  Settings2,
   ShieldCheck,
   SlidersHorizontal,
   Stethoscope,
@@ -23,6 +19,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { DashboardData, Portfolio, User } from "@/lib/types";
+import { PremiumIcon } from "./premium-icon";
 
 const states: Record<Portfolio["status"], string> = {
   DRAFT: "Draft",
@@ -106,7 +103,7 @@ export function ProviderOverview({
           <p>Every business, every location. A clearer view of your day.</p>
         </div>
         <Link className="button primary" href={createHref}>
-          <Plus size={18} /> Register a business
+          <PremiumIcon name="add" size={23} /> Register a business
         </Link>
       </div>
       <section
@@ -154,7 +151,13 @@ export function ProviderOverview({
             <div>
               <span className="provider-metric-label">{m.label}</span>
               <span className={`provider-metric-icon ${m.tone}`}>
-                <m.icon size={20} />
+                {m.label === "Business locations" ? (
+                  <PremiumIcon name="location" size={29} />
+                ) : m.label === "Conversations" ? (
+                  <PremiumIcon name="message" size={29} />
+                ) : (
+                  <m.icon size={20} />
+                )}
               </span>
             </div>
             <strong>{m.value.toLocaleString()}</strong>
@@ -181,13 +184,18 @@ export function ProviderOverview({
                 return (
                   <article className="provider-business-row" key={p.id}>
                     <span className="provider-business-icon">
-                      <Icon size={24} strokeWidth={1.6} />
+                      {/Pharmacy|Hospital|clinic/.test(p.category) ? (
+                        <PremiumIcon name="business" size={34} />
+                      ) : (
+                        <Icon size={24} strokeWidth={1.6} />
+                      )}
                     </span>
                     <div className="provider-business-summary">
                       <Link href={detail}>{p.name}</Link>
                       <span>{p.category}</span>
                       <p>
-                        <MapPin size={13} /> {p.county || "Location not set"}
+                        <PremiumIcon name="location" size={18} />{" "}
+                        {p.county || "Location not set"}
                         {p.address ? ` · ${p.address}` : ""}
                       </p>
                     </div>
@@ -208,7 +216,7 @@ export function ProviderOverview({
                       href={detail}
                       aria-label={`Manage ${p.name}`}
                     >
-                      <Settings2 size={17} />
+                      <PremiumIcon name="settings" size={20} />
                       <span>Manage</span>
                     </Link>
                   </article>
@@ -226,7 +234,8 @@ export function ProviderOverview({
                 then submit it for approval.
               </p>
               <Link href={createHref} className="button primary">
-                <Plus size={17} /> Register your first business
+                <PremiumIcon name="add" size={22} /> Register your first
+                business
               </Link>
             </div>
           )}
@@ -348,12 +357,12 @@ export function ProviderOverview({
                   </strong>
                   <p>{c.last_message || "A new connection. Say hello."}</p>
                 </div>
-                <MessagesSquare size={18} />
+                <PremiumIcon name="message" size={24} />
               </Link>
             ))
           ) : (
             <div className="provider-empty-conversation">
-              <MessagesSquare size={24} />
+              <PremiumIcon name="message" size={36} />
               <p>
                 Customer enquiries will appear here once you start connecting.
               </p>
@@ -376,12 +385,12 @@ export function ProviderOverview({
             <Link
               href={preview ? businessHref : `${businessHref}?view=profile`}
             >
-              <Building2 size={23} />
+              <PremiumIcon name="team" size={29} />
               <strong>Business profile</strong>
               <span>Your owner details</span>
             </Link>
             <Link href={businessHref}>
-              <Clock3 size={23} />
+              <PremiumIcon name="location" size={29} />
               <strong>Hours & location</strong>
               <span>Keep details current</span>
             </Link>

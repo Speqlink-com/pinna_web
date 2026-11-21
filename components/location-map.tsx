@@ -3,15 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { createRoot, type Root } from "react-dom/client";
-import {
-  Building2,
-  Pill,
-  Ambulance,
-  Leaf,
-  FlaskConical,
-  MapPin,
-} from "lucide-react";
+import { Building2, Pill, Ambulance, Leaf, FlaskConical } from "lucide-react";
 import type { Provider } from "@/lib/types";
+import { PremiumIcon } from "./premium-icon";
 
 export type Point = { lat: number; lng: number };
 const noProviders: Provider[] = [];
@@ -133,7 +127,13 @@ export function LocationMap({
               : Building2;
       const root = createRoot(element);
       roots.push(root);
-      root.render(<Icon size={20} />);
+      root.render(
+        provider.category.includes("Pharmacy") ? (
+          <PremiumIcon name="business" size={28} />
+        ) : (
+          <Icon size={20} />
+        ),
+      );
       element.addEventListener("click", (e) => {
         e.stopPropagation();
         callbacks.current.onProvider?.(provider);
@@ -151,9 +151,15 @@ export function LocationMap({
       bounds.extend([provider.longitude, provider.latitude]);
     }
     if (point) {
+      const element = document.createElement("div");
+      element.className = "location-selected-marker";
+      const root = createRoot(element);
+      roots.push(root);
+      root.render(<PremiumIcon name="location" size={42} />);
       markers.push(
         new mapboxgl.Marker({
-          color: picking ? "#126d62" : "#2377dc",
+          element,
+          anchor: "bottom",
           draggable: picking && !disabled,
         })
           .setLngLat([point.lng, point.lat])
@@ -231,7 +237,7 @@ export function LocationMap({
     >
       <div className="map-search">
         <label>
-          <MapPin size={18} />
+          <PremiumIcon name="location" size={24} />
           <input
             aria-label="Search places on map"
             placeholder="Search an address, town or area"
