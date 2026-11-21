@@ -1,21 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  HeartPulse,
-  Building2,
-  ShieldCheck,
-} from "lucide-react";
-import { Brand } from "@/components/brand";
+import { ArrowUpRight, HeartPulse, Building2, ShieldCheck } from "lucide-react";
+import { PublicHeader } from "./public-header";
+import { PublicFooter } from "./public-footer";
+import { PremiumIcon } from "./premium-icon";
 const content: Record<
   string,
   { title: string; intro: string; sections: { title: string; text: string }[] }
 > = {
   privacy: {
     title: "Your privacy matters.",
-    intro:
-      "How pinnaa by Bismart Inc. handles information in this web application.",
+    intro: "How Pinnaa handles information in this web application.",
     sections: [
       {
         title: "Your account",
@@ -39,13 +34,13 @@ const content: Record<
       },
       {
         title: "Account and data requests",
-        text: "Use the official Bismart Inc. support channel provided by your service operator for access, correction, deletion, or security questions. Retention periods, a verified privacy contact, and the final operating privacy policy must be published before public launch.",
+        text: "Use the official Pinnaa support channel provided by your service operator for access, correction, deletion, or security questions. Retention periods, a verified privacy contact, and the final operating privacy policy must be published before public launch.",
       },
     ],
   },
   terms: {
     title: "Good connections. Clear terms.",
-    intro: "Terms for using this phase of pinnaa by Bismart Inc.",
+    intro: "Terms for using this phase of Pinnaa.",
     sections: [
       {
         title: "What pinnaa does",
@@ -69,7 +64,7 @@ const content: Record<
       },
       {
         title: "Launch status",
-        text: "The application includes account services and initial dashboard and portfolio workflows. Public launch terms, support contacts, verification operations, and regulatory review remain to be finalized by Bismart Inc. Design previews contain fictional data and do not represent live service providers.",
+        text: "The application includes account services and initial dashboard and portfolio workflows. Public launch terms, support contacts, verification operations, and regulatory review remain to be finalized by Pinnaa. Design previews contain fictional data and do not represent live service providers.",
       },
     ],
   },
@@ -83,7 +78,7 @@ const content: Record<
       },
       {
         title: "Bring your business to pinnaa",
-        text: "Choose Bismart Business when creating an account. After verification, add a portfolio for each clinic, chemist, ambulance company, agrovet, or other service you manage. One login can manage many portfolios.",
+        text: "Choose Pinnaa Business when creating an account and verify your email. Register each business with its location, services and required documents, then submit it for review. One provider account can manage businesses at different locations. Each is reviewed separately before publication.",
       },
       {
         title: "Sign in with Google",
@@ -91,11 +86,11 @@ const content: Record<
       },
       {
         title: "Administrative access",
-        text: "Only the seeded Super Admin creates other admins. Invited admins receive a temporary password by email and must replace it and enroll an authenticator before entering their dashboard.",
+        text: "Only the Super Admin can create other admins. Invited admins receive a temporary password by email and must replace it. Administrative sign-in supports authenticator verification or a six-digit code sent to the verified account email.",
       },
       {
         title: "Email or password trouble",
-        text: "Use Forgot password to request a reset link. If your email is not verified, request a new verification link from the sign-in screen. Check your spam folder. Delivery requires the operator’s email worker to be running.",
+        text: "Use Forgot password to request a reset link. If your email is not verified, request a new six-digit verification code from the sign-in screen. Check your spam folder. For admin email verification, choose Email OTP, request a code and enter it in the code field before selecting Verify and continue.",
       },
       {
         title: "Explore the design",
@@ -108,56 +103,56 @@ export function DocumentPage({ document }: { document: string }) {
   const entry = content[document];
   if (!entry) notFound();
   return (
-    <div className="document-page">
-      <header className="auth-header">
-        <Brand />
-        <Link className="text-link" href="/sign-in">
-          Sign in <ArrowUpRight size={15} />
-        </Link>
-      </header>
-      <main>
-        <Link href="/sign-in" className="back-link">
-          <ArrowLeft size={15} /> Back to pinnaa
-        </Link>
-        <div className="eyebrow">pinnaa BY BISMART INC.</div>
-        <h1>{entry.title}</h1>
-        <p className="document-intro">{entry.intro}</p>
-        {document !== "help" ? (
-          <div className="notice">
-            Pre-launch application notice · Updated 9 November 2026. Bismart
-            Inc. must finalize its operating policies before public launch.
-          </div>
-        ) : null}
-        {entry.sections.map((s) => (
-          <section key={s.title}>
-            <h2>{s.title}</h2>
-            <p>{s.text}</p>
-          </section>
-        ))}
-        {document === "help" && process.env.NODE_ENV !== "production" ? (
-          <div className="preview-links">
-            <Link href="/preview/customer">
-              <HeartPulse size={19} /> Customer preview{" "}
-              <ArrowUpRight size={16} />
-            </Link>
-            <Link href="/preview/business">
-              <Building2 size={19} /> Business preview{" "}
-              <ArrowUpRight size={16} />
-            </Link>
-            <Link href="/preview/admin">
-              <ShieldCheck size={19} /> Admin preview <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        ) : null}
-      </main>
-      <footer className="auth-footer">
-        <span>© 2026 Bismart Inc.</span>
-        <div>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
-          <Link href="/help">Help</Link>
+    <div className="document-page public-page">
+      <PublicHeader />
+      <main id="public-main" className="public-scroll" tabIndex={-1}>
+        <div className="document-content">
+          <Link href="/sign-in" className="back-link">
+            <PremiumIcon name="chevron" size={15} /> Back to pinnaa
+          </Link>
+          <div className="eyebrow">PINNAA</div>
+          <h1>{entry.title}</h1>
+          <p className="document-intro">{entry.intro}</p>
+          {document !== "help" ? (
+            <div className="notice">
+              Pre-launch application notice · Updated 9 November 2026. Pinnaa
+              must finalize its operating policies before public launch.
+            </div>
+          ) : null}
+          {entry.sections.map((s, index) => (
+            <section
+              key={s.title}
+              id={
+                document === "help" && index === 1
+                  ? "provider-help"
+                  : document === "help" && index === 4
+                    ? "account-help"
+                    : `section-${index + 1}`
+              }
+            >
+              <h2>{s.title}</h2>
+              <p>{s.text}</p>
+            </section>
+          ))}
+          {document === "help" && process.env.NODE_ENV !== "production" ? (
+            <div className="preview-links">
+              <Link href="/preview/customer">
+                <HeartPulse size={19} /> Customer preview{" "}
+                <ArrowUpRight size={16} />
+              </Link>
+              <Link href="/preview/business">
+                <Building2 size={19} /> Business preview{" "}
+                <ArrowUpRight size={16} />
+              </Link>
+              <Link href="/preview/admin">
+                <ShieldCheck size={19} /> Admin preview{" "}
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          ) : null}
         </div>
-      </footer>
+      </main>
+      <PublicFooter />
     </div>
   );
 }

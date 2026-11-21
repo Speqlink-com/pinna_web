@@ -1,6 +1,10 @@
 import Image from "next/image";
 
 const assets = {
+  chevron: "/left-chevron.webp",
+  lock: "/lock.webp",
+  dropdown: "/dropdown-icon.webp",
+  profile: "/profile-icon.webp",
   notification: "/notification-icon.webp",
   location: "/location-icon.webp",
   message: "/message-icon.webp",

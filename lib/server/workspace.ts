@@ -209,7 +209,7 @@ export async function postWorkspace(path: string, body: unknown, user: User) {
         [
           input.email,
           encrypt(
-            `You have been invited to administer pinnaa by Bismart Inc.\n\nSign in at ${process.env.APP_ORIGIN}/sign-in\nEmail: ${input.email}\nTemporary password: ${password}\n\nThe temporary password expires in 24 hours. You must change this password and connect an authenticator before accessing the dashboard.`,
+            `You have been invited to administer Pinnaa\n\nSign in at ${process.env.APP_ORIGIN}/sign-in\nEmail: ${input.email}\nTemporary password: ${password}\n\nThe temporary password expires in 24 hours. You must change this password and connect an authenticator before accessing the dashboard.`,
           ),
         ],
       );

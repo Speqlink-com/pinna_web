@@ -11,12 +11,9 @@ import {
   Bookmark,
   MessagesSquare,
   Building2,
-  Settings,
-  LogOut,
   MapPin,
   Navigation,
   SlidersHorizontal,
-  ChevronDown,
   Plus,
   HeartPulse,
   Pill,
@@ -25,7 +22,6 @@ import {
   Clock,
   Users,
   FileCheck2,
-  Menu,
   X,
   LoaderCircle,
   Send,
@@ -36,11 +32,11 @@ import {
   CheckCircle2,
   AlertCircle,
   Mail,
-  LockKeyhole,
   CircleHelp,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ProviderOverview } from "./provider-overview";
+import { AdminOverview } from "./admin-overview";
 import { PremiumIcon } from "./premium-icon";
 import { BusinessNotifications } from "./business-notifications";
 import { ClientWorkspace } from "./client-workspace";
@@ -231,7 +227,7 @@ export function Dashboard({
   }
   return (
     <div
-      className={`workspace ${isBusiness ? "provider-workspace" : ""} ${isBusiness && collapsed ? "provider-collapsed" : ""}`}
+      className={`workspace pinnaa-workspace workspace-${user.role.toLowerCase()} ${collapsed ? "provider-collapsed" : ""}`}
     >
       <a className="skip-link" href="#workspace-main">
         Skip to content
@@ -275,7 +271,6 @@ export function Dashboard({
                   : "Care on your terms"}
             </span>
           </div>
-          {!isBusiness && <ChevronDown size={14} />}
         </div>
         <div className="nav-caption">WORKSPACE</div>
         <nav aria-label="Main navigation">
@@ -289,10 +284,14 @@ export function Dashboard({
               onClick={() => setMenu(false)}
               aria-current={section === item.key ? "page" : undefined}
             >
-              {isBusiness && item.key === "messages" ? (
+              {item.key === "messages" ? (
                 <PremiumIcon name="message" size={24} />
-              ) : isBusiness && item.key === "portfolios" ? (
+              ) : item.key === "portfolios" || item.key === "clients" ? (
                 <PremiumIcon name="business" size={26} />
+              ) : item.key === "team" ? (
+                <PremiumIcon name="team" size={24} />
+              ) : item.key === "overview" && !isAdmin && !isBusiness ? (
+                <PremiumIcon name="search" size={21} />
               ) : (
                 <item.icon size={18} />
               )}
@@ -351,11 +350,7 @@ export function Dashboard({
             title="Account settings"
             className={`nav-item ${section === "settings" ? "active" : ""}`}
           >
-            {isBusiness ? (
-              <PremiumIcon name="settings" />
-            ) : (
-              <Settings size={18} />
-            )}
+            <PremiumIcon name="settings" />
             <span>Account settings</span>
           </Link>
           {isBusiness && (
@@ -376,11 +371,7 @@ export function Dashboard({
             disabled={busy}
             onClick={logout}
           >
-            {isBusiness ? (
-              <PremiumIcon name="logout" size={22} />
-            ) : (
-              <LogOut size={18} />
-            )}
+            <PremiumIcon name="logout" size={22} />
             <span>Sign out</span>
           </button>
           <div className="sidebar-profile">
@@ -414,23 +405,17 @@ export function Dashboard({
               aria-label="Open navigation"
               onClick={() => setMenu(true)}
             >
-              {isBusiness ? (
-                <PremiumIcon name="sidebar" size={23} />
-              ) : (
-                <Menu size={21} />
-              )}
+              <PremiumIcon name="sidebar" size={23} />
             </button>
-            {isBusiness && (
-              <button
-                className="icon-button provider-collapse-toggle"
-                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                aria-expanded={!collapsed}
-                onClick={() => setCollapsed((value) => !value)}
-              >
-                <PremiumIcon name="sidebar" size={23} />
-              </button>
-            )}
-            <span>{isBusiness ? "Workspace" : "pinnaa"}</span>
+            <button
+              className="icon-button provider-collapse-toggle"
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-expanded={!collapsed}
+              onClick={() => setCollapsed((value) => !value)}
+            >
+              <PremiumIcon name="sidebar" size={23} />
+            </button>
+            <span>Workspace</span>
             <span className="breadcrumb-slash">/</span>
             <strong>{titles[section] ?? "Overview"}</strong>
           </div>
@@ -455,7 +440,7 @@ export function Dashboard({
           )}
           <div className="workspace-header-actions">
             <span className="secure-label">
-              <LockKeyhole size={13} /> Secure workspace
+              <PremiumIcon name="lock" size={17} /> Secure workspace
             </span>
             {isBusiness && (
               <BusinessNotifications
@@ -477,10 +462,10 @@ export function Dashboard({
             )}
             <Link
               href={href("settings")}
-              className="avatar avatar-small"
+              className="account-profile-icon"
               aria-label="Open your account settings"
             >
-              {user.name[0]}
+              <PremiumIcon name="profile" size={30} />
             </Link>
           </div>
         </header>
@@ -529,6 +514,8 @@ export function Dashboard({
             <>
               {isBusiness && section === "overview" ? (
                 <ProviderOverview user={user} data={data} preview={preview} />
+              ) : isAdmin && section === "overview" ? (
+                <AdminOverview user={user} data={data} preview={preview} />
               ) : !preview &&
                 (isBusiness || isAdmin) &&
                 ["overview", "portfolios", "applications"].includes(section) ? (
@@ -883,7 +870,7 @@ export function Dashboard({
             </>
           )}
           <footer className="workspace-footer">
-            <span>pinnaa by Bismart Inc.</span>
+            <span>Pinnaa</span>
             <div>
               <Link href="/privacy">Privacy</Link>
               <Link href="/help">
@@ -1210,7 +1197,7 @@ function Discovery({
           {locating ? (
             <LoaderCircle size={16} className="spin" />
           ) : (
-            <Navigation size={16} />
+            <PremiumIcon name="location" size={22} />
           )}{" "}
           {coords ? "Location shared" : "Use my location"}
         </button>
@@ -1262,7 +1249,7 @@ function Discovery({
         <form className="search-panel" onSubmit={search}>
           <div className="search-main">
             <div className="search-query">
-              <Search size={20} />
+              <PremiumIcon name="search" size={21} />
               <label htmlFor="search" className="sr-only">
                 Search provider, service or medicine
               </label>
@@ -1454,7 +1441,11 @@ function Discovery({
                   <span
                     className={`provider-category-icon category-${p.category.split(" ")[0].toLowerCase()}`}
                   >
-                    <Icon size={26} />
+                    {/Pharmacy|Hospital|clinic/.test(p.category) ? (
+                      <PremiumIcon name="business" size={34} />
+                    ) : (
+                      <Icon size={26} />
+                    )}
                   </span>
                   <button
                     className={`icon-button save-provider ${saved.includes(p.id) ? "is-saved" : ""}`}
@@ -1474,7 +1465,7 @@ function Discovery({
                   <button onClick={() => setDetails(p)}>{p.name}</button>
                 </h3>
                 <div className="provider-address">
-                  <MapPin size={13} />
+                  <PremiumIcon name="location" size={18} />
                   {p.county}
                   <span>·</span>
                   {p.distance === null
@@ -1559,7 +1550,7 @@ function Discovery({
             <span className="provider-category">{details.category}</span>
             <h3>{details.name}</h3>
             <p>
-              <MapPin size={14} /> {details.address}
+              <PremiumIcon name="location" size={20} /> {details.address}
             </p>
             {details.description && (
               <p className="provider-description">{details.description}</p>
@@ -2063,7 +2054,7 @@ function Account({ user, preview }: { user: User; preview: boolean }) {
                 : user.role === "ADMIN"
                   ? "Administrator"
                   : user.role === "BUSINESS"
-                    ? "Bismart Business"
+                    ? "Pinnaa Business"
                     : "Personal account"}
             </dd>
           </div>
@@ -2079,7 +2070,7 @@ function Account({ user, preview }: { user: User; preview: boolean }) {
           </div>
         </dl>
         <div className="account-security">
-          <LockKeyhole size={21} />
+          <PremiumIcon name="lock" size={26} />
           <div>
             <h3>Keep your account secure.</h3>
             <p>
@@ -2111,6 +2102,8 @@ function Messages({
   notify: (s: string) => void;
 }) {
   const requested = useSearchParams().get("conversation");
+  const [threadPickerOpen, setThreadPickerOpen] = useState(false);
+  const threadPickerTrigger = useRef<HTMLButtonElement>(null);
   const [selectedConversation, setActive] = useState(
       data.conversations.find((c) => c.id === requested)?.id ??
         data.conversations[0]?.id ??
@@ -2202,7 +2195,27 @@ function Messages({
         </div>
       </div>
       <div className="messages-panel panel">
-        <aside className="conversation-list">
+        <div className="mobile-conversation-toolbar">
+          <button
+            type="button"
+            className="text-link"
+            ref={threadPickerTrigger}
+            aria-expanded={threadPickerOpen}
+            aria-controls="conversation-list"
+            onClick={() => setThreadPickerOpen((value) => !value)}
+          >
+            <PremiumIcon name="chevron" size={13} />
+            {threadPickerOpen
+              ? "Back to conversation"
+              : "Choose a conversation"}
+            <span>{data.conversations.length}</span>
+          </button>
+        </div>
+        <aside
+          className={`conversation-list ${threadPickerOpen ? "conversation-list-open" : ""}`}
+          id="conversation-list"
+          aria-label="Conversations"
+        >
           <div className="conversation-heading">
             Messages <span>{data.conversations.length}</span>
           </div>
@@ -2213,6 +2226,10 @@ function Messages({
                 disabled={busy}
                 key={c.id}
                 onClick={() => {
+                  setThreadPickerOpen(false);
+                  requestAnimationFrame(() =>
+                    threadPickerTrigger.current?.focus(),
+                  );
                   if (active !== c.id) {
                     setMessages([]);
                     setError("");
@@ -2284,8 +2301,8 @@ function Messages({
                 ) : null}
               </div>
               <div className="chat-notice">
-                <LockKeyhole size={12} /> Share only the information needed for
-                your enquiry.
+                <PremiumIcon name="lock" size={15} /> Share only the information
+                needed for your enquiry.
               </div>
               <div
                 className="chat-messages"

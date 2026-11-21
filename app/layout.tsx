@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./premium.css";
+import "./system.css";
 const inter = localFont({
   src: [
     {
@@ -29,13 +30,13 @@ export const metadata: Metadata = {
     template: "%s | pinnaa",
   },
   description:
-    "Find providers that fit your insurance, budget, and location. Connect to healthcare, pharmacies, agrovets, and more with pinnaa by Bismart Inc.",
+    "Find providers that fit your insurance, budget, and location. Connect to healthcare, pharmacies, agrovets, and more with Pinnaa.",
   robots: { index: false, follow: false },
 };
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7f8f6",
+  themeColor: "#047b90",
 };
 export default function RootLayout({
   children,

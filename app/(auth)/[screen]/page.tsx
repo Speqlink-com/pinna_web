@@ -32,11 +32,13 @@ export default async function AuthPage({
     redirect(nextPath(user));
   return (
     <AuthScreen
+      key={`${screen}:${query.account === "business" ? "business" : "personal"}`}
       mode={screen as AuthMode}
       token={typeof query.token === "string" ? query.token : ""}
       error={typeof query.error === "string" ? query.error : ""}
       expired={query.expired === "true"}
       user={user}
+      businessAccount={query.account === "business"}
     />
   );
 }

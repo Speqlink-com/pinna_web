@@ -106,7 +106,7 @@ function EmailVerificationForm({ token }: { token: string }) {
         <CheckCircle2 size={32} />
         <h3>Email verified.</h3>
         <p>
-          Sign in with your password to continue. Bismart Business accounts
+          Sign in with your password to continue. Pinnaa Business accounts
           require Admin approval before workspace access.
         </p>
         <Link href="/sign-in" className="button primary full-width">

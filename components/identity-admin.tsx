@@ -94,7 +94,7 @@ export function IdentityAdmin({
           </h2>
           <p>
             {kind === "clients"
-              ? "Review who may sign in as a Bismart Business client. Portfolio publication is reviewed separately."
+              ? "Review who may sign in as a Pinnaa Business client. Portfolio publication is reviewed separately."
               : "Manage issued accounts. Only the platform owner can create or disable administrators."}
           </p>
         </div>

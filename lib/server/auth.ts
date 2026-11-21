@@ -43,7 +43,7 @@ async function enqueue(
         ? "Verify your pinnaa email"
         : "Reset your pinnaa password",
       encrypt(
-        `Use this link to ${purpose === "verify" ? "verify your email" : "reset your password"}:\n\n${link}\n\nExpires in ${purpose === "verify" ? "24 hours" : "30 minutes"}. If you did not request this, ignore this email.\n\npinnaa by Bismart Inc.`,
+        `Use this link to ${purpose === "verify" ? "verify your email" : "reset your password"}:\n\n${link}\n\nExpires in ${purpose === "verify" ? "24 hours" : "30 minutes"}. If you did not request this, ignore this email.\n\nPinnaa`,
       ),
     ],
   );

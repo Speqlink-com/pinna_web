@@ -1,4 +1,4 @@
-# pinnaa web · Bismart Inc.
+# Pinnaa web
 
 Next.js 16 / React 19 web app in black, grey and white, deployed to **https://pinnaa.com** on Vercel. Identity and workspace data come from the Python/PostgreSQL backend in `../pinna_infra`, exposed at **https://api.pinnaa.com**.
 
@@ -18,7 +18,7 @@ The Python backend is the only routed identity authority, in development and pro
 ## Account behavior
 
 - Customers register for themselves, verify email and go to discovery without MFA.
-- Bismart Business clients register once for multiple portfolios. Email verification and MFA are required before workspace access. Providers register businesses and branches for separate publication approval. Administratively restricted pending/rejected/suspended users see `/account-status`.
+- Pinnaa Business clients register once for multiple portfolios. Email verification and MFA are required before workspace access. Providers register businesses and branches for separate publication approval. Administratively restricted pending/rejected/suspended users see `/account-status`.
 - Admins are created only by the seeded Super Admin. Invitations email a 24-hour temporary password, followed by forced replacement and MFA enrollment.
 - The backend seeds `comsiwende@gmail.com` from its private environment password. Seeding never overwrites an existing account. The owner also changes the initial password and enrolls MFA.
 
@@ -45,7 +45,7 @@ pnpm test
 pnpm build
 ```
 
-Backend integration/security tests and the production TLS/container smoke test live in `../pinna_infra`. Real Google/Zoho delivery and Vercel/Cloudflare acceptance require the operator's completed environment and infrastructure. The privacy/terms pages still need final Bismart policy and support details before public provider onboarding.
+Backend integration/security tests and the production TLS/container smoke test live in `../pinna_infra`. Real Google/Zoho delivery and Vercel/Cloudflare acceptance require the operator's completed environment and infrastructure. The privacy/terms pages still need final Pinnaa policy and support details before public provider onboarding.
 
 Email signup now opens `/verify-email` for a six-digit code with a ten-minute expiry. The screen supports paste/autofill, resend cooldown, incorrect/expired feedback and existing unverified accounts. Valid password sign-in for an unverified account routes back to this step. No code is placed in a URL or browser storage. Email verification does not replace password login, business approval or privileged MFA. Previously mailed verification links remain usable until expiry.
 

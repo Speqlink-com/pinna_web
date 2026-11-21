@@ -8,6 +8,7 @@ import type { DashboardData } from "../lib/types";
 
 let ProviderOverview: typeof import("../components/provider-overview").ProviderOverview;
 let BusinessNotifications: typeof import("../components/business-notifications").BusinessNotifications;
+let AdminOverview: typeof import("../components/admin-overview").AdminOverview;
 before(async () => {
   mock.module("next/image.js", {
     defaultExport: ({
@@ -27,8 +28,48 @@ before(async () => {
   ({ ProviderOverview } = await import("../components/provider-overview"));
   ({ BusinessNotifications } =
     await import("../components/business-notifications"));
+  ({ AdminOverview } = await import("../components/admin-overview"));
 });
 after(() => mock.restoreAll());
+
+test("admin overview preserves server metrics and the exact approval/location routes", async () => {
+  const browser = new Window();
+  const id = "00000000-0000-4000-8000-000000000011";
+  try {
+    browser.document.body.innerHTML = renderToStaticMarkup(
+      createElement(AdminOverview, {
+        user: previewUsers.admin,
+        data: {
+          portfolios: [
+            { ...previewProviders[0], id, status: "ADMIN_RECOMMENDED" },
+          ],
+          conversations: [],
+          admins: [],
+          stats: [
+            {
+              label: "Business location reviews",
+              value: 7,
+              detail: "Awaiting location approval",
+            },
+          ],
+        },
+      }),
+    );
+    const doc = browser.document;
+    assert.equal(doc.querySelector(".stat-card strong")?.textContent, "7");
+    assert.equal(
+      doc.querySelector(".admin-queue-row")?.getAttribute("href"),
+      `/dashboard/applications?portfolio=${id}`,
+    );
+    assert.equal(
+      doc.querySelector(".provider-banner-link")?.getAttribute("href"),
+      "/dashboard/applications?status=ADMIN_RECOMMENDED",
+    );
+    assert.doesNotMatch(doc.body.textContent ?? "", /bismart/i);
+  } finally {
+    await browser.happyDOM.close();
+  }
+});
 
 const empty: DashboardData = {
   portfolios: [],

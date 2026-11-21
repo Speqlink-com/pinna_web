@@ -7,14 +7,14 @@ import {
   Check,
   Eye,
   EyeOff,
-  LockKeyhole,
   Mail,
-  UserRound,
   Building2,
   ShieldCheck,
   Copy,
 } from "lucide-react";
-import { Brand } from "./brand";
+import { PublicHeader } from "./public-header";
+import { PublicFooter } from "./public-footer";
+import { PremiumIcon } from "./premium-icon";
 import { AuthVisual } from "./auth-visual";
 import { AssetButton } from "./asset-button";
 import { api, ApiError } from "@/lib/api";
@@ -90,7 +90,7 @@ function Password({
     <div className="field-group">
       <label htmlFor={name}>{label}</label>
       <div className="input-wrap">
-        <LockKeyhole size={18} />
+        <PremiumIcon name="lock" size={20} />
         <input
           id={name}
           name={name}
@@ -124,14 +124,16 @@ export function AuthScreen({
   error = "",
   expired = false,
   user = null,
+  businessAccount = false,
 }: {
   mode: AuthMode;
   token?: string;
   error?: string;
   expired?: boolean;
   user?: User | null;
+  businessAccount?: boolean;
 }) {
-  const [business, setBusiness] = useState(false),
+  const [business, setBusiness] = useState(businessAccount),
     [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [confirmation, setConfirmation] = useState(""),
@@ -280,21 +282,14 @@ export function AuthScreen({
   ];
   return (
     <div className="auth-page welcome-shell">
-      <header className="auth-header">
-        <Brand />
-        <div className="auth-header-right">
-          <span>One platform. More possibilities.</span>
-          <Link href="/help">Help & support</Link>
-        </div>
-      </header>
-      <main className="auth-main">
+      <PublicHeader />
+      <main className="auth-main" id="public-main" tabIndex={-1}>
         <AuthVisual business={business} />
         <section className="auth-form-panel">
           <div className={`auth-form-inner ${isSignup ? "signup-inner" : ""}`}>
             {mode !== "sign-in" && mode !== "sign-up" ? (
               <Link href="/sign-in" className="back-link">
-                <Image src="/left-chevron.webp" width={15} height={15} alt="" />{" "}
-                Back to sign in
+                <PremiumIcon name="chevron" size={15} /> Back to sign in
               </Link>
             ) : (
               <div className="auth-kicker">
@@ -380,7 +375,7 @@ export function AuthScreen({
                           className={!business ? "selected" : ""}
                           onClick={() => setBusiness(false)}
                         >
-                          <UserRound size={18} />
+                          <PremiumIcon name="profile" size={21} />
                           <span>
                             For myself<small>Find & connect with care</small>
                           </span>
@@ -394,7 +389,7 @@ export function AuthScreen({
                         >
                           <Building2 size={18} />
                           <span>
-                            Bismart Business
+                            Pinnaa Business
                             <small>Manage your portfolios</small>
                           </span>
                           {business ? <Check size={15} /> : null}
@@ -445,7 +440,7 @@ export function AuthScreen({
                         <div className="field-group">
                           <label htmlFor="name">Full name</label>
                           <div className="input-wrap">
-                            <UserRound size={18} />
+                            <PremiumIcon name="profile" size={21} />
                             <input
                               id="name"
                               name="name"
@@ -768,24 +763,13 @@ export function AuthScreen({
               </>
             )}
             <div className="auth-trust">
-              <LockKeyhole size={13} />
+              <PremiumIcon name="lock" size={16} />
               <span>A secure connection. A personal choice.</span>
             </div>
           </div>
         </section>
       </main>
-      <footer className="auth-footer">
-        <span>
-          © {new Date().getFullYear()} Bismart Inc. All rights reserved.
-        </span>
-        <div>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
-          <span className="footer-location">
-            <span className="tiny-dot" /> Made for connections that matter
-          </span>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

@@ -200,3 +200,61 @@ for (const role of ["ADMIN", "SUPER_ADMIN"] as const) {
     },
   );
 }
+
+test("welcome navigation exposes public actions and restores focus when dismissed", async () => {
+  const container = document.createElement("div");
+  document.body.append(container);
+  let root: Root | undefined;
+  try {
+    await act(async () => {
+      root = createRoot(container);
+      root.render(createElement(AuthScreen, { mode: "sign-in" }));
+    });
+    const about = [
+      ...container.querySelectorAll<HTMLButtonElement>(".public-nav-trigger"),
+    ].find((el) => el.textContent?.includes("About Us"))!;
+    assert.ok(about);
+    await act(async () => about.click());
+    assert.equal(about.getAttribute("aria-expanded"), "true");
+    const panel = container.querySelector<HTMLElement>(
+      `[id="${about.getAttribute("aria-controls")}"]`,
+    )!;
+    assert.equal(panel.hidden, false);
+    assert.equal(
+      panel
+        .querySelector('a[href="/explore#purpose"]')
+        ?.textContent?.includes("Our purpose"),
+      true,
+    );
+    await act(async () =>
+      document.dispatchEvent(
+        new browser.KeyboardEvent("keydown", {
+          key: "Escape",
+          bubbles: true,
+        }) as unknown as Event,
+      ),
+    );
+    assert.equal(about.getAttribute("aria-expanded"), "false");
+    assert.equal(document.activeElement, about);
+    const mobile = container.querySelector<HTMLButtonElement>(
+      ".public-menu-toggle",
+    )!;
+    await act(async () => mobile.click());
+    assert.equal(mobile.getAttribute("aria-expanded"), "true");
+    await act(async () =>
+      document.dispatchEvent(
+        new browser.KeyboardEvent("keydown", {
+          key: "Escape",
+          bubbles: true,
+        }) as unknown as Event,
+      ),
+    );
+    assert.equal(mobile.getAttribute("aria-expanded"), "false");
+    assert.equal(document.activeElement, mobile);
+    assert.ok(container.querySelector('a[href="/sign-up?account=business"]'));
+    assert.doesNotMatch(container.textContent ?? "", /bismart/i);
+  } finally {
+    if (root) await act(async () => root!.unmount());
+    container.remove();
+  }
+});

@@ -152,7 +152,19 @@ export function ClientWorkspace({ user }: ClientWorkspaceProps) {
     [counts, setCounts] = useState<Record<string, number>>({}),
     [offset, setOffset] = useState(0),
     [next, setNext] = useState<number | null>(null),
-    [status, setStatus] = useState(business ? "" : "SUBMITTED"),
+    [status, setStatus] = useState(
+      [
+        "DRAFT",
+        "SUBMITTED",
+        "ADMIN_RECOMMENDED",
+        "APPROVED",
+        "CHANGES_REQUESTED",
+      ].includes(params.get("status") ?? "")
+        ? params.get("status")!
+        : business
+          ? ""
+          : "SUBMITTED",
+    ),
     [archived, setArchived] = useState(false),
     [search, setSearch] = useState(initialQuery),
     [query, setQuery] = useState(initialQuery),

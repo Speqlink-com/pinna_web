@@ -13,7 +13,7 @@ export function AccountStatus({ user }: { user: User }) {
       <Brand />
       <section className="panel identity-status-card">
         <Clock size={32} />
-        <div className="eyebrow">BISMART BUSINESS</div>
+        <div className="eyebrow">PINNAA BUSINESS</div>
         <h1>
           {pending
             ? "Your account is awaiting approval"

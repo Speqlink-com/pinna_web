@@ -1,3 +1,13 @@
+# Shared Pinnaa experience · 21 November 2026
+
+The current owner brief supersedes the previous corporate attribution: all application screens, public metadata and outgoing account mail use Pinnaa. The three-loop emblem and favicon come from BT's approved exports; the wordmark reads `pinnaa`. BT's About, Services, For providers, Guidance and Contact navigation is adapted to the features available in this application. Public links resolve to the new One Health information page, existing help/privacy pages or account flows. Provider registration links preselect the business account purpose. No sample contact details or unsupported BT workflows are presented as live services.
+
+The shared `.pinnaa-workspace` theme now applies to customer, provider, Admin and Super Admin screens. `app/system.css` owns the fixed viewport shells, white surfaces, shadows, stronger type and role-independent controls. The document remains fixed while forms, navigation, public content and workspace content scroll independently. Conversations retain separate list/history scrolling and a visible composer. Mobile menus use disclosure controls with Escape, outside-click dismissal and focus restoration. Admin overview metrics come from the existing dashboard response; application links preserve the requested location/status filter.
+
+Authentication, authorization and publication policies are unchanged. Backend changes replace the email signature/sender display name, including the Compose override needed when an older operator environment still supplies the former display name.
+
+---
+
 # Premium artwork and contrast · 21 November 2026
 
 The supplied public icon assets now appear in provider navigation, search, messages, settings, registration, business cards and location controls. The notification bell opens a keyboard-accessible panel with current business registration/approval statuses and links to the matching location. It does not imply unread events or introduce a notification delivery service. Selected map locations use the supplied location pin while retaining dragging and coordinate selection.
